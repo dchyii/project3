@@ -1,7 +1,9 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
+
+export const DataContext = createContext();
 
 function App() {
   useEffect(() => {
@@ -12,26 +14,34 @@ function App() {
     fetchTest();
   }, []);
 
+  const userContext = {
+    userID: "user1",
+    isLoggedIn: true,
+    isSuperAdmin: false,
+  };
+
   return (
-    <div className="App">
-      {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
-      <nav>
-        <div className=" h-9 border border-orange-400">
-          <p>navbar</p>
-        </div>
-      </nav>
-      <Routes>
-        <Route path="/" element={""} />
-        <Route path="/photos" element={""} />
-        <Route path="/photographers" element={""} />
-        <Route path="/signup" element={""} />
-        <Route path="/signin" element={""} />
-        <Route path="/:userID/posts" element={""} />
-        <Route path="/:userID/posts/new" element={""} />
-        <Route path="/:userID/posts/:postID" element={""} />
-        <Route path="/:userID/posts/:postID/edit" element={""} />
-      </Routes>
-    </div>
+    <DataContext.Provider value={userContext}>
+      <div className="App">
+        {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
+        <nav>
+          <div className=" h-9 border border-orange-400">
+            <p>navbar</p>
+          </div>
+        </nav>
+        <Routes>
+          <Route path="/" element={""} />
+          <Route path="/photos" element={""} />
+          <Route path="/photographers" element={""} />
+          <Route path="/signup" element={""} />
+          <Route path="/signin" element={""} />
+          <Route path="/:userID/posts" element={""} />
+          <Route path="/:userID/posts/new" element={""} />
+          <Route path="/:userID/posts/:postID" element={""} />
+          <Route path="/:userID/posts/:postID/edit" element={""} />
+        </Routes>
+      </div>
+    </DataContext.Provider>
   );
 }
 
