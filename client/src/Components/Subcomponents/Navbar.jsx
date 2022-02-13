@@ -6,10 +6,7 @@ export const PublicNavbarButtons = () => {
   const userContext = useContext(DataContext);
   console.log("nav bar context", userContext);
   return (
-    <div
-      id="publicButtons"
-      className="w-1/2 xl:w-1/3 text-base border border-orange-400"
-    >
+    <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block"></div>
       <div className="w-1/3 inline-block">
         <Link to="/signin">Sign In</Link>
@@ -25,10 +22,7 @@ export const LoggedInNavbarButtons = (props) => {
   const userContext = useContext(DataContext);
   console.log("nav bar context", userContext);
   return (
-    <div
-      id="publicButtons"
-      className="w-1/2 xl:w-1/3 text-base border border-orange-400"
-    >
+    <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block">
         <Link to={`/${props.userID}/posts/new`}>Post</Link>
       </div>

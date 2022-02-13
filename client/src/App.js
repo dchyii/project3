@@ -2,6 +2,7 @@ import "./App.css";
 import axios from "axios";
 import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
+import Navbar from "./Components/Subcomponents/Navbar";
 
 export const DataContext = createContext();
 
@@ -24,11 +25,7 @@ function App() {
     <DataContext.Provider value={userContext}>
       <div className="App">
         {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
-        <nav>
-          <div className=" h-9 border border-orange-400">
-            <p>navbar</p>
-          </div>
-        </nav>
+        <Navbar />
         <Routes>
           <Route path="/" element={""} />
           <Route path="/photos" element={""} />
