@@ -16,6 +16,7 @@ function App() {
 
   const userContext = {
     userID: "user1",
+    username: "username1",
     isLoggedIn: true,
     isSuperAdmin: false,
   };
