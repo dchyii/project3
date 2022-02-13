@@ -3,7 +3,9 @@ require("dotenv").config();
 const { urlencoded } = require("express");
 const path = require("path");
 const express = require("express");
+const session = require("express-session");
 const mongoose = require("mongoose");
+const userController = require("./controllers/usersController");
 
 //* config
 const app = express();
@@ -26,6 +28,17 @@ mongoose.connection.once("open", () => {
 //* middleware
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: process.env.SECRET, 
+    resave: false, 
+    saveUninitialized: false, 
+  })
+);
+
+//* Middleware for routes
+app.use("/api/users", userController);
 
 //* routes
 app.use("/api/test", (req, res) => {
