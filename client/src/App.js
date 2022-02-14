@@ -1,12 +1,15 @@
 import "./App.css";
 import axios from "axios";
 import PhotoGallery from "./Components/Pages/Home/PhotoGallery";
-import ImageUploader from "./Components/Pages/ImageUploader/ImageUploader"
+import ImageUploader from "./Components/Pages/ImageUploader/ImageUploader";
 import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
 import { SignupForm } from "./Components/Pages/SignupForm";
 import { SigninForm } from "./Components/Pages/SigninForm";
+import Photos from "./Components/Pages/Photos/Photos";
+import Photographers from "./Components/Pages/Photographers/Photographers";
+import SearchBar from "./Components/Subcomponents/SearchBar";
 
 export const DataContext = createContext();
 
@@ -31,10 +34,14 @@ function App() {
       <div className="App">
         {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
+        <br></br>
+        <br></br>
+        <SearchBar />
+        <br></br>
         <Routes>
           <Route path="/" element={<PhotoGallery />} />
-          <Route path="/photos" element={""} />
-          <Route path="/photographers" element={""} />
+          <Route path="/photos" element={<Photos />} />
+          <Route path="/photographers" element={<Photographers />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/signin" element={<SigninForm />} />
           <Route path="/:userID/posts" element={""} />
