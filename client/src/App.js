@@ -1,7 +1,11 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect } from "react";
 import PhotoGallery from "./Components/PhotoGallery";
+import { useEffect, createContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./Components/Subcomponents/Navbar";
+
+export const DataContext = createContext();
 
 function App() {
   useEffect(() => {
@@ -12,11 +16,32 @@ function App() {
     fetchTest();
   }, []);
 
+  const userContext = {
+    userID: "user1",
+    username: "username1",
+    isLoggedIn: true,
+    isSuperAdmin: false,
+  };
+
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello Project 3</h1>
-      <PhotoGallery />
-    </div>
+
+    <DataContext.Provider value={userContext}>
+      <div className="App">
+        {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<PhotoGallery/>} />
+          <Route path="/photos" element={""} />
+          <Route path="/photographers" element={""} />
+          <Route path="/signup" element={""} />
+          <Route path="/signin" element={""} />
+          <Route path="/:userID/posts" element={""} />
+          <Route path="/:userID/posts/new" element={""} />
+          <Route path="/:userID/posts/:postID" element={""} />
+          <Route path="/:userID/posts/:postID/edit" element={""} />
+        </Routes>
+      </div>
+    </DataContext.Provider>
   );
 }
 
