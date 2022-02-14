@@ -12,6 +12,7 @@
     "react-query": "^3.34.14",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "swiper": "^8.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -44,5 +45,10 @@
     "eslint": "^8.8.0",
     "postcss": "^8.4.6",
     "tailwindcss": "^3.0.19"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "tailwind.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
