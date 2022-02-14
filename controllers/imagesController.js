@@ -56,4 +56,19 @@ router.get("/seed", async (req, res) => {
   }
 });
 
+//* view post
+router.get("/:postid", async (req, res) => {
+  const { postid } = req.params;
+  try {
+    const foundImagePosts = await Image.findById(postid);
+    res.status(200).json({
+      status: "ok",
+      message: "get individual image post",
+      data: foundImagePosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 module.exports = router;
