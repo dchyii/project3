@@ -1,5 +1,6 @@
 import "./App.css";
 import axios from "axios";
+import PhotoGallery from "./Components/PhotoGallery";
 import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
@@ -25,12 +26,13 @@ function App() {
   };
 
   return (
+
     <DataContext.Provider value={userContext}>
       <div className="App">
         {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
         <Routes>
-          <Route path="/" element={""} />
+          <Route path="/" element={<PhotoGallery/>} />
           <Route path="/photos" element={""} />
           <Route path="/photographers" element={""} />
           <Route path="/signup" element={<SignupForm />} />
