@@ -17,7 +17,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 //css
-import "../Components/Top10.css";
+import "./Top10.css";
 
 const Top10 = () => {
   return (

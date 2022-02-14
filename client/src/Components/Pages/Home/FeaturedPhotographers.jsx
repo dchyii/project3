@@ -18,7 +18,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 //css
-import "../Components/Featured.css";
+import "./Featured.css";
 
 const FeaturedPhotographers = () => {
   return (
