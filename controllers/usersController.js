@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const User = require("../models/usersModel");
+const Image = require("../models/postImagesModel");
 
 //*GET seed users
 router.get("/seed", async (req, res) => {
@@ -74,7 +75,7 @@ router.get("/seed", async (req, res) => {
       .status(200)
       .json({ status: "ok", message: "seeded users", data: seededUsers });
   } catch (error) {
-    res.json({status: "not ok", message: error.message});
+    res.json({ status: "not ok", message: error.message });
   }
 });
 
@@ -89,7 +90,7 @@ router.post("/new", async (req, res) => {
     console.log("created user is: ", createdUser);
     res.json({ status: "ok", message: "user created", data: createdUser });
   } catch (error) {
-    res.json({status: "not ok", message: error.message});
+    res.json({ status: "not ok", message: error.message });
   }
 });
 
@@ -101,7 +102,7 @@ router.get("/superadmin", async (req, res) => {
       .status(200)
       .json({ status: "ok", message: "get all users", data: allUsers });
   } catch (error) {
-    res.json({status: "not ok", message: error.message});
+    res.json({ status: "not ok", message: error.message });
   }
 });
 
@@ -111,8 +112,7 @@ router.post("/login", async (req, res) => {
     const foundUser = await User.findOne({ username: req.body.username });
     if (!foundUser) {
       res.json({ status: "not ok", message: "no user found" });
-    } 
-    else {
+    } else {
       if (bcrypt.compareSync(req.body.password, foundUser.password)) {
         req.session.currentUser = foundUser;
         res.json({ status: "ok", message: "user found", data: foundUser });
@@ -121,7 +121,32 @@ router.post("/login", async (req, res) => {
       }
     }
   } catch (error) {
-    res.json({status: "not ok", message: error.message});
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* auth
+const isAuthenticated = (req, res, next) => {
+  if (req.session.currentUser) {
+    return next();
+  } else {
+    res.json({ status: "not ok", message: "please login or sign up" });
+  }
+};
+
+//* get user posts
+router.get("/:userid", isAuthenticated, async (req, res) => {
+  const { userid } = req.params;
+  try {
+    const foundUserPosts = await Image.find({ author: userid });
+
+    res.status(200).json({
+      status: "ok",
+      message: "get user home page",
+      data: foundUserPosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
   }
 });
 
