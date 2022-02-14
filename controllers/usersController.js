@@ -106,7 +106,7 @@ router.get("/superadmin", async (req, res) => {
   }
 });
 
-//* get all username
+//* get all username - superadmin
 router.get("/superadmin/allusername", async (req, res) => {
   try {
     const allUsernames = await User.find({});

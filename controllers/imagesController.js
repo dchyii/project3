@@ -121,7 +121,19 @@ router.put("/:postid", isAuthenticated, async (req, res) => {
   }
 });
 
-
-
+//* delete image post
+router.delete("/:postid", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  try {
+    const deletedImagePost = await Image.findByIdAndDelete(postid);
+    res.status(200).json({
+      status: "ok",
+      message: "deleted image post",
+      data: deletedImagePost,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
 
 module.exports = router;
