@@ -9,6 +9,7 @@ import {
   Autoplay,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -23,7 +24,10 @@ const Top10 = () => {
   return (
     <div className="Top10">
       <p className="T10">Top 10 Photos</p>
-      <p className="ShowAll">Show All...</p>
+      <Link to={`/photos`} style={{ textAlign: "right" }}>
+        Show All
+      </Link>
+
       <div className="container">
         <br></br>
         <Swiper
