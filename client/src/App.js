@@ -1,6 +1,7 @@
 import "./App.css";
 import axios from "axios";
 import PhotoGallery from "./Components/Pages/Home/PhotoGallery";
+import ImageUploader from "./Components/Pages/ImageUploader/ImageUploader"
 import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
@@ -37,7 +38,7 @@ function App() {
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/signin" element={<SigninForm />} />
           <Route path="/:userID/posts" element={""} />
-          <Route path="/:userID/posts/new" element={""} />
+          <Route path="/:userID/posts/new" element={<ImageUploader />} />
           <Route path="/:userID/posts/:postID" element={""} />
           <Route path="/:userID/posts/:postID/edit" element={""} />
         </Routes>
