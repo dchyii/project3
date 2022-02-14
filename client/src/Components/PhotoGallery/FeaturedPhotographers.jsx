@@ -9,6 +9,7 @@ import {
   Autoplay,
 } from "swiper"; //removed Keyboard
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,13 +19,15 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 //css
-import "../Components/Featured.css";
+import "../PhotoGallery/Featured.css";
 
 const FeaturedPhotographers = () => {
   return (
     <div className="Featured">
       <p className="FeaturedP">Featured Photographers</p>
-      <p className="ShowAll">Show All...</p>
+      <Link to={`/photographers`} style={{ textAlign: "right" }}>
+        Photographers...
+      </Link>
       <br></br>
       <div className="container">
         <Swiper
