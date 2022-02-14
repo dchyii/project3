@@ -1,9 +1,12 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
 import { forwardRef } from "react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 export const SignupForm = () => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -19,57 +22,68 @@ export const SignupForm = () => {
   });
 
   return (
-    <div className="m-12 border p-6 md:w-6/12 mx-auto">
-      <form onSubmit={formik.handleSubmit}>
-        <Field
-          dot={true}
-          error={formik.touched?.username && formik.errors?.username}
-          label="Username"
-          name="username"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          type="text"
-        />
-        <Field
-          dot={true}
-          error={formik.touched?.email && formik.errors?.email}
-          label="Email"
-          name="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          type="text"
-        />
-        <Field
-          dot={true}
-          error={formik.touched?.password && formik.errors?.password}
-          icon={<LockIcon />}
-          label="Password"
-          name="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          type="password"
-        />
-        <Field
-          dot={true}
-          error={
-            formik.touched?.repeatPassword && formik.errors?.repeatPassword
-          }
-          icon={<LockIcon />}
-          label="Repeat Password"
-          name="repeatPassword"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          type="password"
-        />
+    <div>
+      <div className="m-12 border p-6 md:w-6/12 mx-auto">
+        <form onSubmit={formik.handleSubmit}>
+          <Field
+            dot={true}
+            error={formik.touched?.username && formik.errors?.username}
+            label="Username"
+            name="username"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+          />
+          <Field
+            dot={true}
+            error={formik.touched?.email && formik.errors?.email}
+            label="Email"
+            name="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+          />
+          <Field
+            dot={true}
+            error={formik.touched?.password && formik.errors?.password}
+            icon={<LockIcon />}
+            label="Password"
+            name="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="password"
+          />
+          <Field
+            dot={true}
+            error={
+              formik.touched?.repeatPassword && formik.errors?.repeatPassword
+            }
+            icon={<LockIcon />}
+            label="Repeat Password"
+            name="repeatPassword"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="password"
+          />
+          <button
+            className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
+            type="submit"
+            //dirty === not filled up, isValid === validity of all fields
+            disabled={!(formik.isValid && formik.dirty)}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div>
+        <p>Already have an account? Sign in</p>
         <button
-          className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
-          type="submit"
-          //dirty === not filled up, isValid === validity of all fields
-          disabled={!(formik.isValid && formik.dirty)}
+          className="mt-8 bg-black active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
+          onClick={() => navigate("/signin")}
         >
-          Submit
+          Sign Up
         </button>
-      </form>
+      </div>
     </div>
   );
 };
