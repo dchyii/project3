@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const Image = require("../models/postImagesModel");
@@ -56,7 +57,34 @@ router.get("/seed", async (req, res) => {
   }
 });
 
-//* view post
+//* auth
+const isAuthenticated = (req, res, next) => {
+  if (req.session.currentUser) {
+    return next();
+  } else {
+    res.json({ status: "not ok", message: "please login or sign up" });
+  }
+};
+
+//* create new user post
+router.post("/new", isAuthenticated, async (req, res) => {
+  const newImagePost = req.body;
+  if (!newImagePost.imgPath) {
+    res.status(400).json({ status: "not ok", message: "please upload image" });
+  }
+  try {
+    const createdNewImagePost = await Image.create(newImagePost);
+    res.status(200).json({
+      status: "ok",
+      message: "create new image post",
+      data: createdNewImagePost,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* view individual post
 router.get("/:postid", async (req, res) => {
   const { postid } = req.params;
   try {
@@ -65,6 +93,43 @@ router.get("/:postid", async (req, res) => {
       status: "ok",
       message: "get individual image post",
       data: foundImagePosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* edit image post
+router.put("/:postid", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  const changedImagePosts = req.body;
+  try {
+    const editedImagePosts = await Image.findByIdAndUpdate(
+      postid,
+      changedImagePosts,
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({
+      status: "ok",
+      message: "edited image post",
+      data: editedImagePosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* delete image post
+router.delete("/:postid", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  try {
+    const deletedImagePost = await Image.findByIdAndDelete(postid);
+    res.status(200).json({
+      status: "ok",
+      message: "deleted image post",
+      data: deletedImagePost,
     });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
