@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
+import { SignupForm } from "./Components/Pages/SignupForm";
 
 export const DataContext = createContext();
 
@@ -18,7 +19,7 @@ function App() {
   const userContext = {
     userID: "user1",
     username: "username1",
-    isLoggedIn: true,
+    isLoggedIn: false,
     isSuperAdmin: false,
   };
 
@@ -31,7 +32,7 @@ function App() {
           <Route path="/" element={""} />
           <Route path="/photos" element={""} />
           <Route path="/photographers" element={""} />
-          <Route path="/signup" element={""} />
+          <Route path="/signup" element={<SignupForm />} />
           <Route path="/signin" element={""} />
           <Route path="/:userID/posts" element={""} />
           <Route path="/:userID/posts/new" element={""} />
