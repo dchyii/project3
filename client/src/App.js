@@ -4,6 +4,7 @@ import { useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
 import { SignupForm } from "./Components/Pages/SignupForm";
+import { SigninForm } from "./Components/Pages/SigninForm";
 
 export const DataContext = createContext();
 
@@ -33,7 +34,7 @@ function App() {
           <Route path="/photos" element={""} />
           <Route path="/photographers" element={""} />
           <Route path="/signup" element={<SignupForm />} />
-          <Route path="/signin" element={""} />
+          <Route path="/signin" element={<SigninForm />} />
           <Route path="/:userID/posts" element={""} />
           <Route path="/:userID/posts/new" element={""} />
           <Route path="/:userID/posts/:postID" element={""} />
