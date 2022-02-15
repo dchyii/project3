@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../App";
+import axios from "axios";
 
 export const PublicNavbarButtons = () => {
   return (
@@ -17,6 +18,16 @@ export const PublicNavbarButtons = () => {
 };
 
 export const LoggedInNavbarButtons = (props) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    axios({
+      method: "post",
+      url: "/api/users/logout?method=DELETE",
+    }).then((response) => {
+      console.log(response);
+    });
+  };
+
   return (
     <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block">
@@ -27,7 +38,7 @@ export const LoggedInNavbarButtons = (props) => {
       </div>
       <div className="w-1/3 inline-block">
         {/* <Link to="/">Sign Out</Link> add form to destroy cookie */}
-        <form>
+        <form onSubmit={handleSubmit}>
           <input type="submit" value="Sign Out" />
         </form>
       </div>
