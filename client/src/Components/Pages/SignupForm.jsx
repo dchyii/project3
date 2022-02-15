@@ -1,11 +1,22 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import axios from "axios";
 
 export const SignupForm = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let allUsernames = [];
+    const fetchAllUsernames = async () => {
+      const result = await axios.get("/api/users/superadmin/allusername");
+      allUsernames.push(result.data.data);
+      console.log(allUsernames);
+    };
+    fetchAllUsernames();
+  }, []);
 
   const formik = useFormik({
     initialValues: {

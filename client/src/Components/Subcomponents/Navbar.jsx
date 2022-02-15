@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { DataContext } from "../../App";
 
 export const PublicNavbarButtons = () => {
-  const userContext = useContext(DataContext);
-  console.log("nav bar context", userContext);
   return (
     <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block"></div>
@@ -19,8 +17,6 @@ export const PublicNavbarButtons = () => {
 };
 
 export const LoggedInNavbarButtons = (props) => {
-  const userContext = useContext(DataContext);
-  console.log("nav bar context", userContext);
   return (
     <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block">
@@ -37,9 +33,9 @@ export const LoggedInNavbarButtons = (props) => {
 };
 
 export const NavbarButtons = () => {
-  const userContext = useContext(DataContext);
+  const [userContext, setUserContext] = useContext(DataContext);
   if (userContext.isLoggedIn) {
-    return <LoggedInNavbarButtons userID={userContext.userID} />;
+    return <LoggedInNavbarButtons userID={userContext.username} />;
   } else {
     return <PublicNavbarButtons />;
   }
