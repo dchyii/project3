@@ -49,14 +49,6 @@ function Navbar() {
           <div id="logo" className="text-xl">
             <Link to="/">Logo</Link>
           </div>
-          {/* <div
-            id="publicButtons"
-            className="w-1/2 xl:w-1/3 text-base border border-orange-400"
-          >
-            <div className="w-1/3 inline-block"></div>
-            <div className="w-1/3 inline-block">Sign In</div>
-            <div className="w-1/3 inline-block">Sign Up</div>
-          </div> */}
           <NavbarButtons />
         </div>
       </nav>

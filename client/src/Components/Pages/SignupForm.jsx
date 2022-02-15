@@ -47,6 +47,7 @@ export const SignupForm = () => {
             userID: "",
             username: "",
             password: "",
+            profilePhoto: "",
             isLoggedIn: true,
             isSuperAdmin: false,
           };
@@ -55,7 +56,6 @@ export const SignupForm = () => {
             userID: result._id,
             username: result.username,
             password: result.password,
-            isSuperAdmin: result.superAdmin,
           };
           console.log(user);
           localStorage.setItem("userContext", JSON.stringify(user));
