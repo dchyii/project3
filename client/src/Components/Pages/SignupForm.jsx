@@ -1,12 +1,14 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import { DataContext } from "../../App";
 
 export const SignupForm = () => {
   const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(DataContext);
   const [allUsernames, setAllUsernames] = useState([]);
 
   useEffect(() => {
@@ -25,9 +27,45 @@ export const SignupForm = () => {
       repeatPassword: "",
     },
     validationSchema: validateSchema(allUsernames),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      const body = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      };
       console.log("submitted values: ", values);
-      console.log("password: ", values.password);
+      axios({
+        method: "post",
+        url: "/api/users/new",
+        data: body,
+      }).then((response) => {
+        if (response.data.status === "not ok") {
+          console.log(response.data.message);
+        } else {
+          const result = response.data.data;
+          let user = {
+            userID: "",
+            username: "",
+            password: "",
+            isLoggedIn: true,
+            isSuperAdmin: false,
+          };
+          user = {
+            ...user,
+            userID: result._id,
+            username: result.username,
+            password: result.password,
+            isSuperAdmin: result.superAdmin,
+          };
+          console.log(user);
+          localStorage.setItem("userContext", JSON.stringify(user));
+          const newMsg =
+            response.data.message.charAt(0).toUpperCase() +
+            response.data.message.slice(1);
+          window.alert(newMsg);
+          setUserContext(user);
+        }
+      });
     },
   });
 
