@@ -10,23 +10,22 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 
-import "swiper/css";
-import "swiper/css/bundle";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-import "./Featured.css";
+// import "swiper/css";
+// import "swiper/css/bundle";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import "swiper/css/scrollbar";
 
 const FeaturedPhotographers = () => {
   return (
     <div className="Featured">
-      <p className="FeaturedP">Featured Photographers</p>
-      <Link to={`/photographers`} style={{ textAlign: "right" }}>
-        Show All
-      </Link>
-      <br></br>
-      <div className="container">
+      <p className="FeaturedP font-extrabold text-2xl">
+        Featured Photographers
+      </p>
+      <div className="w-full text-right px-10">
+        <Link to={`/photographers`}>Show All</Link>
+      </div>
+      <div className="w-full">
         <Swiper
           modules={[
             Navigation,
@@ -51,7 +50,6 @@ const FeaturedPhotographers = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          className="mySwiper"
         >
           <SwiperSlide>Slide 1</SwiperSlide>
           <br></br>

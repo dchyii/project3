@@ -38,14 +38,20 @@ export const SigninForm = () => {
             userID: "",
             username: "",
             password: "",
+            profilePhoto: "",
             isLoggedIn: true,
             isSuperAdmin: false,
           };
+          console.log(
+            "profile",
+            result.profilePhoto ? result.profilePhoto : ""
+          );
           user = {
             ...user,
             userID: result._id,
             username: result.username,
             password: result.password,
+            profilePhoto: result.profilePhoto ? result.profilePhoto : "",
             isSuperAdmin: result.superAdmin,
           };
           console.log(user);

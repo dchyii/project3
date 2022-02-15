@@ -5,8 +5,8 @@ const postImageSchema = Schema(
   {
     imgPath: { type: String, required: true },
     description: { type: String, required: true },
-    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    author: { type: Schema.Types.ObjectId, ref: "User" },
+    imageLikes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    imageAuthor: { type: Schema.Types.ObjectId, ref: "User" },
     equipment: String,
     tags: [String],
   },

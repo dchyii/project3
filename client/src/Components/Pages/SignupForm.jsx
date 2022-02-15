@@ -1,19 +1,20 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useState, useContext } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import { DataContext } from "../../App";
 
 export const SignupForm = () => {
   const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(DataContext);
+  const [allUsernames, setAllUsernames] = useState([]);
 
   useEffect(() => {
-    let allUsernames = [];
     const fetchAllUsernames = async () => {
       const result = await axios.get("/api/users/superadmin/allusername");
-      allUsernames.push(result.data.data);
-      console.log(allUsernames);
+      setAllUsernames(result.data.data);
     };
     fetchAllUsernames();
   }, []);
@@ -25,10 +26,46 @@ export const SignupForm = () => {
       password: "",
       repeatPassword: "",
     },
-    validationSchema: validateSchema,
-    onSubmit: (values) => {
+    validationSchema: validateSchema(allUsernames),
+    onSubmit: async (values) => {
+      const body = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      };
       console.log("submitted values: ", values);
-      console.log("password: ", values.password);
+      axios({
+        method: "post",
+        url: "/api/users/new",
+        data: body,
+      }).then((response) => {
+        if (response.data.status === "not ok") {
+          console.log(response.data.message);
+        } else {
+          const result = response.data.data;
+          let user = {
+            userID: "",
+            username: "",
+            password: "",
+            profilePhoto: "",
+            isLoggedIn: true,
+            isSuperAdmin: false,
+          };
+          user = {
+            ...user,
+            userID: result._id,
+            username: result.username,
+            password: result.password,
+          };
+          console.log(user);
+          localStorage.setItem("userContext", JSON.stringify(user));
+          const newMsg =
+            response.data.message.charAt(0).toUpperCase() +
+            response.data.message.slice(1);
+          window.alert(newMsg);
+          setUserContext(user);
+        }
+      });
     },
   });
 
@@ -100,19 +137,24 @@ export const SignupForm = () => {
 };
 
 // Yup validation schema
-const validateSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(6, "Username should be at least 6 characters")
-    .matches(/^[0-9A-Za-z]*[^ ]$/, "Please use alphanumeric characters")
-    .required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password required"),
-  repeatPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Please confirm password"),
-});
+const validateSchema = (usernames) => {
+  const allUsernames = usernames;
+  const schema = Yup.object().shape({
+    username: Yup.string()
+      .min(6, "Username should be at least 6 characters")
+      .matches(/^[0-9A-Za-z]*[^ ]$/, "Please use alphanumeric characters")
+      .notOneOf(allUsernames, "This username is taken")
+      .required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password required"),
+    repeatPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Please confirm password"),
+  });
+  return schema;
+};
 
 /*  COMPONENT LOGIC */
 

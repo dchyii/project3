@@ -33,6 +33,7 @@ function App() {
     userID: "",
     username: "",
     password: "",
+    profilePhoto: "",
     isLoggedIn: false,
     isSuperAdmin: false,
   });
@@ -59,7 +60,7 @@ function App() {
         <br></br>
         <SearchBar />
         <br></br>
-        <div className="App-container h-full p-16 -m-20">
+        <div className="App-container h-screen w-full pt-16 -mt-20 overflow-hidden">
           <Routes>
             <Route path="/" element={<PhotoGallery />} />
             <Route path="/photos" element={<Photos />} />
