@@ -25,7 +25,7 @@ const Top10 = () => {
         Show All
       </Link>
 
-      <div className="container">
+      <div className="swiper">
         <br></br>
         <Swiper
           modules={[
@@ -51,11 +51,9 @@ const Top10 = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          // onSwiper={(swiper) => console.log(swiper)}
-          // onSlideChange={() => console.log("slide change")}
-          className="mySwiper"
+          className="swiper-slide"
         >
-          <SwiperSlide></SwiperSlide>
+          <SwiperSlide className="swiper-slide">Slide 1</SwiperSlide>
           <br></br>
           <SwiperSlide>Slide 2</SwiperSlide>
           <br></br>

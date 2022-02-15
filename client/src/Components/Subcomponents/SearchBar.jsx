@@ -21,7 +21,7 @@ const SearchBar = () => {
   const filteredPosts = filterPosts(posts, searchQuery);
 
   return (
-    <div className="App">
+    <div>
       <SearchBar2 searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <ul>
         {filteredPosts.map((post) => (
