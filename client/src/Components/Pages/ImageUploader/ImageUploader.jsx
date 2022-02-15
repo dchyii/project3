@@ -1,23 +1,33 @@
+// DEPENDENCIES
 import "./style.css";
-
 import { useState, forwardRef, useContext } from "react";
 import { DataContext } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
-
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+//VARIABLES
 const NAME_OF_UPLOAD_PRESET = "project_3";
 const YOUR_CLOUDINARY_ID = "djtovzgnc";
-
-
-
-const tagList = ["People", "Food", "Animals", "Nature", "Urban", "Art", "Others"]
+const tagList = [
+  "People",
+  "Food",
+  "Animals",
+  "Nature",
+  "Urban",
+  "Art",
+  "Others",
+];
 
 // A helper function
 
 const ImageUploader = () => {
-  const userContext = useContext[DataContext];
+  const [userContext, setUserContext] = useContext(DataContext);
+  const navigate = useNavigate();
+  // const userContext = useContext[DataContext];
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     // ...other fields
     img: "",
@@ -26,23 +36,69 @@ const ImageUploader = () => {
   const [displayedImage, setDisplayedImage] = useState(
     "https://image.flaticon.com/icons/png/128/109/109612.png"
   );
+  const [imageUrl, setImageUrl] = useState("");
 
-//FORM
-const formik = useFormik({
-  initialValues: {
-    username: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-  },
-  validationSchema: validateSchema,
-  onSubmit: (values) => {
-    console.log("submitted values: ", values);
-    console.log("password: ", values.password);
-  },
-});
+  //FORM
+  const validateSchema = Yup.object().shape({
+    imagePath: Yup.string().required("Please upload an image."),
+    description: Yup.string().required("Please enter a description."),
+  });
+  const formik = useFormik({
+    initialValues: {
+      imagePath: "",
+      likes: [],
+      description: "",
+      equipment: "",
+      tags: [],
+      author: "",
+    },
+    // validationSchema: validateSchema,
+    onSubmit: async (values) => {
+      formik.setFieldValue("tags", tags);
+      if (uploadingImg) return;
+      console.log("submitted values: ", values);
+      //   await axios.post("/api/images/new", values);
+      // axios({
+      //   method: "post",
+      //   url: "/api/images/new",
+      //   data: values,
+      // }).then((response) => {
+      //   console.log(response);
+      //   if (response.data.status === "not ok") {
+      //     console.log("not ok");
+      //     const newMsg =
+      //       response.data.message.charAt(0).toUpperCase() +
+      //       response.data.message.slice(1);
+      //     setMessage(newMsg);
+      //   } else {
+      //     const result = response.data.data;
+      //     let post = {
+      //       imagePath: "",
+      //       likes: [],
+      //       description: "",
+      //       equipment: "",
+      //       tags: [],
+      //       likes: [],
+      //     };
+      //     console.log(post);
+      //     post = {
+      //       ...post,
+      //       imagePath: "",
+      //       likes: [],
+      //       description: "",
+      //       equipment: "",
+      //       tags: [],
+      //       likes: [],
+      //     };
+      //     console.log(post);
+      //     navigate(-1, { replace: false });
+      //   }
+      // });
+    },
+  });
 
   //TAGS
+
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
@@ -50,8 +106,10 @@ const formik = useFormik({
   const addTag = (e) => {
     e.preventDefault();
     const trimmedInput = tagInput.trim();
+    const addTag = (prevState) => [...prevState, trimmedInput];
     if (trimmedInput.length && !tags.includes(trimmedInput)) {
       setTags((prevState) => [...prevState, trimmedInput]);
+      formik.setFieldValue("tags", addTag(tags));
       setTagInput("");
     }
   };
@@ -59,6 +117,7 @@ const formik = useFormik({
   const removeTag = (value) => {
     const arr = tags.filter((tag) => tag !== value);
     setTags(arr);
+    formik.setFieldValue("tags", arr);
   };
 
   const tagDisplay = tags.map((tag) => (
@@ -72,7 +131,7 @@ const formik = useFormik({
     </div>
   ));
 
-  const tagDatalist = tagList.map((item) => <option value={item} />)
+  const tagDatalist = tagList.map((item) => <option key={item} value={item} />);
 
   //IMAGE
   const uploadImage = async (file) => {
@@ -88,6 +147,8 @@ const formik = useFormik({
     );
     const img = await res.json();
     setDisplayedImage(img.secure_url);
+    setImageUrl(img.secure_url);
+    formik.setFieldValue("imagePath", img.secure_url);
     return img.secure_url;
   };
 
@@ -97,7 +158,7 @@ const formik = useFormik({
 
     setUploadingImg(true);
     setDisplayedImage(
-      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644763790/project3/qabryg06iumjfaqdoiqg.gif"
+      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644945448/project3/fihn2qjb7r3lt4dq0jxu.gif"
     );
     const uploadedUrl = await uploadImage(file);
     setFormData({ ...formData, img: uploadedUrl });
@@ -114,9 +175,12 @@ const formik = useFormik({
 
   return (
     <div className="center">
-      <form method="POST" onSubmit={handleSubmit} className="form-input">
+      <form method="POST" onSubmit={formik.handleSubmit} className="form-input">
         <div>
-          <img src={displayedImage} style={{ maxWidth: "75% ", height: "auto" }}/>
+          <img
+            src={displayedImage}
+            style={{ maxWidth: "75% ", height: "auto" }}
+          />
           <input
             className="input"
             type="file"
@@ -125,57 +189,73 @@ const formik = useFormik({
             disabled={uploadingImg}
           />
         </div>
-        <Field type="text" value={formData.img} className="hidden"/>
         <span
           style={{ display: "inline-block", width: "70%", padding: "10px" }}
         >
-          <Field label="Description" name="description" type="textarea" rows="6"/>
+          <Field
+            label="Description"
+            name="description"
+            type="textarea"
+            onChange={formik.handleChange}
+            rows="6"
+            dot={true}
+            error={formik.touched?.description && formik.errors?.description}
+          />
           <Field
             label="Equipment"
             name="equipment"
             placeholder="Equipment used..."
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </span>
-       
-          <aside
+
+        <aside
+          style={{
+            display: "inline-block",
+            width: "30%",
+            maxWidth: "30%",
+          }}
+          className="max-w-sm"
+        >
+          <div
             style={{
-              display: "inline-block",
-              width: "30%",
-              maxWidth: "30%"
+              position: "absolute",
+              marginTop: "-253px",
+              maxWidth: "23%",
+              width: "24%",
             }}
-            className="max-w-sm"
           >
-            <div style={{position: "absolute", marginTop: "-253px", maxWidth: "23%", width: "24%"}}>
-              <Field
-                list="tags"
-                name="tag"
-                id="tag"
-                type="text"
-                value={tagInput}
-                placeholder="Enter a tag"
-                onChange={onTagInputChange}
-              />
-              <datalist id="tags" style={{ display: "none" }}>
-                {tagDatalist}
-              </datalist>
-              <button
-                onClick={addTag}
-                className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-              >
-                Add Tag
-              </button>{" "}
-              <p>
-                <i>Click on a tag to remove it!</i>
-              </p>
-              <div className="flex flex-wrap" style={{maxHeight: "200px"}}>{tagDisplay}</div>
+            <Field
+              list="tags"
+              id="tag"
+              type="text"
+              value={tagInput}
+              placeholder="Enter a tag"
+              onChange={onTagInputChange}
+            />
+            <datalist id="tags" style={{ display: "none" }}>
+              {tagDatalist}
+            </datalist>
+            <button
+              onClick={addTag}
+              className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            >
+              Add Tag
+            </button>{" "}
+            <p>
+              <i>Click on a tag to remove it!</i>
+            </p>
+            <div className="flex flex-wrap" style={{ maxHeight: "200px" }}>
+              {tagDisplay}
             </div>
-          </aside>
-      
+          </div>
+        </aside>
+
         <br />
         <button
           type="submit"
-          disabled={uploadingImg}
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+          className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
         >
           Submit
         </button>
@@ -286,7 +366,7 @@ const Field = forwardRef(
 );
 
 Field.displayName = "Field";
-
+Field.enableReinitialize = true;
 const ErrorIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
