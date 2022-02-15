@@ -33,6 +33,7 @@ function App() {
     userID: "",
     username: "",
     password: "",
+    profilePhoto: "",
     isLoggedIn: false,
     isSuperAdmin: false,
   });
