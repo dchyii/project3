@@ -1,6 +1,7 @@
 import "./style.css";
 
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useContext } from "react";
+import { DataContext } from "../../../App";
 import axios from "axios";
 import { Formik } from "formik";
 
@@ -138,6 +139,7 @@ const LockIcon = () => (
 // A helper function
 
 const ImageUploader = () => {
+  const userContext = useContext[DataContext];
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({
@@ -153,7 +155,8 @@ const ImageUploader = () => {
     const { value } = e.target;
     setTagInput(value);
   };
-  const addTag = () => {
+  const addTag = (e) => {
+    e.preventDefault();
     const trimmedInput = tagInput.trim();
     if (trimmedInput.length && !tags.includes(trimmedInput)) {
       setTags((prevState) => [...prevState, trimmedInput]);
@@ -161,11 +164,21 @@ const ImageUploader = () => {
     }
   };
 
-  const removeTag = (tag) => {
-    const arr = tags.filter((item) => item.name !== tag);
+  const removeTag = (value) => {
+    const arr = tags.filter((tag) => tag !== value);
     setTags(arr);
   };
 
+  const tagDisplay = tags.map((tag) => (
+    <div className="tag" key={tag}>
+      <button
+        className="bg-green-500 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full"
+        onClick={() => removeTag(tag)}
+      >
+        {tag}
+      </button>
+    </div>
+  ));
   const uploadImage = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -214,7 +227,6 @@ const ImageUploader = () => {
           onChange={handleFileChange}
           disabled={uploadingImg}
         />
-
         <span>
           <Field label="Description" name="description" type="textarea" />
           <Field
@@ -226,23 +238,32 @@ const ImageUploader = () => {
         </span>
         <span>
           <div className="container">
-            {tags.map((tag) => (
-              <div className="tag" key={tag}>
-                {tag}
-                <button>X</button>
-              </div>
-            ))}
-            <input
-              value={tagInput}
-              placeholder="Enter a tag"
-              onChange={onTagInputChange}
-            />
-            <button
-              onClick={addTag}
-              className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-            >
-              Add Tag
-            </button>
+            <span>
+              <p><i>Click on a tag to remove it!</i></p>
+              {tagDisplay}
+              <Field
+                list="tags"
+                name="tag"
+                id="tag"
+                type="text"
+                value={tagInput}
+                placeholder="Enter a tag"
+                onChange={onTagInputChange}
+              />
+              <datalist id="tags">
+                <option value="People" />
+                <option value="Food" />
+                <option value="Nature" />
+                <option value="Urban" />
+                <option value="Other" />
+              </datalist>
+              <button
+                onClick={addTag}
+                className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+              >
+                Add Tag
+              </button>
+            </span>
           </div>
         </span>
         <br />
