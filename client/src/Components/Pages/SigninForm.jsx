@@ -1,5 +1,5 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
-import { forwardRef, useContext } from "react";
+import { forwardRef, useContext, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -9,6 +9,7 @@ import { DataContext } from "../../App";
 export const SigninForm = () => {
   const navigate = useNavigate();
   const [userContext, setUserContext] = useContext(DataContext);
+  const [message, setMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -24,24 +25,32 @@ export const SigninForm = () => {
         url: "/api/users/login",
         data: values,
       }).then((response) => {
-        const result = response.data.data;
-        let user = {
-          userID: "",
-          username: "",
-          isLoggedIn: true,
-          isSuperAdmin: false,
-        };
-        user = {
-          ...user,
-          userID: result._id,
-          username: result.username,
-          isSuperAdmin: result.superAdmin,
-        };
-        console.log(user);
-        setUserContext(user);
+        console.log(response);
+        if (response.data.status === "not ok") {
+          console.log("not ok");
+          const newMsg =
+            response.data.message.charAt(0).toUpperCase() +
+            response.data.message.slice(1);
+          setMessage(newMsg);
+        } else {
+          const result = response.data.data;
+          let user = {
+            userID: "",
+            username: "",
+            isLoggedIn: true,
+            isSuperAdmin: false,
+          };
+          user = {
+            ...user,
+            userID: result._id,
+            username: result.username,
+            isSuperAdmin: result.superAdmin,
+          };
+          console.log(user);
+          setUserContext(user);
+          navigate(-1, { replace: false });
+        }
       });
-
-      navigate(-1, { replace: false });
     },
   });
 
@@ -68,6 +77,7 @@ export const SigninForm = () => {
             onBlur={formik.handleBlur}
             type="password"
           />
+          <p className="text-red-600 font-semibold">{message}</p>
           <button
             className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
             type="submit"

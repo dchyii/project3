@@ -33,9 +33,9 @@ export const LoggedInNavbarButtons = (props) => {
 };
 
 export const NavbarButtons = () => {
-  const userContext = useContext(DataContext);
-  if (userContext[0].isLoggedIn) {
-    return <LoggedInNavbarButtons userID={userContext[0].username} />;
+  const [userContext, setUserContext] = useContext(DataContext);
+  if (userContext.isLoggedIn) {
+    return <LoggedInNavbarButtons userID={userContext.username} />;
   } else {
     return <PublicNavbarButtons />;
   }
