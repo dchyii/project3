@@ -1,6 +1,7 @@
 import "./style.css";
 
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useContext } from "react";
+import { DataContext } from "../../../App";
 import axios from "axios";
 import { Formik } from "formik";
 
@@ -135,9 +136,12 @@ const LockIcon = () => (
   </svg>
 );
 
+const tagList = ["People", "Food", "Nature", "Urban", "Art", "Others"]
+
 // A helper function
 
 const ImageUploader = () => {
+  const userContext = useContext[DataContext];
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({
@@ -149,11 +153,14 @@ const ImageUploader = () => {
     "https://image.flaticon.com/icons/png/128/109/109612.png"
   );
 
+
+  //TAGS
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
   };
-  const addTag = () => {
+  const addTag = (e) => {
+    e.preventDefault();
     const trimmedInput = tagInput.trim();
     if (trimmedInput.length && !tags.includes(trimmedInput)) {
       setTags((prevState) => [...prevState, trimmedInput]);
@@ -161,11 +168,25 @@ const ImageUploader = () => {
     }
   };
 
-  const removeTag = (tag) => {
-    const arr = tags.filter((item) => item.name !== tag);
+  const removeTag = (value) => {
+    const arr = tags.filter((tag) => tag !== value);
     setTags(arr);
   };
 
+  const tagDisplay = tags.map((tag) => (
+    <div className="tag" key={tag}>
+      <button
+        className="bg-green-500 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full"
+        onClick={() => removeTag(tag)}
+      >
+        {tag}
+      </button>
+    </div>
+  ));
+
+  const tagDatalist = tagList.map((item) => <option value={item} />)
+
+  //IMAGE
   const uploadImage = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -203,48 +224,67 @@ const ImageUploader = () => {
     // upload `formData` to server
   };
 
+
+
   return (
     <div className="center">
       <form onSubmit={handleSubmit} className="form-input">
-        <img src={displayedImage} />
-        <input
-          className="input"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          disabled={uploadingImg}
-        />
-
-        <span>
-          <Field label="Description" name="description" type="textarea" />
+        <div>
+          <img src={displayedImage} style={{ maxWidth: "75% ", height: "auto" }}/>
+          <input
+            className="input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={uploadingImg}
+          />
+        </div>
+        <Field type="text" value={formData.img} className="hidden"/>
+        <span
+          style={{ display: "inline-block", width: "70%", padding: "10px" }}
+        >
+          <Field label="Description" name="description" type="textarea" rows="6"/>
           <Field
             label="Equipment"
             name="equipment"
             placeholder="Equipment used..."
-            dot
           />
         </span>
-        <span>
-          <div className="container">
-            {tags.map((tag) => (
-              <div className="tag" key={tag}>
-                {tag}
-                <button>X</button>
-              </div>
-            ))}
-            <input
-              value={tagInput}
-              placeholder="Enter a tag"
-              onChange={onTagInputChange}
-            />
-            <button
-              onClick={addTag}
-              className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-            >
-              Add Tag
-            </button>
-          </div>
-        </span>
+       
+          <aside
+            style={{
+              display: "inline-block",
+              width: "30%",
+              maxWidth: "30%"
+            }}
+            className="max-w-sm"
+          >
+            <div style={{position: "absolute", marginTop: "-253px", maxWidth: "23%", width: "24%"}}>
+              <Field
+                list="tags"
+                name="tag"
+                id="tag"
+                type="text"
+                value={tagInput}
+                placeholder="Enter a tag"
+                onChange={onTagInputChange}
+              />
+              <datalist id="tags" style={{ display: "none" }}>
+                {tagDatalist}
+              </datalist>
+              <button
+                onClick={addTag}
+                className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+              >
+                Add Tag
+              </button>{" "}
+              <p>
+                <i>Click on a tag to remove it!</i>
+              </p>
+              <div className="flex flex-wrap" style={{maxHeight: "200px"}}>{tagDisplay}</div>
+            </div>
+          </aside>
+      
         <br />
         <button
           type="submit"

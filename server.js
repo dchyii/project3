@@ -4,9 +4,11 @@ const { urlencoded } = require("express");
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const userController = require("./controllers/usersController");
 const imageController = require("./controllers/imagesController");
+const commentController = require("./controllers/commentsController");
 
 //* config
 const app = express();
@@ -29,6 +31,7 @@ mongoose.connection.once("open", () => {
 //* middleware
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.use(express.json());
+app.use(methodOverride("_method"));
 app.use(urlencoded({ extended: false }));
 
 app.use(
@@ -42,6 +45,7 @@ app.use(
 //* Middleware for routes
 app.use("/api/users", userController);
 app.use("/api/images", imageController);
+app.use("/api/comments", commentController);
 
 //* routes
 app.use("/api/test", (req, res) => {

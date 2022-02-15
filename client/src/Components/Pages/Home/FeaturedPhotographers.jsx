@@ -1,4 +1,3 @@
-// import Swiper core and required modules
 import {
   Navigation,
   Pagination,
@@ -7,28 +6,27 @@ import {
   Mousewheel,
   Keyboard,
   Autoplay,
-} from "swiper"; //removed Keyboard
+} from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/bundle";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-//css
-import "./Featured.css";
+// import "swiper/css";
+// import "swiper/css/bundle";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import "swiper/css/scrollbar";
 
 const FeaturedPhotographers = () => {
   return (
     <div className="Featured">
-      <p className="FeaturedP">Featured Photographers</p>
-      <p className="ShowAll">Show All...</p>
-      <br></br>
-      <div className="container">
+      <p className="FeaturedP font-extrabold text-2xl">
+        Featured Photographers
+      </p>
+      <div className="w-full text-right px-10">
+        <Link to={`/photographers`}>Show All</Link>
+      </div>
+      <div className="w-full">
         <Swiper
-          // install Swiper modules
           modules={[
             Navigation,
             Pagination,
@@ -52,9 +50,6 @@ const FeaturedPhotographers = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
-          className="mySwiper"
         >
           <SwiperSlide>Slide 1</SwiperSlide>
           <br></br>

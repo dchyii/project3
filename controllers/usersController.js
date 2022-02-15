@@ -106,6 +106,23 @@ router.get("/superadmin", async (req, res) => {
   }
 });
 
+//* get all username - superadmin
+router.get("/superadmin/allusername", async (req, res) => {
+  try {
+    const allUsernames = await User.find({});
+    const usernameMap = [];
+    allUsernames.forEach((user) => {
+      usernameMap.push(user.username);
+      return usernameMap;
+    });
+    res
+      .status(200)
+      .json({ status: "ok", message: "get all username", data: usernameMap });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* sessions on log in
 router.post("/login", async (req, res) => {
   try {
@@ -123,6 +140,13 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
+});
+
+//* log out
+router.delete("/", async (req, res) => {
+  req.session.destroy(() => {
+    res.json({ status: "ok", message: "logged out" });
+  });
 });
 
 //* auth
@@ -149,6 +173,5 @@ router.get("/:userid", isAuthenticated, async (req, res) => {
     res.json({ status: "not ok", message: error.message });
   }
 });
-
 
 module.exports = router;

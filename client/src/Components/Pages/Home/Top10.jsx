@@ -1,4 +1,3 @@
-// import Swiper core and required modules
 import {
   Navigation,
   Pagination,
@@ -9,25 +8,23 @@ import {
   Autoplay,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-//css
-import "./Top10.css";
-
 const Top10 = () => {
   return (
     <div className="Top10">
-      <p className="T10">Top 10 Photos</p>
-      <p className="ShowAll">Show All...</p>
-      <div className="container">
-        <br></br>
+      <p className="T10 font-extrabold text-2xl">Top 10 Photos</p>
+      <div className="w-full text-right px-10">
+        <Link to={`/photos`}>Show All</Link>
+      </div>
+
+      <div className="w-full h-full">
         <Swiper
-          // install Swiper modules
           modules={[
             Navigation,
             Pagination,
@@ -51,11 +48,10 @@ const Top10 = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
-          className="mySwiper"
         >
-          <SwiperSlide></SwiperSlide>
+          <SwiperSlide>
+            <p className="border border-red-500">Slide 1</p>
+          </SwiperSlide>
           <br></br>
           <SwiperSlide>Slide 2</SwiperSlide>
           <br></br>

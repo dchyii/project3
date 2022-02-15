@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../App";
+import axios from "axios";
 
 export const PublicNavbarButtons = () => {
-  const userContext = useContext(DataContext);
-  console.log("nav bar context", userContext);
   return (
     <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block"></div>
@@ -19,8 +18,28 @@ export const PublicNavbarButtons = () => {
 };
 
 export const LoggedInNavbarButtons = (props) => {
-  const userContext = useContext(DataContext);
-  console.log("nav bar context", userContext);
+  const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(DataContext);
+
+  const handleSignout = async (e) => {
+    e.preventDefault();
+    axios({
+      method: "delete",
+      url: "/api/users",
+    }).then(() => {
+      localStorage.removeItem("userContext");
+      setUserContext({
+        userID: "",
+        username: "",
+        password: "",
+        profilePhoto: "",
+        isLoggedIn: false,
+        isSuperAdmin: false,
+      });
+      navigate("/", { replace: false });
+    });
+  };
+
   return (
     <div id="publicButtons" className="w-1/2 xl:w-1/3 text-base">
       <div className="w-1/3 inline-block">
@@ -30,16 +49,19 @@ export const LoggedInNavbarButtons = (props) => {
         <Link to={`/${props.userID}/posts`}>{props.userID}</Link>
       </div>
       <div className="w-1/3 inline-block">
-        <Link to="/">Sign Out</Link> {/*add form to destroy cookie*/}
+        {/* <Link to="/">Sign Out</Link> add form to destroy cookie */}
+        <form onSubmit={handleSignout}>
+          <input type="submit" value="Sign Out" />
+        </form>
       </div>
     </div>
   );
 };
 
 export const NavbarButtons = () => {
-  const userContext = useContext(DataContext);
+  const [userContext, setUserContext] = useContext(DataContext);
   if (userContext.isLoggedIn) {
-    return <LoggedInNavbarButtons userID={userContext.userID} />;
+    return <LoggedInNavbarButtons userID={userContext.username} />;
   } else {
     return <PublicNavbarButtons />;
   }
@@ -53,14 +75,6 @@ function Navbar() {
           <div id="logo" className="text-xl">
             <Link to="/">Logo</Link>
           </div>
-          {/* <div
-            id="publicButtons"
-            className="w-1/2 xl:w-1/3 text-base border border-orange-400"
-          >
-            <div className="w-1/3 inline-block"></div>
-            <div className="w-1/3 inline-block">Sign In</div>
-            <div className="w-1/3 inline-block">Sign Up</div>
-          </div> */}
           <NavbarButtons />
         </div>
       </nav>
