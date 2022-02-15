@@ -3,10 +3,188 @@ import "./style.css";
 import { useState, forwardRef, useContext } from "react";
 import { DataContext } from "../../../App";
 import axios from "axios";
-import { Formik } from "formik";
+import { useFormik, Formik } from "formik";
 
 const NAME_OF_UPLOAD_PRESET = "project_3";
 const YOUR_CLOUDINARY_ID = "djtovzgnc";
+
+
+
+const tagList = ["People", "Food", "Animals", "Nature", "Urban", "Art", "Others"]
+
+// A helper function
+
+const ImageUploader = () => {
+  const userContext = useContext[DataContext];
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
+  const [formData, setFormData] = useState({
+    // ...other fields
+    img: "",
+  });
+  const [uploadingImg, setUploadingImg] = useState(false);
+  const [displayedImage, setDisplayedImage] = useState(
+    "https://image.flaticon.com/icons/png/128/109/109612.png"
+  );
+
+//FORM
+const formik = useFormik({
+  initialValues: {
+    username: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
+  },
+  validationSchema: validateSchema,
+  onSubmit: (values) => {
+    console.log("submitted values: ", values);
+    console.log("password: ", values.password);
+  },
+});
+
+  //TAGS
+  const onTagInputChange = (e) => {
+    const { value } = e.target;
+    setTagInput(value);
+  };
+  const addTag = (e) => {
+    e.preventDefault();
+    const trimmedInput = tagInput.trim();
+    if (trimmedInput.length && !tags.includes(trimmedInput)) {
+      setTags((prevState) => [...prevState, trimmedInput]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (value) => {
+    const arr = tags.filter((tag) => tag !== value);
+    setTags(arr);
+  };
+
+  const tagDisplay = tags.map((tag) => (
+    <div className="tag" key={tag}>
+      <button
+        className="bg-green-500 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full"
+        onClick={() => removeTag(tag)}
+      >
+        {tag}
+      </button>
+    </div>
+  ));
+
+  const tagDatalist = tagList.map((item) => <option value={item} />)
+
+  //IMAGE
+  const uploadImage = async (file) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const img = await res.json();
+    setDisplayedImage(img.secure_url);
+    return img.secure_url;
+  };
+
+  const handleFileChange = async (event) => {
+    const [file] = event.target.files;
+    if (!file) return;
+
+    setUploadingImg(true);
+    setDisplayedImage(
+      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644763790/project3/qabryg06iumjfaqdoiqg.gif"
+    );
+    const uploadedUrl = await uploadImage(file);
+    setFormData({ ...formData, img: uploadedUrl });
+    setUploadingImg(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // disable the form submit when uploading image
+    if (uploadingImg) return;
+
+    // upload `formData` to server
+  };
+
+  return (
+    <div className="center">
+      <form method="POST" onSubmit={handleSubmit} className="form-input">
+        <div>
+          <img src={displayedImage} style={{ maxWidth: "75% ", height: "auto" }}/>
+          <input
+            className="input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={uploadingImg}
+          />
+        </div>
+        <Field type="text" value={formData.img} className="hidden"/>
+        <span
+          style={{ display: "inline-block", width: "70%", padding: "10px" }}
+        >
+          <Field label="Description" name="description" type="textarea" rows="6"/>
+          <Field
+            label="Equipment"
+            name="equipment"
+            placeholder="Equipment used..."
+          />
+        </span>
+       
+          <aside
+            style={{
+              display: "inline-block",
+              width: "30%",
+              maxWidth: "30%"
+            }}
+            className="max-w-sm"
+          >
+            <div style={{position: "absolute", marginTop: "-253px", maxWidth: "23%", width: "24%"}}>
+              <Field
+                list="tags"
+                name="tag"
+                id="tag"
+                type="text"
+                value={tagInput}
+                placeholder="Enter a tag"
+                onChange={onTagInputChange}
+              />
+              <datalist id="tags" style={{ display: "none" }}>
+                {tagDatalist}
+              </datalist>
+              <button
+                onClick={addTag}
+                className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+              >
+                Add Tag
+              </button>{" "}
+              <p>
+                <i>Click on a tag to remove it!</i>
+              </p>
+              <div className="flex flex-wrap" style={{maxHeight: "200px"}}>{tagDisplay}</div>
+            </div>
+          </aside>
+      
+        <br />
+        <button
+          type="submit"
+          disabled={uploadingImg}
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ImageUploader;
 
 const style = {
   dot: `after:content-['*'] after:ml-0.5 after:text-red-500`,
@@ -135,167 +313,3 @@ const LockIcon = () => (
     <path d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z" />
   </svg>
 );
-
-const tagList = ["People", "Food", "Nature", "Urban", "Art", "Others"]
-
-// A helper function
-
-const ImageUploader = () => {
-  const userContext = useContext[DataContext];
-  const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState([]);
-  const [formData, setFormData] = useState({
-    // ...other fields
-    img: "",
-  });
-  const [uploadingImg, setUploadingImg] = useState(false);
-  const [displayedImage, setDisplayedImage] = useState(
-    "https://image.flaticon.com/icons/png/128/109/109612.png"
-  );
-
-
-  //TAGS
-  const onTagInputChange = (e) => {
-    const { value } = e.target;
-    setTagInput(value);
-  };
-  const addTag = (e) => {
-    e.preventDefault();
-    const trimmedInput = tagInput.trim();
-    if (trimmedInput.length && !tags.includes(trimmedInput)) {
-      setTags((prevState) => [...prevState, trimmedInput]);
-      setTagInput("");
-    }
-  };
-
-  const removeTag = (value) => {
-    const arr = tags.filter((tag) => tag !== value);
-    setTags(arr);
-  };
-
-  const tagDisplay = tags.map((tag) => (
-    <div className="tag" key={tag}>
-      <button
-        className="bg-green-500 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full"
-        onClick={() => removeTag(tag)}
-      >
-        {tag}
-      </button>
-    </div>
-  ));
-
-  const tagDatalist = tagList.map((item) => <option value={item} />)
-
-  //IMAGE
-  const uploadImage = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const img = await res.json();
-    setDisplayedImage(img.secure_url);
-    return img.secure_url;
-  };
-
-  const handleFileChange = async (event) => {
-    const [file] = event.target.files;
-    if (!file) return;
-
-    setUploadingImg(true);
-    setDisplayedImage(
-      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644763790/project3/qabryg06iumjfaqdoiqg.gif"
-    );
-    const uploadedUrl = await uploadImage(file);
-    setFormData({ ...formData, img: uploadedUrl });
-    setUploadingImg(false);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // disable the form submit when uploading image
-    if (uploadingImg) return;
-
-    // upload `formData` to server
-  };
-
-
-
-  return (
-    <div className="center">
-      <form onSubmit={handleSubmit} className="form-input">
-        <div>
-          <img src={displayedImage} style={{ maxWidth: "75% ", height: "auto" }}/>
-          <input
-            className="input"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            disabled={uploadingImg}
-          />
-        </div>
-        <Field type="text" value={formData.img} className="hidden"/>
-        <span
-          style={{ display: "inline-block", width: "70%", padding: "10px" }}
-        >
-          <Field label="Description" name="description" type="textarea" rows="6"/>
-          <Field
-            label="Equipment"
-            name="equipment"
-            placeholder="Equipment used..."
-          />
-        </span>
-       
-          <aside
-            style={{
-              display: "inline-block",
-              width: "30%",
-              maxWidth: "30%"
-            }}
-            className="max-w-sm"
-          >
-            <div style={{position: "absolute", marginTop: "-253px", maxWidth: "23%", width: "24%"}}>
-              <Field
-                list="tags"
-                name="tag"
-                id="tag"
-                type="text"
-                value={tagInput}
-                placeholder="Enter a tag"
-                onChange={onTagInputChange}
-              />
-              <datalist id="tags" style={{ display: "none" }}>
-                {tagDatalist}
-              </datalist>
-              <button
-                onClick={addTag}
-                className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-              >
-                Add Tag
-              </button>{" "}
-              <p>
-                <i>Click on a tag to remove it!</i>
-              </p>
-              <div className="flex flex-wrap" style={{maxHeight: "200px"}}>{tagDisplay}</div>
-            </div>
-          </aside>
-      
-        <br />
-        <button
-          type="submit"
-          disabled={uploadingImg}
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
-  );
-};
-
-export default ImageUploader;
