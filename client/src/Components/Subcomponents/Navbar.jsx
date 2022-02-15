@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "../../App";
 import axios from "axios";
 
@@ -18,13 +18,25 @@ export const PublicNavbarButtons = () => {
 };
 
 export const LoggedInNavbarButtons = (props) => {
-  const handleSubmit = async (e) => {
+  const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(DataContext);
+
+  const handleSignout = async (e) => {
     e.preventDefault();
     axios({
-      method: "post",
-      url: "/api/users/logout?method=DELETE",
-    }).then((response) => {
-      console.log(response);
+      method: "delete",
+      url: "/api/users",
+    }).then(() => {
+      localStorage.removeItem("userContext");
+      setUserContext({
+        userID: "",
+        username: "",
+        password: "",
+        profilePhoto: "",
+        isLoggedIn: false,
+        isSuperAdmin: false,
+      });
+      navigate("/", { replace: false });
     });
   };
 
@@ -38,7 +50,7 @@ export const LoggedInNavbarButtons = (props) => {
       </div>
       <div className="w-1/3 inline-block">
         {/* <Link to="/">Sign Out</Link> add form to destroy cookie */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSignout}>
           <input type="submit" value="Sign Out" />
         </form>
       </div>
