@@ -4,6 +4,7 @@ const { urlencoded } = require("express");
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const userController = require("./controllers/usersController");
 const imageController = require("./controllers/imagesController");
@@ -30,6 +31,7 @@ mongoose.connection.once("open", () => {
 //* middleware
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.use(express.json());
+app.use(methodOverride("_method"));
 app.use(urlencoded({ extended: false }));
 
 app.use(
