@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import SearchBar2 from "./SearchBar2";
 
-const posts = [{ id: "asd", name: "edi" }];
+const posts = [{ id: "asd", name: "" }];
 const filterPosts = (posts, query) => {
   if (!query) {
     return posts;
