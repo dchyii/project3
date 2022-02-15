@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const Image = require("../models/postImagesModel");
+const Comment = require("../models/commentsModel");
 
 //*GET seed images
 
@@ -89,6 +90,7 @@ router.get("/:postid", async (req, res) => {
   const { postid } = req.params;
   try {
     const foundImagePosts = await Image.findById(postid);
+    const foundComments = await Comment.
     res.status(200).json({
       status: "ok",
       message: "get individual image post",
