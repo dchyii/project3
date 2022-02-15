@@ -4,9 +4,13 @@ import SearchBar from "../../Subcomponents/SearchBar";
 
 const PhotoGallery = () => {
   return (
-    <div>
-      <Top10 />
-      <FeaturedPhotographers />
+    <div className="h-full w-full mx-auto">
+      <div className="h-1/2">
+        <Top10 />
+      </div>
+      <div className="h-1/2">
+        <FeaturedPhotographers />
+      </div>
     </div>
   );
 };
