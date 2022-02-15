@@ -37,6 +37,7 @@ export const SigninForm = () => {
           let user = {
             userID: "",
             username: "",
+            password: "",
             isLoggedIn: true,
             isSuperAdmin: false,
           };
@@ -44,9 +45,11 @@ export const SigninForm = () => {
             ...user,
             userID: result._id,
             username: result.username,
+            password: result.password,
             isSuperAdmin: result.superAdmin,
           };
           console.log(user);
+          localStorage.setItem("userContext", JSON.stringify(user));
           setUserContext(user);
           navigate(-1, { replace: false });
         }
