@@ -136,6 +136,8 @@ const LockIcon = () => (
   </svg>
 );
 
+const tagList = ["People", "Food", "Nature", "Urban", "Art", "Others"]
+
 // A helper function
 
 const ImageUploader = () => {
@@ -151,6 +153,8 @@ const ImageUploader = () => {
     "https://image.flaticon.com/icons/png/128/109/109612.png"
   );
 
+
+  //TAGS
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
@@ -179,6 +183,10 @@ const ImageUploader = () => {
       </button>
     </div>
   ));
+
+  const tagDatalist = tagList.map((item) => <option value={item} />)
+
+  //IMAGE
   const uploadImage = async (file) => {
     const data = new FormData();
     data.append("file", file);
@@ -216,31 +224,42 @@ const ImageUploader = () => {
     // upload `formData` to server
   };
 
+
+
   return (
     <div className="center">
       <form onSubmit={handleSubmit} className="form-input">
-        <img src={displayedImage} />
-        <input
-          className="input"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          disabled={uploadingImg}
-        />
-        <span>
-          <Field label="Description" name="description" type="textarea" />
+        <div>
+          <img src={displayedImage} style={{ maxWidth: "75% ", height: "auto" }}/>
+          <input
+            className="input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={uploadingImg}
+          />
+        </div>
+        <Field type="text" value={formData.img} className="hidden"/>
+        <span
+          style={{ display: "inline-block", width: "70%", padding: "10px" }}
+        >
+          <Field label="Description" name="description" type="textarea" rows="6"/>
           <Field
             label="Equipment"
             name="equipment"
             placeholder="Equipment used..."
-            dot
           />
         </span>
-        <span>
-          <div className="container">
-            <span>
-              <p><i>Click on a tag to remove it!</i></p>
-              {tagDisplay}
+       
+          <aside
+            style={{
+              display: "inline-block",
+              width: "30%",
+              maxWidth: "30%"
+            }}
+            className="max-w-sm"
+          >
+            <div style={{position: "absolute", marginTop: "-253px", maxWidth: "23%", width: "24%"}}>
               <Field
                 list="tags"
                 name="tag"
@@ -250,22 +269,22 @@ const ImageUploader = () => {
                 placeholder="Enter a tag"
                 onChange={onTagInputChange}
               />
-              <datalist id="tags">
-                <option value="People" />
-                <option value="Food" />
-                <option value="Nature" />
-                <option value="Urban" />
-                <option value="Other" />
+              <datalist id="tags" style={{ display: "none" }}>
+                {tagDatalist}
               </datalist>
               <button
                 onClick={addTag}
                 className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
               >
                 Add Tag
-              </button>
-            </span>
-          </div>
-        </span>
+              </button>{" "}
+              <p>
+                <i>Click on a tag to remove it!</i>
+              </p>
+              <div className="flex flex-wrap" style={{maxHeight: "200px"}}>{tagDisplay}</div>
+            </div>
+          </aside>
+      
         <br />
         <button
           type="submit"
