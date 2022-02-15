@@ -23,12 +23,7 @@ const Top10 = () => {
         <Link to={`/photos`}>Show All</Link>
       </div>
 
-<<<<<<< HEAD
-      <div className="swiper">
-        <br></br>
-=======
       <div className="w-full h-full">
->>>>>>> origin/development
         <Swiper
           modules={[
             Navigation,
@@ -53,16 +48,10 @@ const Top10 = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-<<<<<<< HEAD
-          className="swiper-slide"
-        >
-          <SwiperSlide className="swiper-slide">Slide 1</SwiperSlide>
-=======
         >
           <SwiperSlide>
             <p className="border border-red-500">Slide 1</p>
           </SwiperSlide>
->>>>>>> origin/development
           <br></br>
           <SwiperSlide>Slide 2</SwiperSlide>
           <br></br>
