@@ -7,20 +7,20 @@ const Comment = require("../models/commentsModel");
 router.get("/seed", async (req, res) => {
   const seedComments = [
     {
-      text: "Good photo",
-      author: "6209d3f9e297a16a568fad26",
+      comment: "Good photo",
+      commentAuthor: "6209d3f9e297a16a568fad26",
       postImage: "6209e781da6c8e7613b5e9c3",
     },
     {
-      text: "not good photo",
-      author: "6209d3f9e297a16a568fad24",
-      likes: ["6209d3f9e297a16a568fad25", "6209d3f9e297a16a568fad27"],
+      comment: "not good photo",
+      commentAuthor: "6209d3f9e297a16a568fad24",
+      commentLikes: ["6209d3f9e297a16a568fad25", "6209d3f9e297a16a568fad27"],
       postImage: "6209e781da6c8e7613b5e9c3",
     },
     {
-      text: "go home",
-      author: "6209d3f9e297a16a568fad28",
-      likes: ["6209d3f9e297a16a568fad28"],
+      comment: "go home",
+      commentAuthor: "6209d3f9e297a16a568fad28",
+      commentLikes: ["6209d3f9e297a16a568fad28"],
       postImage: "6209e781da6c8e7613b5e9c2",
     },
   ];
