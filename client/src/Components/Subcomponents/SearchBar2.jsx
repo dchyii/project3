@@ -11,7 +11,7 @@ const SearchBar2 = ({ searchQuery, setSearchQuery }) => {
     <div>
       <form action="/" method="get" autoComplete="off" onSubmit={onSubmit}>
         <label htmlFor="header-search">
-          <span className="search">Search Photos</span>
+          <span className="search">Search Photos </span>
         </label>
         <input
           value={searchQuery}

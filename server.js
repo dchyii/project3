@@ -7,6 +7,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const userController = require("./controllers/usersController");
 const imageController = require("./controllers/imagesController");
+const commentController = require("./controllers/commentsController");
 
 //* config
 const app = express();
@@ -42,6 +43,7 @@ app.use(
 //* Middleware for routes
 app.use("/api/users", userController);
 app.use("/api/images", imageController);
+app.use("/api/comments", commentController);
 
 //* routes
 app.use("/api/test", (req, res) => {
