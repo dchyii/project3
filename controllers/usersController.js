@@ -142,6 +142,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//* log out
+router.delete("/logout", async (req, res) => {
+  req.session.destroy(() => {
+    res.json({ status: "ok", message: "logged out" });
+  });
+});
+
 //* auth
 const isAuthenticated = (req, res, next) => {
   if (req.session.currentUser) {
