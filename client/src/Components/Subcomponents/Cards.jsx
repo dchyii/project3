@@ -1,4 +1,5 @@
 import React from "react";
+import LikeButton from "./LikeButton";
 
 const Cards = () => {
   return (
@@ -11,7 +12,7 @@ const Cards = () => {
               alt="profilepic"
             />
           </div>
-          <span class="pt-1 ml-2 font-bold text-sm">braydoncoyer</span>
+          <span class="pt-1 ml-2 font-bold text-sm">DCHYII </span>
         </div>
         <span class="px-2 hover:bg-gray-300 cursor-pointer rounded">
           <i class="fas fa-ellipsis-h pt-2 text-lg"></i>
@@ -26,6 +27,7 @@ const Cards = () => {
         <div class="pt-2">
           <i class="far fa-heart cursor-pointer"></i>
           <span class="text-sm text-gray-400 font-medium">12 likes</span>
+          <LikeButton />
         </div>
       </div>
     </div>
