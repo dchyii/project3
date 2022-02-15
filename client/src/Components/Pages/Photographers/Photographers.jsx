@@ -1,10 +1,10 @@
 import React from "react";
-import SearchBar from "../../Subcomponents/SearchBar";
+import PhotographerCard from "../../Subcomponents/PhotographerCard";
 
 const Photographers = () => {
   return (
     <div>
-      <h1>All Photographers</h1>
+      <PhotographerCard />
     </div>
   );
 };

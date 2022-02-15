@@ -6,7 +6,6 @@ const PhotoGallery = () => {
   return (
     <div>
       <Top10 />
-      <br></br>
       <FeaturedPhotographers />
     </div>
   );
