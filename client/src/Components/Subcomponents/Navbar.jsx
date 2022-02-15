@@ -26,7 +26,10 @@ export const LoggedInNavbarButtons = (props) => {
         <Link to={`/${props.userID}/posts`}>{props.userID}</Link>
       </div>
       <div className="w-1/3 inline-block">
-        <Link to="/">Sign Out</Link> {/*add form to destroy cookie*/}
+        {/* <Link to="/">Sign Out</Link> add form to destroy cookie */}
+        <form>
+          <input type="submit" value="Sign Out" />
+        </form>
       </div>
     </div>
   );
