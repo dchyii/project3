@@ -1,23 +1,59 @@
 //form adapted from https://kimia-ui.vercel.app/components/field/with-formik
-import { forwardRef } from "react";
+import { forwardRef, useContext, useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import axios from "axios";
+import { DataContext } from "../../App";
 
 export const SigninForm = () => {
   const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(DataContext);
+  const [message, setMessage] = useState("");
 
   const formik = useFormik({
     initialValues: {
       username: "",
-      email: "",
       password: "",
-      repeatPassword: "",
     },
     validationSchema: validateSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("submitted values: ", values);
-      console.log("password: ", values.password);
+      //   await axios.post("/api/users/login", values);
+      axios({
+        method: "post",
+        url: "/api/users/login",
+        data: values,
+      }).then((response) => {
+        console.log(response);
+        if (response.data.status === "not ok") {
+          console.log("not ok");
+          const newMsg =
+            response.data.message.charAt(0).toUpperCase() +
+            response.data.message.slice(1);
+          setMessage(newMsg);
+        } else {
+          const result = response.data.data;
+          let user = {
+            userID: "",
+            username: "",
+            password: "",
+            isLoggedIn: true,
+            isSuperAdmin: false,
+          };
+          user = {
+            ...user,
+            userID: result._id,
+            username: result.username,
+            password: result.password,
+            isSuperAdmin: result.superAdmin,
+          };
+          console.log(user);
+          localStorage.setItem("userContext", JSON.stringify(user));
+          setUserContext(user);
+          navigate(-1, { replace: false });
+        }
+      });
     },
   });
 
@@ -44,6 +80,7 @@ export const SigninForm = () => {
             onBlur={formik.handleBlur}
             type="password"
           />
+          <p className="text-red-600 font-semibold">{message}</p>
           <button
             className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
             type="submit"
@@ -68,15 +105,9 @@ export const SigninForm = () => {
 };
 
 // Yup validation schema
-//! amend to check user and password validation against database
 const validateSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(6, "Username should be at least 6 characters")
-    .matches(/^[0-9A-Za-z]*[^ ]$/, "Please use alphanumeric characters")
-    .required("Username is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password required"),
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Please enter password"),
 });
 
 /*  COMPONENT LOGIC */
