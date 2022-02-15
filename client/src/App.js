@@ -7,6 +7,9 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
 import { SignupForm } from "./Components/Pages/SignupForm";
 import { SigninForm } from "./Components/Pages/SigninForm";
+import Photos from "./Components/Pages/Photos/Photos";
+import Photographers from "./Components/Pages/Photographers/Photographers";
+import SearchBar from "./Components/Subcomponents/SearchBar";
 
 export const DataContext = createContext();
 
@@ -38,17 +41,23 @@ function App() {
       <div className="App">
         {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
-        <Routes>
-          <Route path="/" element={<PhotoGallery />} />
-          <Route path="/photos" element={""} />
-          <Route path="/photographers" element={""} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/signin" element={<SigninForm />} />
-          <Route path="/:userID/posts" element={""} />
-          <Route path="/:userID/posts/new" element={<ImageUploader />} />
-          <Route path="/:userID/posts/:postID" element={""} />
-          <Route path="/:userID/posts/:postID/edit" element={""} />
-        </Routes>
+        <br></br>
+        <br></br>
+        <SearchBar />
+        <br></br>
+        <div className="App-container h-full p-16 -m-20 border border-green-500">
+          <Routes>
+            <Route path="/" element={<PhotoGallery />} />
+            <Route path="/photos" element={<Photos />} />
+            <Route path="/photographers" element={<Photographers />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/signin" element={<SigninForm />} />
+            <Route path="/:userID/posts" element={""} />
+            <Route path="/:userID/posts/new" element={<ImageUploader />} />
+            <Route path="/:userID/posts/:postID" element={""} />
+            <Route path="/:userID/posts/:postID/edit" element={""} />
+          </Routes>
+        </div>
       </div>
     </DataContext.Provider>
   );
