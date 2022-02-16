@@ -10,7 +10,6 @@ const postImageSchema = Schema(
     imageAuthor: { type: Schema.Types.ObjectId, ref: "User" },
     equipment: String,
     tags: [String],
-    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );
