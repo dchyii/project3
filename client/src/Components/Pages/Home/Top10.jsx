@@ -24,7 +24,24 @@ const Top10 = (props) => {
       setGroupSize(3);
     }
   }, []);
-  console.log(props?.photos[0]);
+  console.log(props?.photos);
+  const sortedPhotos = props?.photos.sort((a, b) => {
+    return a.imageLikes.length - b.imageLikes.length;
+  });
+  const swiperRow = sortedPhotos.map((photo, index) => {
+    return (
+      <SwiperSlide key={index}>
+        <a href={`/${photo.imageAuthor}/posts/${photo._id}`}>
+          {/* update image author to username */}
+          <img
+            src={photo.imgPath}
+            alt={photo.description}
+            className="object-fill h-5/6 aspect-auto box-border"
+          />
+        </a>
+      </SwiperSlide>
+    );
+  });
 
   return (
     <div className="Top10 h-full border border-red-500">
@@ -62,7 +79,8 @@ const Top10 = (props) => {
           scrollbar={{ draggable: true }}
           className="h-full"
         >
-          <SwiperSlide>
+          {swiperRow}
+          {/* <SwiperSlide>
             <img
               src={props?.photos[0]?.imgPath}
               alt="sample"
@@ -89,7 +107,7 @@ const Top10 = (props) => {
               alt="sample"
               className="object-fill h-5/6 aspect-auto box-border"
             />
-          </SwiperSlide>
+          </SwiperSlide> */}
           {/* <SwiperSlide>Slide 5</SwiperSlide>
           <SwiperSlide>Slide 6</SwiperSlide>
           <SwiperSlide>Slide 7</SwiperSlide>
