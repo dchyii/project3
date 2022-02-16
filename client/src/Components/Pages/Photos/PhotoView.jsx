@@ -12,16 +12,28 @@ const PhotoView = () => {
       setViewedPost(post.data.data.imagePosts);
     };
     const getComments = async () => {
-        const post = await axios.get(`/api/images/${postID}`);
-        console.log(post);
-      };
+      const post = await axios.get(`/api/images/${postID}`);
+      console.log(post);
+    };
     getPost();
   }, []);
 
-  return (
+  const dummyComments = ["sucks", "goood", "bad"];
+  const allComments = dummyComments.map((item) => (
+    
     <div>
-      <div>PhotoView</div>
-      <span><img src={viewedPost.imgPath} className="w-6/12 inline"/></span><span className="w-6/12 inline">Comments</span>
+      <div>
+        <span>razzle_dazzle</span> {item}
+      </div>
+    </div>
+  ));
+
+  return (
+    <div className="flex flex-row m-10"> 
+      <span className="w-6/12">
+        <img src={viewedPost.imgPath}/>
+      </span>
+      <span className="w-6/12"><div>{allComments}</div></span>
     </div>
   );
 };
