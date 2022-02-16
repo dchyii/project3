@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const postImage = require("./postImagesModel");
+// const postImage = require("./postImagesModel");
 
 const userSchema = Schema({
   username: { type: String, unique: true, required: true },

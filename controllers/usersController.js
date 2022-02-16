@@ -112,7 +112,7 @@ router.get("/superadmin/allusername", async (req, res) => {
     const allUsernames = await User.find({});
     const usernameMap = [];
     allUsernames.forEach((user) => {
-      usernameMap.push(user.username);
+      usernameMap.push({ username: user.username, userid: user._id });
       return usernameMap;
     });
     res
@@ -162,7 +162,7 @@ const isAuthenticated = (req, res, next) => {
 router.get("/:userid", isAuthenticated, async (req, res) => {
   const { userid } = req.params;
   try {
-    const foundUserPosts = await Image.find({ author: userid });
+    const foundUserPosts = await Image.find({ imageAuthor: userid });
 
     res.status(200).json({
       status: "ok",
