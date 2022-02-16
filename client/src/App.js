@@ -78,7 +78,6 @@ function App() {
     setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
 
-  console.log(window.location.pathname);
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (

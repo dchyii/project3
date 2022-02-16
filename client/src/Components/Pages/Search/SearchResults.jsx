@@ -1,33 +1,40 @@
 import { useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const posts = [
   { id: "asd", name: "edi" },
   { id: "tester", name: "example" },
 ];
-const filterPosts = (posts, query) => {
-  if (!query) {
-    return posts;
-  }
+// const filteredPosts = (posts, query) => {
+//   if (!query) {
+//     return posts;
+//   }
 
-  return posts.filter((post) => {
-    const postName = post.name.toLowerCase();
-    return postName.includes(query);
-  });
-};
+//   return posts.filter((post) => {
+//     const postName = post.name.toLowerCase();
+//     return postName.includes(query);
+//   });
+// };
 
 const SearchResults = () => {
-  const { search } = window.location;
-  const query = new URLSearchParams(search).get("s");
-  const [searchQuery, setSearchQuery] = useState(query || "");
-  const filteredPosts = filterPosts(posts, searchQuery);
-
-  console.log(window.location.pathname);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get("searchTerm");
+  const filterPost = (posts, searchTerm) => {
+    if (!searchTerm) {
+      return posts;
+    } else {
+      return posts.filter((post) => {
+        const postName = post.name.toLowerCase();
+        return postName.includes(searchTerm);
+      });
+    }
+  };
+  const filteredPost = filterPost(posts, searchTerm);
 
   return (
     <div>
       <ul>
-        {filteredPosts.map((post) => (
+        {filteredPost.map((post) => (
           <li key={post.id}>
             {post.id} {post.name}
           </li>
