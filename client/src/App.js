@@ -100,7 +100,9 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<PhotoGallery photos={allPhotosDataset} />}
+              element={
+                <PhotoGallery photos={allPhotosDataset} users={allUsers} />
+              }
             />
             <Route
               path="/photos"
