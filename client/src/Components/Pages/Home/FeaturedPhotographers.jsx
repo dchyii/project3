@@ -40,7 +40,7 @@ const FeaturedPhotographers = () => {
           spaceBetween={30}
           slidesPerGroup={3}
           autoplay={{
-            delay: 5000,
+            delay: 300000,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -51,7 +51,16 @@ const FeaturedPhotographers = () => {
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
         >
-          <SwiperSlide>Slide 1</SwiperSlide>
+          <SwiperSlide>
+            {/* Slide 1 */}
+            <img
+              src={
+                "https://cdn.pixabay.com/photo/2016/11/21/00/47/view-1844110_1280.jpg"
+              }
+              alt="sample"
+              className="border border-red-500"
+            />
+          </SwiperSlide>
           <br></br>
           <SwiperSlide>Slide 2</SwiperSlide>
           <br></br>

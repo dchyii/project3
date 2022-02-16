@@ -17,13 +17,13 @@ import "swiper/css/scrollbar";
 
 const Top10 = () => {
   return (
-    <div className="Top10">
+    <div className="Top10 border border-orange-500 h-full">
       <p className="T10 font-extrabold text-2xl">Top 10 Photos</p>
       <div className="w-full text-right px-10">
         <Link to={`/photos`}>Show All</Link>
       </div>
 
-      <div className="w-full h-full">
+      <div className="w-full h-full border border-green-500">
         <Swiper
           modules={[
             Navigation,
@@ -38,7 +38,7 @@ const Top10 = () => {
           spaceBetween={30}
           slidesPerGroup={3}
           autoplay={{
-            delay: 5000,
+            delay: 300000,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -50,27 +50,24 @@ const Top10 = () => {
           scrollbar={{ draggable: true }}
         >
           <SwiperSlide>
-            <p className="border border-red-500">Slide 1</p>
+            {/* <p className="border border-red-500">Slide 1</p> */}
+            <img
+              src={
+                "https://cdn.pixabay.com/photo/2016/11/21/00/47/view-1844110_1280.jpg"
+              }
+              alt="sample"
+              className="border border-red-500"
+            />
           </SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 2</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 3</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 4</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 5</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 6</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 7</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 8</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 9</SwiperSlide>
-          <br></br>
           <SwiperSlide>Slide 10</SwiperSlide>
-          <br></br>
         </Swiper>
       </div>
     </div>
