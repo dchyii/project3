@@ -1,10 +1,10 @@
 // DEPENDENCIES
 import "./style.css";
-import { useState, forwardRef, useContext } from "react";
+import { useState, forwardRef, useContext, useEffect } from "react";
 import { DataContext } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 //VARIABLES
 const NAME_OF_UPLOAD_PRESET = "project_3";
@@ -21,10 +21,12 @@ const tagList = [
 
 // A helper function
 
-const ImageUploader = () => {
+const ImageEditPost = () => {
   const [userContext, setUserContext] = useContext(DataContext);
   const navigate = useNavigate();
+  const { postID } = useParams();
   // const userContext = useContext[DataContext];
+  const [viewedPost, setViewedPost] = useState({})
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
@@ -37,33 +39,41 @@ const ImageUploader = () => {
     "https://image.flaticon.com/icons/png/128/109/109612.png"
   );
 
+  useEffect(() => {
+    const getPost = async () => {
+      const post = await axios.get(`/api/images/${postID}`);
+      console.log(post.data.data.imagePosts);
+      setViewedPost(post.data.data.imagePosts);
+      formik.setFieldValue("description", post.data.data.imagePosts.description);
+      formik.setFieldValue("equipment", post.data.data.imagePosts.equipment);
+      formik.setFieldValue("tags", post.data.data.imagePosts.tags);
+      setTags(post.data.data.imagePosts.tags);
+      document.querySelector("#description").value = post.data.data.imagePosts.description;
+      document.querySelector("#equipment").value = post.data.data.imagePosts.equipment;
+    };
+    getPost();
+  }, []);
+
   //FORM
-  const validateSchema = Yup.object().shape({
-    imgPath: Yup.string().required("Please upload an image."),
-    description: Yup.string().required("Please enter a description."),
-  });
   const formik = useFormik({
     initialValues: {
-      imgPath: "",
       description: "",
-      likes: [],
-      author: "",
       equipment: "",
       tags: [],
     },
-    validationSchema: validateSchema,
     onSubmit: async (values) => {
+      await formik.setFieldValue("imageAuthor", userContext.userID);
       if (uploadingImg) return;
       console.log("submitted values: ", values);
-        // await axios.post("/api/images/new", values);
+      // await axios.post("/api/images/new", values);
       axios({
-        method: "post",
-        url: "/api/images/new",
+        method: "put",
+        url: `/api/images/${postID}`,
         data: values,
       }).then((response) => {
         console.log(response);
         if (response.data.status === "not ok") {
-          console.log("not ok");
+          console.log(response.data.message);
           const newMsg =
             response.data.message.charAt(0).toUpperCase() +
             response.data.message.slice(1);
@@ -71,20 +81,14 @@ const ImageUploader = () => {
         } else {
           const result = response.data.data;
           let post = {
-            imgPath: "",
             description: "",
-            likes: [],
-             author: "",
             equipment: "",
             tags: [],
           };
           console.log(post);
           post = {
             ...post,
-            imgPath: "",
             description: "",
-            likes: [],
-            author: "",
             equipment: "",
             tags: [],
           };
@@ -131,36 +135,37 @@ const ImageUploader = () => {
 
   const tagDatalist = tagList.map((item) => <option key={item} value={item} />);
 
-  //IMAGE
-  const uploadImage = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const img = await res.json();
-    setDisplayedImage(img.secure_url);
-    formik.setFieldValue("imgPath", img.secure_url);
-    return img.secure_url;
-  };
+  // IMAGE
+  // const uploadImage = async (file) => {
+  //   const data = new FormData();
+  //   data.append("file", file);
+  //   data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
+  //   const res = await fetch(
+  //     `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
+  //     {
+  //       method: "POST",
+  //       body: data,
+  //     }
+  //   );
+  //   const img = await res.json();
+  //   setDisplayedImage(img.secure_url);
+  //   formik.setFieldValue("imgPath", img.secure_url);
+  //   formik.setFieldValue("imageAuthor", userContext.userID);
+  //   return img.secure_url;
+  // };
 
-  const handleFileChange = async (event) => {
-    const [file] = event.target.files;
-    if (!file) return;
+  // const handleFileChange = async (event) => {
+  //   const [file] = event.target.files;
+  //   if (!file) return;
 
-    setUploadingImg(true);
-    setDisplayedImage(
-      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644945448/project3/fihn2qjb7r3lt4dq0jxu.gif"
-    );
-    const uploadedUrl = await uploadImage(file);
-    setFormData({ ...formData, img: uploadedUrl });
-    setUploadingImg(false);
-  };
+  //   setUploadingImg(true);
+  //   setDisplayedImage(
+  //     "https://res.cloudinary.com/djtovzgnc/image/upload/v1644945448/project3/fihn2qjb7r3lt4dq0jxu.gif"
+  //   );
+  //   const uploadedUrl = await uploadImage(file);
+  //   setFormData({ ...formData, img: uploadedUrl });
+  //   setUploadingImg(false);
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -175,16 +180,8 @@ const ImageUploader = () => {
       <form method="POST" onSubmit={formik.handleSubmit} className="form-input">
         <div>
           <img
-            src={displayedImage}
+            src={viewedPost?.imgPath}
             style={{ maxWidth: "75% ", height: "auto" }}
-          />
-          <Field
-            className="input"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            disabled={uploadingImg}
-            error={formik.touched?.description && formik.errors?.imgPath}
           />
         </div>
         <span
@@ -193,6 +190,7 @@ const ImageUploader = () => {
           <Field
             label="Description"
             name="description"
+            id="description"
             type="textarea"
             onChange={formik.handleChange}
             rows="6"
@@ -202,6 +200,7 @@ const ImageUploader = () => {
           <Field
             label="Equipment"
             name="equipment"
+            id="equipment"
             placeholder="Equipment used..."
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -263,7 +262,7 @@ const ImageUploader = () => {
   );
 };
 
-export default ImageUploader;
+export default ImageEditPost;
 
 const style = {
   dot: `after:content-['*'] after:ml-0.5 after:text-red-500`,

@@ -12,8 +12,8 @@ router.get("/seed", async (req, res) => {
       imgPath:
         "https://cdn.pixabay.com/photo/2016/11/21/00/47/view-1844110_1280.jpg",
       description: "Dog on mountain lake",
-      imageLikes: ["6209d3f9e297a16a568fad25", "6209d3f9e297a16a568fad28"],
-      imageAuthor: "6209d3f9e297a16a568fad24",
+      imageLikes: ["620c6a8ea434bd67c7f99054", "620c6a8ea434bd67c7f99055"],
+      imageAuthor: "620c6a8ea434bd67c7f99056",
       equipment: "Canon DSLR 550",
       tags: ["animal", "dog", "mountain lake"],
     },
@@ -21,8 +21,8 @@ router.get("/seed", async (req, res) => {
       imgPath:
         "https://cdn.pixabay.com/photo/2020/06/20/01/24/frog-5319326_1280.jpg",
       description: "Frog in the rain",
-      imageLikes: ["6209d3f9e297a16a568fad24", "6209d3f9e297a16a568fad27"],
-      imageAuthor: "6209d3f9e297a16a568fad25",
+      imageLikes: ["620c6a8ea434bd67c7f99059", "620c6a8ea434bd67c7f9905a"],
+      imageAuthor: "620c6a8ea434bd67c7f99057",
       equipment: "Polaroid",
       tags: ["animal", "frog", "rain"],
     },
@@ -30,8 +30,8 @@ router.get("/seed", async (req, res) => {
       imgPath:
         "https://cdn.pixabay.com/photo/2019/04/26/23/07/duisburg-4158910_1280.jpg",
       description: "Tiger and Turtle, Duisburg",
-      imageLikes: ["6209d3f9e297a16a568fad29", "6209d3f9e297a16a568fad2a"],
-      imageAuthor: "6209d3f9e297a16a568fad28",
+      imageLikes: ["620c6a8ea434bd67c7f99058", "620c6a8ea434bd67c7f99057"],
+      imageAuthor: "620c6a8ea434bd67c7f9905a",
       equipment: "Apple iPhone 13 Pro MAX",
       tags: ["duisburg", "bridge"],
     },
@@ -39,7 +39,7 @@ router.get("/seed", async (req, res) => {
       imgPath:
         "https://cdn.pixabay.com/photo/2017/10/05/22/39/seashell-2821388_1280.jpg",
       description: "Sea shells on the beach",
-      imageLikes: ["6209d3f9e297a16a568fad29", "6209d3f9e297a16a568fad2a"],
+      imageLikes: ["620c6a8ea434bd67c7f99056", "620c6a8ea434bd67c7f99054"],
       imageAuthor: "6209d3f9e297a16a568fad28",
       equipment: "Apple iPhone 13 Pro MAX",
       tags: ["sea shells", "beach"],
@@ -71,7 +71,7 @@ router.get("/allimages", async (req, res) => {
   }
 });
 
-//* auth
+//* authentication
 const isAuthenticated = (req, res, next) => {
   if (req.session.currentUser) {
     return next();
@@ -98,6 +98,27 @@ router.post("/new", isAuthenticated, async (req, res) => {
   }
 });
 
+//* create new comment
+router.post("/:postid/comment", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  const user = req.session.currentUser;
+  const newComment = {
+    comment: req.body.comment,
+    commentAuthor: user,
+    postImage: postid,
+  };
+  try {
+    const createdNewComment = await Comment.create(newComment);
+    res.status(200).json({
+      status: "ok",
+      message: "create new comment",
+      data: createdNewComment,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* view individual post
 router.get("/:postid", async (req, res) => {
   const { postid } = req.params;
@@ -106,8 +127,11 @@ router.get("/:postid", async (req, res) => {
     const foundComments = await Comment.find({ postImage: postid });
     res.status(200).json({
       status: "ok",
-      message: "get individual image post",
-      data: (foundImagePosts, "comments", foundComments),
+      message: "get individual post",
+      data: {
+        imagePosts: foundImagePosts,
+        comments: foundComments,
+      },
     });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
@@ -135,8 +159,6 @@ router.put("/:postid", isAuthenticated, async (req, res) => {
     res.json({ status: "not ok", message: error.message });
   }
 });
-
-//
 
 //* delete image post
 router.delete("/:postid", isAuthenticated, async (req, res) => {

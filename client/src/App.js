@@ -10,6 +10,9 @@ import { SigninForm } from "./Components/Pages/SigninForm";
 import Photos from "./Components/Pages/Photos/Photos";
 import Photographers from "./Components/Pages/Photographers/Photographers";
 import SearchBar from "./Components/Subcomponents/SearchBar";
+import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
+import PhotoView from "./Components/Pages/Photos/PhotoView";
+import UserPosts from "./Components/UserPosts/UserPosts";
 
 export const DataContext = createContext();
 
@@ -22,13 +25,6 @@ function App() {
     fetchTest();
   }, []);
 
-  // const userContext = {
-  //   userID: "user1",
-  //   username: "username1",
-  //   isLoggedIn: false,
-  //   isSuperAdmin: false,
-  // };
-
   const [userContext, setUserContext] = useState({
     userID: "",
     username: "",
@@ -37,6 +33,10 @@ function App() {
     isLoggedIn: false,
     isSuperAdmin: false,
   });
+
+  const [photos, setPhotos] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allPhotosDataset, setAllPhotosDataset] = useState([]);
 
   useEffect(() => {
     const checkLocalStorage = () => {
@@ -51,20 +51,55 @@ function App() {
     checkLocalStorage();
   }, []);
 
+  useEffect(() => {
+    const getAllPhotosAndUsers = async () => {
+      const allPhotos = await axios.get("/api/images/allimages");
+      const allUsers = await axios.get("/api/users/superadmin/allusername");
+      setPhotos(allPhotos.data.data);
+      setAllUsers(allUsers.data.data);
+    };
+    getAllPhotosAndUsers();
+  }, []);
+
+  useEffect(() => {
+    const photosDataset = photos.map((photo) => {
+      const findUser = allUsers.find(
+        (user) => user.userid === photo.imageAuthor
+      );
+      const username = findUser?.username;
+      const userProfile = findUser?.profilePhoto;
+      return { ...photo, username: username, profilePhoto: userProfile };
+    });
+    const sortedPhotosDataset = photosDataset.sort((a, b) => {
+      return a.imageLikes.length - b.imageLikes.length;
+    });
+    setAllPhotosDataset(sortedPhotosDataset);
+  }, [photos, allUsers]);
+
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
       <div className="App">
-        {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
         <br></br>
         <br></br>
         <SearchBar />
         <br></br>
-        <div className="App-container h-screen w-full pt-16 -mt-20 overflow-hidden">
+        <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
-            <Route path="/" element={<PhotoGallery />} />
-            <Route path="/photos" element={<Photos />} />
-            <Route path="/photographers" element={<Photographers />} />
+            <Route
+              path="/"
+              element={
+                <PhotoGallery photos={allPhotosDataset} users={allUsers} />
+              }
+            />
+            <Route
+              path="/photos"
+              element={<Photos photos={allPhotosDataset} />}
+            />
+            <Route
+              path="/photographers"
+              element={<Photographers photos={allPhotosDataset} />}
+            />
             <Route
               path="/signup"
               element={
@@ -77,10 +112,16 @@ function App() {
                 userContext.isLoggedIn ? <Navigate to="/" /> : <SigninForm />
               }
             />
-            <Route path="/:userID/posts" element={""} />
+            <Route
+              path="/:userID/posts"
+              element={<UserPosts photos={photos} />}
+            />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={""} />
-            <Route path="/:userID/posts/:postID/edit" element={""} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route
+              path="/:userID/posts/:postID/edit"
+              element={<ImageEditPost />}
+            />
           </Routes>
         </div>
       </div>

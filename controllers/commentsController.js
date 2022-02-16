@@ -8,20 +8,20 @@ router.get("/seed", async (req, res) => {
   const seedComments = [
     {
       comment: "Good photo",
-      commentAuthor: "6209d3f9e297a16a568fad26",
-      postImage: "6209e781da6c8e7613b5e9c3",
+      commentAuthor: "620c6a8ea434bd67c7f99057",
+      postImage: "620c6ebb45e77e01bf9e9ab0",
     },
     {
       comment: "not good photo",
-      commentAuthor: "6209d3f9e297a16a568fad24",
-      commentLikes: ["6209d3f9e297a16a568fad25", "6209d3f9e297a16a568fad27"],
-      postImage: "6209e781da6c8e7613b5e9c3",
+      commentAuthor: "620c6a8ea434bd67c7f99055",
+      commentLikes: ["620c6a8ea434bd67c7f99054", "620c6a8ea434bd67c7f99056"],
+      postImage: "620c6ebb45e77e01bf9e9aaf",
     },
     {
       comment: "go home",
-      commentAuthor: "6209d3f9e297a16a568fad28",
-      commentLikes: ["6209d3f9e297a16a568fad28"],
-      postImage: "6209e781da6c8e7613b5e9c2",
+      commentAuthor: "620c6a8ea434bd67c7f99054",
+      commentLikes: ["620c6a8ea434bd67c7f99056"],
+      postImage: "620c6ebb45e77e01bf9e9aaf",
     },
   ];
   try {
@@ -36,5 +36,7 @@ router.get("/seed", async (req, res) => {
     res.json({ status: "not ok", message: error.message });
   }
 });
+
+
 
 module.exports = router;

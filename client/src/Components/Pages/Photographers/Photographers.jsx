@@ -1,10 +1,10 @@
 import React from "react";
 import PhotographerCard from "../../Subcomponents/PhotographerCard";
 
-const Photographers = () => {
+const Photographers = (props) => {
   return (
     <div>
-      <PhotographerCard />
+      <PhotographerCard photo={props.photos} />
     </div>
   );
 };
