@@ -22,13 +22,6 @@ function App() {
     fetchTest();
   }, []);
 
-  // const userContext = {
-  //   userID: "user1",
-  //   username: "username1",
-  //   isLoggedIn: false,
-  //   isSuperAdmin: false,
-  // };
-
   const [userContext, setUserContext] = useState({
     userID: "",
     username: "",
@@ -59,12 +52,6 @@ function App() {
     const getAllPhotosAndUsers = async () => {
       const allPhotos = await axios.get("/api/images/allimages");
       const allUsers = await axios.get("/api/users/superadmin/allusername");
-      // console.log(allPhotos.data.data);
-      // console.log(allUsers.data.data);
-      // const allPhotosWithUsernames = allPhotos.map((photo) => {
-      //   return { ...photo };
-      // });
-      // console.log(allPhotosWithUsernames);
       setPhotos(allPhotos.data.data);
       setAllUsers(allUsers.data.data);
     };
@@ -72,7 +59,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(allUsers);
     const photosDataset = photos.map((photo) => {
       const findUser = allUsers.find(
         (user) => user.userid === photo.imageAuthor
@@ -80,7 +66,6 @@ function App() {
       const username = findUser?.username;
       return { ...photo, username: username };
     });
-    console.log(photosDataset);
     const sortedPhotosDataset = photosDataset.sort((a, b) => {
       return a.imageLikes.length - b.imageLikes.length;
     });
@@ -90,7 +75,6 @@ function App() {
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
       <div className="App">
-        {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
         <br></br>
         <br></br>

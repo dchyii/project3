@@ -24,22 +24,16 @@ const Top10 = (props) => {
       setGroupSize(3);
     }
   }, []);
-  // console.log(props?.photos);
-  // const sortedPhotos = props?.photos.sort((a, b) => {
-  //   return a.imageLikes.length - b.imageLikes.length;
-  // });
 
   let topPhotos = [];
   for (let i = 0; i < Math.min(10, props.photos.length); i++) {
     topPhotos.push(props.photos[i]);
   }
-  console.log(topPhotos);
 
   const swiperRow = topPhotos.map((photo, index) => {
     return (
       <SwiperSlide key={index}>
         <a href={`/${photo.username}/posts/${photo._id}`}>
-          {/* update image author to username */}
           <img
             src={photo.imgPath}
             alt={photo.description}
@@ -87,40 +81,6 @@ const Top10 = (props) => {
           className="h-full"
         >
           {swiperRow}
-          {/* <SwiperSlide>
-            <img
-              src={props?.photos[0]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[3]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[2]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[3]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide> */}
-          {/* <SwiperSlide>Slide 5</SwiperSlide>
-          <SwiperSlide>Slide 6</SwiperSlide>
-          <SwiperSlide>Slide 7</SwiperSlide>
-          <SwiperSlide>Slide 8</SwiperSlide>
-          <SwiperSlide>Slide 9</SwiperSlide>
-          <SwiperSlide>Slide 10</SwiperSlide> */}
         </Swiper>
       </div>
     </div>
