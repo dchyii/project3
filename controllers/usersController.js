@@ -87,6 +87,7 @@ router.post("/new", async (req, res) => {
   );
   try {
     const createdUser = await User.create(req.body);
+    req.session.currentUser = createdUser;
     console.log("created user is: ", createdUser);
     res.json({ status: "ok", message: "user created", data: createdUser });
   } catch (error) {
@@ -121,7 +122,7 @@ router.get("/superadmin/allusername", async (req, res) => {
     });
     res
       .status(200)
-      .json({ status: "ok", message:"get all username", data: usernameMap });
+      .json({ status: "ok", message: "get all username", data: usernameMap });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
@@ -162,22 +163,60 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
-//* get user posts
-router.get("/:userid", isAuthenticated, async (req, res) => {
-  const { userid } = req.params;
+//*get user information
+router.get("/userinfo", isAuthenticated, async (req, res) => {
+  const user = req.session.currentUser;
   try {
-    const foundUserPosts = await Image.find({ imageAuthor: userid });
+    const foundUserInfo = await User.find({ _id: user });
+    res
+      .status(200)
+      .json({ status: "ok", message: "get user info", data: foundUserInfo });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
 
+//*edit user information
+router.put("/userinfo", isAuthenticated, async (req, res) => {
+  const user = req.session.currentUser;
+  const changedUserInfo = req.body;
+  try {
+    const editedUserInfo = await User.findOneAndUpdate(
+      { _id: user },
+      changedUserInfo,
+      { new: true }
+    );
     res.status(200).json({
       status: "ok",
-      message: "get user home page",
-      data: foundUserPosts,
+      message: "edit user info",
+      data: editedUserInfo,
     });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
 });
 
-
+//* get user posts
+router.get("/:userid", isAuthenticated, async (req, res) => {
+  const { userid } = req.params;
+  const user = req.session.currentUser;
+  try {
+    const foundUserPosts = await Image.find({ imageAuthor: userid });
+    if (user === userid) {
+      res.status(200).json({
+        status: "ok",
+        message: "get user home page",
+        data: foundUserPosts,
+      });
+    } else {
+      res.json({
+        status: "not ok",
+        message: "please log in with the correct username",
+      });
+    }
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
 
 module.exports = router;
