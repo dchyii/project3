@@ -98,6 +98,27 @@ router.post("/new", isAuthenticated, async (req, res) => {
   }
 });
 
+//* create new comment
+router.post("/:postid/comment", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  const user = req.session.currentUser;
+  const newComment = {
+    comment: req.body.comment,
+    commentAuthor: user,
+    postImage: postid,
+  };
+  try {
+    const createdNewComment = await Comment.create(newComment);
+    res.status(200).json({
+      status: "ok",
+      message: "create new comment",
+      data: createdNewComment,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* view individual post
 router.get("/:postid", async (req, res) => {
   const { postid } = req.params;
