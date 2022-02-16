@@ -71,7 +71,7 @@ function App() {
         <br></br>
         <SearchBar />
         <br></br>
-        <div className="App-container h-screen w-full pt-16 -mt-20 overflow-hidden">
+        <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
             <Route path="/" element={<PhotoGallery photos={photos} />} />
             <Route path="/photos" element={<Photos photos={photos} />} />
