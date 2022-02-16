@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import Cards from "../../Subcomponents/Cards";
 
 const SearchResults = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,17 +26,11 @@ const SearchResults = (props) => {
   const filteredPhotos = filterAllPhotos(allPhotos, searchTerm);
   console.log(filteredPhotos);
 
-  return (
-    <div>
-      <ul>
-        {filteredPhotos.map((post, index) => (
-          <li key={index}>
-            {post._id} {post.description}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  const displayPhotos = filteredPhotos.map((photo, index) => {
+    return <Cards photos={photo} key={index} />;
+  });
+
+  return <div>{displayPhotos}</div>;
 };
 
 export default SearchResults;
