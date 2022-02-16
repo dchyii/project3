@@ -36,64 +36,62 @@ const ImageUploader = () => {
   const [displayedImage, setDisplayedImage] = useState(
     "https://image.flaticon.com/icons/png/128/109/109612.png"
   );
-  const [imageUrl, setImageUrl] = useState("");
 
   //FORM
   const validateSchema = Yup.object().shape({
-    imagePath: Yup.string().required("Please upload an image."),
+    imgPath: Yup.string().required("Please upload an image."),
     description: Yup.string().required("Please enter a description."),
   });
   const formik = useFormik({
     initialValues: {
-      imagePath: "",
-      likes: [],
+      imgPath: "",
       description: "",
+      likes: [],
+      author: "",
       equipment: "",
       tags: [],
-      author: "",
     },
-    // validationSchema: validateSchema,
+    validationSchema: validateSchema,
     onSubmit: async (values) => {
-      formik.setFieldValue("tags", tags);
       if (uploadingImg) return;
       console.log("submitted values: ", values);
-      //   await axios.post("/api/images/new", values);
-      // axios({
-      //   method: "post",
-      //   url: "/api/images/new",
-      //   data: values,
-      // }).then((response) => {
-      //   console.log(response);
-      //   if (response.data.status === "not ok") {
-      //     console.log("not ok");
-      //     const newMsg =
-      //       response.data.message.charAt(0).toUpperCase() +
-      //       response.data.message.slice(1);
-      //     setMessage(newMsg);
-      //   } else {
-      //     const result = response.data.data;
-      //     let post = {
-      //       imagePath: "",
-      //       likes: [],
-      //       description: "",
-      //       equipment: "",
-      //       tags: [],
-      //       likes: [],
-      //     };
-      //     console.log(post);
-      //     post = {
-      //       ...post,
-      //       imagePath: "",
-      //       likes: [],
-      //       description: "",
-      //       equipment: "",
-      //       tags: [],
-      //       likes: [],
-      //     };
-      //     console.log(post);
-      //     navigate(-1, { replace: false });
-      //   }
-      // });
+        // await axios.post("/api/images/new", values);
+      axios({
+        method: "post",
+        url: "/api/images/new",
+        data: values,
+      }).then((response) => {
+        console.log(response);
+        if (response.data.status === "not ok") {
+          console.log("not ok");
+          const newMsg =
+            response.data.message.charAt(0).toUpperCase() +
+            response.data.message.slice(1);
+          setMessage(newMsg);
+        } else {
+          const result = response.data.data;
+          let post = {
+            imgPath: "",
+            description: "",
+            likes: [],
+             author: "",
+            equipment: "",
+            tags: [],
+          };
+          console.log(post);
+          post = {
+            ...post,
+            imgPath: "",
+            description: "",
+            likes: [],
+            author: "",
+            equipment: "",
+            tags: [],
+          };
+          console.log(post);
+          navigate(-1, { replace: false });
+        }
+      });
     },
   });
 
@@ -147,8 +145,7 @@ const ImageUploader = () => {
     );
     const img = await res.json();
     setDisplayedImage(img.secure_url);
-    setImageUrl(img.secure_url);
-    formik.setFieldValue("imagePath", img.secure_url);
+    formik.setFieldValue("imgPath", img.secure_url);
     return img.secure_url;
   };
 
@@ -181,12 +178,13 @@ const ImageUploader = () => {
             src={displayedImage}
             style={{ maxWidth: "75% ", height: "auto" }}
           />
-          <input
+          <Field
             className="input"
             type="file"
             accept="image/*"
             onChange={handleFileChange}
             disabled={uploadingImg}
+            error={formik.touched?.description && formik.errors?.imgPath}
           />
         </div>
         <span
@@ -256,6 +254,7 @@ const ImageUploader = () => {
         <button
           type="submit"
           className="mt-8 bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
+          disabled={uploadingImg && !(formik.isValid && formik.dirty)}
         >
           Submit
         </button>
