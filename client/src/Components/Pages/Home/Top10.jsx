@@ -28,7 +28,14 @@ const Top10 = (props) => {
   // const sortedPhotos = props?.photos.sort((a, b) => {
   //   return a.imageLikes.length - b.imageLikes.length;
   // });
-  const swiperRow = props.photos.map((photo, index) => {
+
+  let topPhotos = [];
+  for (let i = 0; i < Math.min(10, props.photos.length); i++) {
+    topPhotos.push(props.photos[i]);
+  }
+  console.log(topPhotos);
+
+  const swiperRow = topPhotos.map((photo, index) => {
     return (
       <SwiperSlide key={index}>
         <a href={`/${photo.username}/posts/${photo._id}`}>
@@ -46,7 +53,7 @@ const Top10 = (props) => {
   return (
     <div className="Top10 h-full border border-red-500">
       <p className="T10 font-extrabold text-2xl absolute w-full">
-        Top 10 Photos
+        Featured Photos
       </p>
       <div className="w-full text-right px-10 absolute mt-7">
         <Link to={`/photos`}>Show All</Link>
