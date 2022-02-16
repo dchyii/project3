@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const User = require("./usersModel");
 
 const postImageSchema = Schema(
   {
@@ -9,6 +10,7 @@ const postImageSchema = Schema(
     imageAuthor: { type: Schema.Types.ObjectId, ref: "User" },
     equipment: String,
     tags: [String],
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );
