@@ -138,7 +138,10 @@ export const SignupForm = () => {
 
 // Yup validation schema
 const validateSchema = (usernames) => {
-  const allUsernames = usernames;
+  const allUsernames = [];
+  usernames.map((username) => {
+    return allUsernames.push(username.username);
+  });
   const schema = Yup.object().shape({
     username: Yup.string()
       .min(6, "Username should be at least 6 characters")
