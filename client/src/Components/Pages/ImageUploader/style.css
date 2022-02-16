@@ -6,8 +6,11 @@
 }
 .form-input {
   width: 80%;
+  margin-left: 10%;
   height: 100%;
   padding: 20px;
+  align-items: center;
+  justify-content: center;
   background: #fff;
   box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377),
     3px 3px 7px rgba(94, 104, 121, 0.377);

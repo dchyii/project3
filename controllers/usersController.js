@@ -112,7 +112,11 @@ router.get("/superadmin/allusername", async (req, res) => {
     const allUsernames = await User.find({});
     const usernameMap = [];
     allUsernames.forEach((user) => {
-      usernameMap.push({ username: user.username, userid: user._id });
+      usernameMap.push({
+        username: user.username,
+        userid: user._id,
+        profilePhoto: user.profilePhoto,
+      });
       return usernameMap;
     });
     res
