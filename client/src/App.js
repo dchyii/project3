@@ -38,6 +38,8 @@ function App() {
     isSuperAdmin: false,
   });
 
+  const [photos, setPhotos] = useState([]);
+
   useEffect(() => {
     const checkLocalStorage = () => {
       const storedData = localStorage.getItem("userContext");
@@ -51,6 +53,15 @@ function App() {
     checkLocalStorage();
   }, []);
 
+  useEffect(() => {
+    const allPhoto = async () => {
+      const allPhotos = await axios.get("/api/images/allimages");
+      console.log(allPhotos.data.data);
+      setPhotos(allPhotos.data.data);
+    };
+    allPhoto();
+  }, []);
+
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
       <div className="App">
@@ -60,11 +71,14 @@ function App() {
         <br></br>
         <SearchBar />
         <br></br>
-        <div className="App-container h-full p-16 -m-20">
+        <div className="App-container h-screen w-full pt-16 -mt-20 overflow-hidden">
           <Routes>
-            <Route path="/" element={<PhotoGallery />} />
-            <Route path="/photos" element={<Photos />} />
-            <Route path="/photographers" element={<Photographers />} />
+            <Route path="/" element={<PhotoGallery photos={photos} />} />
+            <Route path="/photos" element={<Photos photos={photos} />} />
+            <Route
+              path="/photographers"
+              element={<Photographers photos={photos} />}
+            />
             <Route
               path="/signup"
               element={

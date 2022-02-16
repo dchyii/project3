@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const commentSchema = Schema(
   {
-    text: String,
-    author: { type: Schema.Types.ObjectId, ref: "User" },
-    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    comment: String,
+    commentAuthor: { type: Schema.Types.ObjectId, ref: "User" },
+    commentLikes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     postImage: { type: Schema.Types.ObjectId, ref: "PostImage" },
   },
   { timestamps: true }
