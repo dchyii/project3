@@ -1,7 +1,11 @@
 import React from "react";
 import LikeButton from "./LikeButton";
 
-const Cards = () => {
+const Cards = (props) => {
+  const filteredImg = props.photos.map((image) => {
+    return image.imgPath;
+  });
+
   return (
     <div class=" rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-white mx-3 md:mx-0 lg:mx-0">
       <div class="w-full flex justify-between p-3">
@@ -20,7 +24,8 @@ const Cards = () => {
       </div>
       <img
         class="w-full bg-cover"
-        src="https://3.bp.blogspot.com/-Chu20FDi9Ek/WoOD-ehQ29I/AAAAAAAAK7U/mc4CAiTYOY8VzOFzBKdR52aLRiyjqu0MwCLcBGAs/s1600/DSC04596%2B%25282%2529.JPG"
+        // src="https://3.bp.blogspot.com/-Chu20FDi9Ek/WoOD-ehQ29I/AAAAAAAAK7U/mc4CAiTYOY8VzOFzBKdR52aLRiyjqu0MwCLcBGAs/s1600/DSC04596%2B%25282%2529.JPG"
+        src={filteredImg}
         alt="img"
       />
       <div class="px-3 pb-2">

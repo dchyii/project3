@@ -1,10 +1,10 @@
 import React from "react";
 import Cards from "../../Subcomponents/Cards";
 
-const Photos = () => {
+const Photos = (props) => {
   return (
     <div>
-      <Cards />
+      <Cards photos={props.photos} />
     </div>
   );
 };
