@@ -39,6 +39,8 @@ function App() {
   });
 
   const [photos, setPhotos] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allPhotosDataset, setAllPhotosDataset] = useState([]);
 
   useEffect(() => {
     const checkLocalStorage = () => {
@@ -54,13 +56,36 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const allPhoto = async () => {
+    const getAllPhotosAndUsers = async () => {
       const allPhotos = await axios.get("/api/images/allimages");
-      console.log(allPhotos.data.data);
+      const allUsers = await axios.get("/api/users/superadmin/allusername");
+      // console.log(allPhotos.data.data);
+      // console.log(allUsers.data.data);
+      // const allPhotosWithUsernames = allPhotos.map((photo) => {
+      //   return { ...photo };
+      // });
+      // console.log(allPhotosWithUsernames);
       setPhotos(allPhotos.data.data);
+      setAllUsers(allUsers.data.data);
     };
-    allPhoto();
+    getAllPhotosAndUsers();
   }, []);
+
+  useEffect(() => {
+    console.log(allUsers);
+    const photosDataset = photos.map((photo) => {
+      // console.log(photo._id);
+      // const index = allUsers.findIndex((user) => user.userid === photo._id);
+      const findUser = allUsers.find(
+        (user) => user.userid === photo.imageAuthor
+      );
+      const username = findUser?.username;
+      // console.log(username);
+      return { ...photo, username: username };
+    });
+    console.log(photosDataset);
+    setAllPhotosDataset(photosDataset);
+  }, [photos, allUsers]);
 
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
@@ -73,11 +98,17 @@ function App() {
         <br></br>
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
-            <Route path="/" element={<PhotoGallery photos={photos} />} />
-            <Route path="/photos" element={<Photos photos={photos} />} />
+            <Route
+              path="/"
+              element={<PhotoGallery photos={allPhotosDataset} />}
+            />
+            <Route
+              path="/photos"
+              element={<Photos photos={allPhotosDataset} />}
+            />
             <Route
               path="/photographers"
-              element={<Photographers photos={photos} />}
+              element={<Photographers photos={allPhotosDataset} />}
             />
             <Route
               path="/signup"

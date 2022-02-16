@@ -25,7 +25,7 @@ const FeaturedPhotographers = (props) => {
       setGroupSize(3);
     }
   }, []);
-  console.log(props?.photos[0]);
+  // console.log(props?.photos[0]);
 
   return (
     <div className="Featured h-full border border-green-500">

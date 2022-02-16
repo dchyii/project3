@@ -24,14 +24,14 @@ const Top10 = (props) => {
       setGroupSize(3);
     }
   }, []);
-  console.log(props?.photos);
+  // console.log(props?.photos);
   const sortedPhotos = props?.photos.sort((a, b) => {
     return a.imageLikes.length - b.imageLikes.length;
   });
   const swiperRow = sortedPhotos.map((photo, index) => {
     return (
       <SwiperSlide key={index}>
-        <a href={`/${photo.imageAuthor}/posts/${photo._id}`}>
+        <a href={`/${photo.username}/posts/${photo._id}`}>
           {/* update image author to username */}
           <img
             src={photo.imgPath}
