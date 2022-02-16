@@ -82,12 +82,22 @@ const isAuthenticated = (req, res, next) => {
 
 //* create new user post
 router.post("/new", isAuthenticated, async (req, res) => {
-  const newImagePost = req.body;
+  // const { userid } = req.params;
+  const user = req.session.currentUser;
+
+  const newImagePost = {
+    imgPath: req.body.imgPath,
+    description: req.body.description,
+    imageAuthor: user,
+    equipment: req.body.equipment,
+    tags: req.body.tags,
+  };
   if (!newImagePost.imgPath) {
     res.status(400).json({ status: "not ok", message: "please upload image" });
   }
   try {
     const createdNewImagePost = await Image.create(newImagePost);
+
     res.status(200).json({
       status: "ok",
       message: "create new image post",
