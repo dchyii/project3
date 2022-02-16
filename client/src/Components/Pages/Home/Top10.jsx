@@ -45,7 +45,7 @@ const Top10 = (props) => {
   });
 
   return (
-    <div className="Top10 h-full border border-red-500">
+    <div className="Top10 h-full">
       <p className="T10 font-extrabold text-2xl absolute w-full">
         Featured Photos
       </p>

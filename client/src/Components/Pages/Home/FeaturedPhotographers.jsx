@@ -25,10 +25,36 @@ const FeaturedPhotographers = (props) => {
       setGroupSize(3);
     }
   }, []);
-  // console.log(props?.photos[0]);
+
+  const filterNoProfilePhoto = props?.users.filter((user) => user.profilePhoto);
+
+  const filterNoPost = filterNoProfilePhoto.filter((user) => {
+    return (
+      props.photos.findIndex((post) => post.imageAuthor === user.userid) !== -1
+    );
+  });
+
+  let featuredPhotographers = [];
+  for (let i = 0; i < Math.min(10, filterNoPost.length); i++) {
+    featuredPhotographers.push(filterNoPost[i]);
+  }
+
+  const swiperRow = featuredPhotographers.map((user, index) => {
+    return (
+      <SwiperSlide key={index}>
+        <a href={`/${user.username}/posts`}>
+          <img
+            src={user.profilePhoto}
+            alt={user.username}
+            className="object-fill h-5/6 aspect-auto box-border"
+          />
+        </a>
+      </SwiperSlide>
+    );
+  });
 
   return (
-    <div className="Featured h-full border border-green-500">
+    <div className="Featured h-full">
       <p className="FeaturedP font-extrabold text-2xl absolute w-full">
         Featured Photographers
       </p>
@@ -62,40 +88,7 @@ const FeaturedPhotographers = (props) => {
           scrollbar={{ draggable: true }}
           className="h-full"
         >
-          <SwiperSlide>
-            <img
-              src={props?.photos[0]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[3]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[2]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src={props?.photos[3]?.imgPath}
-              alt="sample"
-              className="object-fill h-5/6 aspect-auto box-border"
-            />
-          </SwiperSlide>
-          {/* <SwiperSlide>Slide 5</SwiperSlide>
-          <SwiperSlide>Slide 6</SwiperSlide>
-          <SwiperSlide>Slide 7</SwiperSlide>
-          <SwiperSlide>Slide 8</SwiperSlide>
-          <SwiperSlide>Slide 9</SwiperSlide>
-          <SwiperSlide>Slide 10</SwiperSlide> */}
+          {swiperRow}
         </Swiper>
       </div>
     </div>

@@ -64,7 +64,8 @@ function App() {
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;
-      return { ...photo, username: username };
+      const userProfile = findUser?.profilePhoto;
+      return { ...photo, username: username, profilePhoto: userProfile };
     });
     const sortedPhotosDataset = photosDataset.sort((a, b) => {
       return a.imageLikes.length - b.imageLikes.length;
