@@ -1,20 +1,9 @@
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const posts = [
   { id: "asd", name: "edi" },
   { id: "tester", name: "example" },
 ];
-// const filteredPosts = (posts, query) => {
-//   if (!query) {
-//     return posts;
-//   }
-
-//   return posts.filter((post) => {
-//     const postName = post.name.toLowerCase();
-//     return postName.includes(query);
-//   });
-// };
 
 const SearchResults = () => {
   const [searchParams, setSearchParams] = useSearchParams();
