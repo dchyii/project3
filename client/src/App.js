@@ -107,7 +107,12 @@ function App() {
               path="/photographers"
               element={<Photographers photos={allPhotosDataset} />}
             />
-            <Route path="/search" element={<SearchResults />} />
+            <Route
+              path="/search"
+              element={
+                <SearchResults photos={allPhotosDataset} users={allUsers} />
+              }
+            />
             <Route
               path="/signup"
               element={

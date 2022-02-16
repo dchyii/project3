@@ -1,31 +1,36 @@
 import { useSearchParams } from "react-router-dom";
 
-const posts = [
-  { id: "asd", name: "edi" },
-  { id: "tester", name: "example" },
-];
-
-const SearchResults = () => {
+const SearchResults = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("searchTerm");
-  const filterPost = (posts, searchTerm) => {
+
+  const allPhotos = props.photos;
+  const allUsers = props.users;
+
+  // console.log(typeof JSON.stringify(allPhotos[1]));
+  // console.log("photos:", allPhotos);
+  // console.log("users: ", allUsers);
+
+  const filterAllPhotos = (allData, searchTerm) => {
     if (!searchTerm) {
-      return posts;
+      return allData;
     } else {
-      return posts.filter((post) => {
-        const postName = post.name.toLowerCase();
-        return postName.includes(searchTerm);
+      const caseInsensitiveSearchTerm = searchTerm.toLowerCase();
+      return allData.filter((photo) => {
+        const stringifiedData = JSON.stringify(photo).toLowerCase();
+        return stringifiedData.includes(caseInsensitiveSearchTerm);
       });
     }
   };
-  const filteredPost = filterPost(posts, searchTerm);
+  const filteredPhotos = filterAllPhotos(allPhotos, searchTerm);
+  console.log(filteredPhotos);
 
   return (
     <div>
       <ul>
-        {filteredPost.map((post) => (
-          <li key={post.id}>
-            {post.id} {post.name}
+        {filteredPhotos.map((post, index) => (
+          <li key={index}>
+            {post._id} {post.description}
           </li>
         ))}
       </ul>
