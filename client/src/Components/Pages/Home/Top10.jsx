@@ -9,21 +9,51 @@ import {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { useEffect, useState } from "react";
 
-const Top10 = () => {
+const Top10 = (props) => {
+  const [groupSize, setGroupSize] = useState(1);
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setGroupSize(1);
+    } else {
+      setGroupSize(3);
+    }
+  }, []);
+
+  let topPhotos = [];
+  for (let i = 0; i < Math.min(10, props.photos.length); i++) {
+    topPhotos.push(props.photos[i]);
+  }
+
+  const swiperRow = topPhotos.map((photo, index) => {
+    return (
+      <SwiperSlide key={index}>
+        <a href={`/${photo.username}/posts/${photo._id}`}>
+          <img
+            src={photo.imgPath}
+            alt={photo.description}
+            className="object-fill h-5/6 aspect-auto box-border"
+          />
+        </a>
+      </SwiperSlide>
+    );
+  });
+
   return (
-    <div className="Top10">
-      <p className="T10 font-extrabold text-2xl">Top 10 Photos</p>
-      <div className="w-full text-right px-10">
+    <div className="Top10 h-full">
+      <p className="T10 font-extrabold text-2xl absolute w-full">
+        Featured Photos
+      </p>
+      <div className="w-full text-right px-10 absolute mt-7">
         <Link to={`/photos`}>Show All</Link>
       </div>
 
-      <div className="w-full h-full">
+      <div className="w-full h-full pt-20">
         <Swiper
           modules={[
             Navigation,
@@ -34,11 +64,11 @@ const Top10 = () => {
             Mousewheel,
             Autoplay,
           ]}
-          slidesPerView={3}
+          slidesPerView={groupSize}
           spaceBetween={30}
-          slidesPerGroup={3}
+          slidesPerGroup={1}
           autoplay={{
-            delay: 5000,
+            delay: 300000,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -48,29 +78,9 @@ const Top10 = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
+          className="h-full"
         >
-          <SwiperSlide>
-            <p className="border border-red-500">Slide 1</p>
-          </SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 2</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 3</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 4</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 5</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 6</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 7</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 8</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 9</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 10</SwiperSlide>
-          <br></br>
+          {swiperRow}
         </Swiper>
       </div>
     </div>

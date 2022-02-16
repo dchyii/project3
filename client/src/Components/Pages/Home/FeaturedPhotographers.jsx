@@ -9,17 +9,59 @@ import {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
+// import "swiper/css";
+// import "swiper/css/bundle";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import "swiper/css/scrollbar";
+import { useEffect, useState } from "react";
 
-const FeaturedPhotographers = () => {
+const FeaturedPhotographers = (props) => {
+  const [groupSize, setGroupSize] = useState(1);
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setGroupSize(1);
+    } else {
+      setGroupSize(3);
+    }
+  }, []);
+
+  const filterNoProfilePhoto = props?.users.filter((user) => user.profilePhoto);
+
+  const filterNoPost = filterNoProfilePhoto.filter((user) => {
+    return (
+      props.photos.findIndex((post) => post.imageAuthor === user.userid) !== -1
+    );
+  });
+
+  let featuredPhotographers = [];
+  for (let i = 0; i < Math.min(10, filterNoPost.length); i++) {
+    featuredPhotographers.push(filterNoPost[i]);
+  }
+
+  const swiperRow = featuredPhotographers.map((user, index) => {
+    return (
+      <SwiperSlide key={index}>
+        <a href={`/${user.username}/posts`}>
+          <img
+            src={user.profilePhoto}
+            alt={user.username}
+            className="object-fill h-5/6 aspect-auto box-border"
+          />
+        </a>
+      </SwiperSlide>
+    );
+  });
+
   return (
-    <div className="Featured">
-      <p className="FeaturedP font-extrabold text-2xl">
+    <div className="Featured h-full">
+      <p className="FeaturedP font-extrabold text-2xl absolute w-full">
         Featured Photographers
       </p>
-      <div className="w-full text-right px-10">
+      <div className="w-full text-right px-10 absolute mt-7">
         <Link to={`/photographers`}>Show All</Link>
       </div>
-      <div className="w-full">
+      <div className="w-full h-full pt-20">
         <Swiper
           modules={[
             Navigation,
@@ -30,11 +72,11 @@ const FeaturedPhotographers = () => {
             Mousewheel,
             Autoplay,
           ]}
-          slidesPerView={3}
+          slidesPerView={groupSize}
           spaceBetween={30}
-          slidesPerGroup={3}
+          slidesPerGroup={1}
           autoplay={{
-            delay: 5000,
+            delay: 300000,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -44,27 +86,9 @@ const FeaturedPhotographers = () => {
           navigation={true}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
+          className="h-full"
         >
-          <SwiperSlide>Slide 1</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 2</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 3</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 4</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 5</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 6</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 7</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 8</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 9</SwiperSlide>
-          <br></br>
-          <SwiperSlide>Slide 10</SwiperSlide>
-          <br></br>
+          {swiperRow}
         </Swiper>
       </div>
     </div>
