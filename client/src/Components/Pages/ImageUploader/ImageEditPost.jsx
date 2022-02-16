@@ -26,6 +26,7 @@ const ImageEditPost = () => {
   const navigate = useNavigate();
   const { postID } = useParams();
   // const userContext = useContext[DataContext];
+  const [viewedPost, setViewedPost] = useState({})
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
@@ -41,7 +42,14 @@ const ImageEditPost = () => {
   useEffect(() => {
     const getPost = async () => {
       const post = await axios.get(`/api/images/${postID}`);
-      console.log(post.data.data);
+      console.log(post.data.data.imagePosts);
+      setViewedPost(post.data.data.imagePosts);
+      formik.setFieldValue("description", post.data.data.imagePosts.description);
+      formik.setFieldValue("equipment", post.data.data.imagePosts.equipment);
+      formik.setFieldValue("tags", post.data.data.imagePosts.tags);
+      setTags(post.data.data.imagePosts.tags);
+      document.querySelector("#description").value = post.data.data.imagePosts.description;
+      document.querySelector("#equipment").value = post.data.data.imagePosts.equipment;
     };
     getPost();
   }, []);
@@ -127,37 +135,37 @@ const ImageEditPost = () => {
 
   const tagDatalist = tagList.map((item) => <option key={item} value={item} />);
 
-  //IMAGE
-  const uploadImage = async (file) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const img = await res.json();
-    setDisplayedImage(img.secure_url);
-    formik.setFieldValue("imgPath", img.secure_url);
-    formik.setFieldValue("imageAuthor", userContext.userID);
-    return img.secure_url;
-  };
+  // IMAGE
+  // const uploadImage = async (file) => {
+  //   const data = new FormData();
+  //   data.append("file", file);
+  //   data.append("upload_preset", NAME_OF_UPLOAD_PRESET);
+  //   const res = await fetch(
+  //     `https://api.cloudinary.com/v1_1/${YOUR_CLOUDINARY_ID}/image/upload`,
+  //     {
+  //       method: "POST",
+  //       body: data,
+  //     }
+  //   );
+  //   const img = await res.json();
+  //   setDisplayedImage(img.secure_url);
+  //   formik.setFieldValue("imgPath", img.secure_url);
+  //   formik.setFieldValue("imageAuthor", userContext.userID);
+  //   return img.secure_url;
+  // };
 
-  const handleFileChange = async (event) => {
-    const [file] = event.target.files;
-    if (!file) return;
+  // const handleFileChange = async (event) => {
+  //   const [file] = event.target.files;
+  //   if (!file) return;
 
-    setUploadingImg(true);
-    setDisplayedImage(
-      "https://res.cloudinary.com/djtovzgnc/image/upload/v1644945448/project3/fihn2qjb7r3lt4dq0jxu.gif"
-    );
-    const uploadedUrl = await uploadImage(file);
-    setFormData({ ...formData, img: uploadedUrl });
-    setUploadingImg(false);
-  };
+  //   setUploadingImg(true);
+  //   setDisplayedImage(
+  //     "https://res.cloudinary.com/djtovzgnc/image/upload/v1644945448/project3/fihn2qjb7r3lt4dq0jxu.gif"
+  //   );
+  //   const uploadedUrl = await uploadImage(file);
+  //   setFormData({ ...formData, img: uploadedUrl });
+  //   setUploadingImg(false);
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -172,7 +180,7 @@ const ImageEditPost = () => {
       <form method="POST" onSubmit={formik.handleSubmit} className="form-input">
         <div>
           <img
-            src={displayedImage}
+            src={viewedPost?.imgPath}
             style={{ maxWidth: "75% ", height: "auto" }}
           />
         </div>
@@ -182,6 +190,7 @@ const ImageEditPost = () => {
           <Field
             label="Description"
             name="description"
+            id="description"
             type="textarea"
             onChange={formik.handleChange}
             rows="6"
@@ -191,6 +200,7 @@ const ImageEditPost = () => {
           <Field
             label="Equipment"
             name="equipment"
+            id="equipment"
             placeholder="Equipment used..."
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
