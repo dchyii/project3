@@ -117,7 +117,7 @@ router.get("/superadmin/allusername", async (req, res) => {
     });
     res
       .status(200)
-      .json({ status: "ok", message: "get all username", data: usernameMap });
+      .json({ status: "ok", message:"get all username", data: usernameMap });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
@@ -173,5 +173,7 @@ router.get("/:userid", isAuthenticated, async (req, res) => {
     res.json({ status: "not ok", message: error.message });
   }
 });
+
+
 
 module.exports = router;
