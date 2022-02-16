@@ -22,13 +22,6 @@ function App() {
     fetchTest();
   }, []);
 
-  // const userContext = {
-  //   userID: "user1",
-  //   username: "username1",
-  //   isLoggedIn: false,
-  //   isSuperAdmin: false,
-  // };
-
   const [userContext, setUserContext] = useState({
     userID: "",
     username: "",
@@ -39,6 +32,8 @@ function App() {
   });
 
   const [photos, setPhotos] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allPhotosDataset, setAllPhotosDataset] = useState([]);
 
   useEffect(() => {
     const checkLocalStorage = () => {
@@ -54,30 +49,53 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const allPhoto = async () => {
+    const getAllPhotosAndUsers = async () => {
       const allPhotos = await axios.get("/api/images/allimages");
-      console.log(allPhotos.data.data);
+      const allUsers = await axios.get("/api/users/superadmin/allusername");
       setPhotos(allPhotos.data.data);
+      setAllUsers(allUsers.data.data);
     };
-    allPhoto();
+    getAllPhotosAndUsers();
   }, []);
+
+  useEffect(() => {
+    const photosDataset = photos.map((photo) => {
+      const findUser = allUsers.find(
+        (user) => user.userid === photo.imageAuthor
+      );
+      const username = findUser?.username;
+      const userProfile = findUser?.profilePhoto;
+      return { ...photo, username: username, profilePhoto: userProfile };
+    });
+    const sortedPhotosDataset = photosDataset.sort((a, b) => {
+      return a.imageLikes.length - b.imageLikes.length;
+    });
+    setAllPhotosDataset(sortedPhotosDataset);
+  }, [photos, allUsers]);
 
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
       <div className="App">
-        {/* <h1 className="text-3xl font-bold underline">Hello Project 3</h1> */}
         <Navbar />
         <br></br>
         <br></br>
         <SearchBar />
         <br></br>
-        <div className="App-container h-screen w-full pt-16 -mt-20 overflow-hidden">
+        <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
-            <Route path="/" element={<PhotoGallery photos={photos} />} />
-            <Route path="/photos" element={<Photos photos={photos} />} />
+            <Route
+              path="/"
+              element={
+                <PhotoGallery photos={allPhotosDataset} users={allUsers} />
+              }
+            />
+            <Route
+              path="/photos"
+              element={<Photos photos={allPhotosDataset} />}
+            />
             <Route
               path="/photographers"
-              element={<Photographers photos={photos} />}
+              element={<Photographers photos={allPhotosDataset} />}
             />
             <Route
               path="/signup"
