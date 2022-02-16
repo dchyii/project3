@@ -10,6 +10,8 @@ import { SigninForm } from "./Components/Pages/SigninForm";
 import Photos from "./Components/Pages/Photos/Photos";
 import Photographers from "./Components/Pages/Photographers/Photographers";
 import SearchBar from "./Components/Subcomponents/SearchBar";
+import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
+import PhotoView from "./Components/Pages/Photos/PhotoView";
 
 export const DataContext = createContext();
 
@@ -111,8 +113,8 @@ function App() {
             />
             <Route path="/:userID/posts" element={""} />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={""} />
-            <Route path="/:userID/posts/:postID/edit" element={""} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID/edit" element={<ImageEditPost />} />
           </Routes>
         </div>
       </div>
