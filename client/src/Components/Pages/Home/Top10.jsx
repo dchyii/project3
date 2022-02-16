@@ -25,10 +25,10 @@ const Top10 = (props) => {
     }
   }, []);
   // console.log(props?.photos);
-  const sortedPhotos = props?.photos.sort((a, b) => {
-    return a.imageLikes.length - b.imageLikes.length;
-  });
-  const swiperRow = sortedPhotos.map((photo, index) => {
+  // const sortedPhotos = props?.photos.sort((a, b) => {
+  //   return a.imageLikes.length - b.imageLikes.length;
+  // });
+  const swiperRow = props.photos.map((photo, index) => {
     return (
       <SwiperSlide key={index}>
         <a href={`/${photo.username}/posts/${photo._id}`}>

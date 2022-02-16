@@ -74,17 +74,17 @@ function App() {
   useEffect(() => {
     console.log(allUsers);
     const photosDataset = photos.map((photo) => {
-      // console.log(photo._id);
-      // const index = allUsers.findIndex((user) => user.userid === photo._id);
       const findUser = allUsers.find(
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;
-      // console.log(username);
       return { ...photo, username: username };
     });
     console.log(photosDataset);
-    setAllPhotosDataset(photosDataset);
+    const sortedPhotosDataset = photosDataset.sort((a, b) => {
+      return a.imageLikes.length - b.imageLikes.length;
+    });
+    setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
 
   return (
