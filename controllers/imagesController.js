@@ -71,7 +71,7 @@ router.get("/allimages", async (req, res) => {
   }
 });
 
-//* auth
+//* authentication
 const isAuthenticated = (req, res, next) => {
   if (req.session.currentUser) {
     return next();
