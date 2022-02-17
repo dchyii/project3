@@ -65,7 +65,7 @@ function App() {
 
   useEffect(() => {
     const photosDataset = photos.map((photo) => {
-      const findUser = allUsers.find(
+      const findUser = allUsers?.find(
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;

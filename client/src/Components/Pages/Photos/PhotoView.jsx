@@ -9,12 +9,9 @@ const PhotoView = () => {
   useEffect(() => {
     const getPost = async () => {
       const post = await axios.get(`/api/images/${postID}`);
-      console.log(post.data.data.imagePosts);
-      setViewedPost(post.data.data.imagePosts);
-    };
-    const getComments = async () => {
-      const post = await axios.get(`/api/images/${postID}`);
       console.log(post);
+      setViewedPost(post.data.data.imagePosts);
+      console.log(post.data.data.comments)
     };
     getPost();
   }, []);
@@ -45,7 +42,7 @@ key={item}>
         </div>
       <div className="flex flex-row">
         <span className="w-6/12">
-          <img src={viewedPost.imgPath} className="min-h-80 max-h-80" />
+          <img src={viewedPost?.imgPath} className="min-h-80 max-h-80" />
           <div className="pt-1">
           <div className="pt-2">
         <i className="far fa-heart cursor-pointer"></i>
@@ -53,7 +50,7 @@ key={item}>
       </div>
             <div className="mb-2 text-sm">
               <span className="font-medium mr-2">braydoncoyer</span>{" "}
-              {viewedPost.description}
+              {viewedPost?.description}
             </div>
             <div>
             <span>Tags: </span>
