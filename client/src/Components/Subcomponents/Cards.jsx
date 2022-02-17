@@ -1,12 +1,13 @@
 import { useState } from "react";
 import LikeButton from "./LikeButton";
+import SuperAdminDelete from "./SuperAdminDelete";
 
 const Cards = (props) => {
   // const [L, setL] = useState([]);
   // const [liked, SetLiked] = useState(false);
   // const allLiked = props?.photos?.imageLikes;
   const properties = props?.photos;
-  console.log(properties);
+  // console.log(properties);
   return (
     <div className=" inline-block rounded overflow-hidden border w-96 h-96 m-5 bg-white mx-3 rounded-lg">
       <div className="w-full flex justify-between p-3">
@@ -39,6 +40,9 @@ const Cards = (props) => {
 
       <div className="px-3 pb-2">
         <div className="pt-2">
+          <div className={`absolute`}>
+            <SuperAdminDelete type={"images"} id={properties?._id} />
+          </div>
           <LikeButton properties={properties} />
         </div>
       </div>
