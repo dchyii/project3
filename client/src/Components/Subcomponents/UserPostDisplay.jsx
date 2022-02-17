@@ -3,6 +3,7 @@ import { DataContext } from "../../App";
 
 const UserPostDisplay = (props) => {
   const [userContext, setUserContext] = useContext(DataContext);
+  const userID = userContext.userID;
   const properties = props?.photos;
   console.log(properties);
   const displayPosts = props.photos.map((photo, key) => {
