@@ -102,7 +102,7 @@ const FeaturedPhotographers = (props) => {
           spaceBetween={30}
           slidesPerGroup={1}
           autoplay={{
-            delay: 300000,
+            delay: 5000,
             disableOnInteraction: false,
           }}
           loop={true}
