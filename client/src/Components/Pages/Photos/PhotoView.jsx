@@ -28,33 +28,35 @@ const PhotoView = () => {
   ));
 
   return (
-    <div className="flex flex-row m-10 rounded border">
-      <span className="w-6/12">
-        <div class="w-full flex justify-between p-3">
-          <div class="flex">
-            <div class="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
-              <img
-                src="https://avatars0.githubusercontent.com/u/38799309?v=4"
-                alt="profilepic"
-              />
-            </div>
-            <span class="pt-1 ml-2 font-bold text-sm">braydoncoyer</span>
+    <div className="m-10 rounded border">
+
+        <div class="flex">
+          <div class="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
+            <img
+              src="https://avatars0.githubusercontent.com/u/38799309?v=4"
+              alt="profilepic"
+            />
           </div>
-          <span class="px-2 hover:bg-gray-300 cursor-pointer rounded">
-            <i class="fas fa-ellipsis-h pt-2 text-lg"></i>
-          </span>
+          <span class="pt-1 ml-2 font-bold text-sm">braydoncoyer</span>
         </div>
-        <img src={viewedPost.imgPath} />
-        <div class="pt-1">
-        <div class="mb-2 text-sm">
-          <span class="font-medium mr-2">braydoncoyer</span> {viewedPost.description}
-        </div>
+        <span class="px-2 hover:bg-gray-300 cursor-pointer rounded">
+          <i class="fas fa-ellipsis-h pt-2 text-lg"></i>
+        </span>
+
+      <div className="flex flex-row m-10 rounded border">
+        <span className="w-6/12">
+          <img src={viewedPost.imgPath} />
+          <div class="pt-1">
+            <div class="mb-2 text-sm">
+              <span class="font-medium mr-2">braydoncoyer</span>{" "}
+              {viewedPost.description}
+            </div>
+          </div>
+        </span>
+        <span className="w-6/12">
+          <div>{allComments}</div>
+        </span>
       </div>
-      </span>
-      <span className="w-6/12">
-          
-        <div>{allComments}</div>
-      </span>
     </div>
   );
 };
