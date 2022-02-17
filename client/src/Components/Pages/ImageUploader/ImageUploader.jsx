@@ -47,7 +47,7 @@ const ImageUploader = () => {
       imgPath: "",
       description: "",
       likes: [],
-      author: "",
+      imageAuthor: "",
       equipment: "",
       tags: [],
     },
@@ -74,7 +74,7 @@ const ImageUploader = () => {
             imgPath: "",
             description: "",
             likes: [],
-             author: "",
+            imageAuthor: "",
             equipment: "",
             tags: [],
           };
@@ -84,7 +84,7 @@ const ImageUploader = () => {
             imgPath: "",
             description: "",
             likes: [],
-            author: "",
+            imageAuthor: "",
             equipment: "",
             tags: [],
           };
@@ -94,6 +94,17 @@ const ImageUploader = () => {
       });
     },
   });
+
+  useEffect(() => {
+   const setUser = () => {
+    formik.setFieldValue("imageAuthor", userContext.userID)
+   }
+  
+    return () => {
+      setUser()
+    }
+  }, [])
+  
 
   //TAGS
 
