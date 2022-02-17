@@ -6,37 +6,42 @@ import LikeButton from "../../Subcomponents/LikeButton";
 
 const PhotoView = (props) => {
   const { postID, userID } = useParams();
-  const [viewedPost, setViewedPost] = useState({});
+  // const [viewedPost, setViewedPost] = useState({});
   const [comments, setComments] = useState();
   const postIndex = props?.photos.findIndex((photo) => photo._id === postID);
   const properties = props?.photos[postIndex];
-  console.log(properties)
-
+  console.log(props.photos);
+  const viewedPost = props.photos[postIndex];
   useEffect(() => {
-    const getPost = async () => {
+    const getComments = async () => {
       const post = await axios.get(`/api/images/${postID}`);
-      console.log(post.data.data);
-      setViewedPost(post.data.data.imagePosts);
-      console.log(post.data.data.comments);
+      // console.log(post.data.data);
+      // setViewedPost(post.data.data.imagePosts);
+      // console.log(post.data.data.comments);
       setComments(post.data.data.comments);
-      console.log(props);
+      // console.log(props);
+      // setViewedPost(props.photos[postIndex])
+      // console.log(viewedPost)
     };
-    getPost();
+    getComments();
   }, []);
   console.log(properties);
 
-  const allComments = comments?.map((item, index) => (
+  const allComments = comments?.map((item, index) => {
+    const commentUsernameIndex = props.users?.findIndex((user) => user?.userid === item?.commentAuthor);
+    const commentUsername = props?.users[commentUsernameIndex]?.username
+    return (
     <div
       className={
         index % 2 == 0 ? "bg-slate-100 py-1 text-sm" : "bg-white py-1 text-sm"
       }
       key={index}
     >
-      <span className="font-medium mr-2">{item.commentAuthor}</span>{" "}
+      <span className="font-medium mr-2">{commentUsername}</span>{" "}
       <span>{item.comment}</span>
       <span></span>
-    </div>
-  ));
+    </div>);
+  });
 
   const showTags = viewedPost?.tags?.map((item) => (
     <span
@@ -57,7 +62,7 @@ const PhotoView = (props) => {
           />
         </div>
         <span className="pt-1 ml-2 font-bold text-sm">
-          {viewedPost?.imageAuthor}
+          {viewedPost?.username}
         </span>
       </div>
       <div className="flex flex-row">
