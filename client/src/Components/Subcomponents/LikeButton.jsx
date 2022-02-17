@@ -1,4 +1,4 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { DataContext } from "../../App";
 import axios from "axios";
 
@@ -8,7 +8,11 @@ const LikeButton = (props) => {
   const allLikes = props?.properties?.imageLikes;
   const [totalLikes, setTotalLikes] = useState(allLikes);
   const postID = props?.properties?._id;
-  console.log(props.properties)
+  console.log(props.properties);
+
+  useEffect(() => {
+    setTotalLikes(allLikes);
+  }, [allLikes]);
 
   const likeStatus = totalLikes?.includes(userID) ? "Liked" : "Like";
 
