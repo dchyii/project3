@@ -7,58 +7,45 @@ import { useFormik, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 //VARIABLES
-const NAME_OF_UPLOAD_PRESET = "project_3";
+const NAME_OF_UPLOAD_PRESET = "profile_pics";
 const YOUR_CLOUDINARY_ID = "djtovzgnc";
-const tagList = [
-  "People",
-  "Food",
-  "Animals",
-  "Nature",
-  "Urban",
-  "Art",
-  "Others",
-];
 
 // A helper function
 
-const ImageUploader = () => {
+const ProfileEdit = () => {
   const [userContext, setUserContext] = useContext(DataContext);
   const navigate = useNavigate();
   // const userContext = useContext[DataContext];
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
+  const [userInfo, setUserInfo] = useState();
   const [formData, setFormData] = useState({
     // ...other fields
     img: "",
   });
   const [uploadingImg, setUploadingImg] = useState(false);
-  const [displayedImage, setDisplayedImage] = useState(
-    "https://image.flaticon.com/icons/png/128/109/109612.png"
+  const [displayedImage, setDisplayedImage] = useState("https://image.flaticon.com/icons/png/128/109/109612.png"
   );
 
   //FORM
   const validateSchema = Yup.object().shape({
-    imgPath: Yup.string().required("Please upload an image."),
-    description: Yup.string().required("Please enter a description."),
+    profilePhoto: Yup.string().required("Please upload an image."),
   });
   const formik = useFormik({
     initialValues: {
-      imgPath: "",
-      description: "",
-      likes: [],
-      imageAuthor: "",
-      equipment: "",
-      tags: [],
+        profilePhoto: "",
+        username: "",
+        email: "",
     },
     validationSchema: validateSchema,
     onSubmit: async (values) => {
       if (uploadingImg) return;
       console.log("submitted values: ", values);
-      // await axios.post("/api/images/new", values);
+        // await axios.post("/api/images/new", values);
       axios({
-        method: "post",
-        url: "/api/images/new",
+        method: "put",
+        url: "/api/users/userinfo",
         data: values,
       }).then((response) => {
         console.log(response);
@@ -71,22 +58,16 @@ const ImageUploader = () => {
         } else {
           // const result = response.data.data;
           let post = {
-            imgPath: "",
-            description: "",
-            likes: [],
-            imageAuthor: "",
-            equipment: "",
-            tags: [],
+            profilePhoto: "",
+            username: "",
+            email: "",
           };
           console.log(post);
           post = {
             ...post,
-            imgPath: "",
-            description: "",
-            likes: [],
-            imageAuthor: "",
-            equipment: "",
-            tags: [],
+            profilePhoto: "",
+            username: "",
+            email: "",
           };
           console.log(post);
           navigate(-1, { replace: false });
@@ -94,51 +75,23 @@ const ImageUploader = () => {
       });
     },
   });
-
   useEffect(() => {
-    const setUser = () => {
-      formik.setFieldValue("imageAuthor", userContext.userID);
+    const initialize = async () => {
+      const post = await axios.get(`/api/users/userinfo`);
+      console.log(post.data.data);
+      const userData = post?.data?.data[0];
+      setUserInfo(userData?.post?.data?.data[0])
+      formik.setFieldValue("profilePhoto", userData?.profilePhoto);
+      setDisplayedImage(userData?.profilePhoto);
+      formik.setFieldValue("username", userData?.username);
+      document.querySelector("#username").value = userData?.username;
+      formik.setFieldValue("email", userData?.email);
+      document.querySelector("#email").value = userData?.email;
+
     };
-    return () => {
-      setUser();
-    };
+    initialize();
   }, []);
-
-  //TAGS
-  const onTagInputChange = (e) => {
-    const { value } = e.target;
-    setTagInput(value);
-  };
-  const addTag = (e) => {
-    e.preventDefault();
-    const trimmedInput = tagInput.trim();
-    const addTag = (prevState) => [...prevState, trimmedInput];
-    if (trimmedInput.length && !tags.includes(trimmedInput)) {
-      setTags((prevState) => [...prevState, trimmedInput]);
-      formik.setFieldValue("tags", addTag(tags));
-      setTagInput("");
-    }
-  };
-
-  const removeTag = (value) => {
-    const arr = tags.filter((tag) => tag !== value);
-    setTags(arr);
-    formik.setFieldValue("tags", arr);
-  };
-
-  const tagDisplay = tags.map((tag) => (
-    <div className="tag" key={tag}>
-      <button
-        className="bg-green-500 hover:bg-red-500 text-white font-bold py-1 px-3 rounded-full"
-        onClick={() => removeTag(tag)}
-      >
-        {tag}
-      </button>
-    </div>
-  ));
-
-  const tagDatalist = tagList.map((item) => <option key={item} value={item} />);
-
+  
   //IMAGE
   const uploadImage = async (file) => {
     const data = new FormData();
@@ -153,7 +106,7 @@ const ImageUploader = () => {
     );
     const img = await res.json();
     setDisplayedImage(img.secure_url);
-    formik.setFieldValue("imgPath", img.secure_url);
+    formik.setFieldValue("profilePhoto", img.secure_url);
     return img.secure_url;
   };
 
@@ -168,7 +121,6 @@ const ImageUploader = () => {
     const uploadedUrl = await uploadImage(file);
     setFormData({ ...formData, img: uploadedUrl });
     setUploadingImg(false);
-    formik.setFieldValue("imageAuthor", userContext.userID);
   };
 
   const handleSubmit = (event) => {
@@ -196,69 +148,22 @@ const ImageUploader = () => {
             error={formik.touched?.description && formik.errors?.imgPath}
           />
         </div>
-        <span
-          style={{ display: "inline-block", width: "70%", padding: "10px" }}
-        >
-          <Field
-            label="Description"
-            name="description"
-            type="textarea"
-            onChange={formik.handleChange}
-            rows="6"
-            dot={true}
-            error={formik.touched?.description && formik.errors?.description}
-          />
-          <Field
-            label="Equipment"
-            name="equipment"
-            placeholder="Equipment used..."
+        <Field
+            label="Username"
+            name="username"
+            id="username"
+            placeholder="Enter new username"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
           />
-        </span>
-
-        <aside
-          style={{
-            display: "inline-block",
-            width: "30%",
-            maxWidth: "30%",
-          }}
-          className="max-w-sm"
-        >
-          <div
-            style={{
-              position: "absolute",
-              marginTop: "-253px",
-              maxWidth: "23%",
-              width: "24%",
-            }}
-          >
-            <Field
-              list="tags"
-              id="tag"
-              type="text"
-              value={tagInput}
-              placeholder="Enter a tag"
-              onChange={onTagInputChange}
-            />
-            <datalist id="tags" style={{ display: "none" }}>
-              {tagDatalist}
-            </datalist>
-            <button
-              onClick={addTag}
-              className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-0 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-            >
-              Add Tag
-            </button>{" "}
-            <p>
-              <i>Click on a tag to remove it!</i>
-            </p>
-            <div className="flex flex-wrap" style={{ maxHeight: "200px" }}>
-              {tagDisplay}
-            </div>
-          </div>
-        </aside>
-
+                  <Field
+            label="Email"
+            name="email"
+            id="email"
+            placeholder="Enter new email"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+          />
         <br />
         <button
           type="submit"
@@ -272,7 +177,7 @@ const ImageUploader = () => {
   );
 };
 
-export default ImageUploader;
+export default ProfileEdit;
 
 const style = {
   dot: `after:content-['*'] after:ml-0.5 after:text-red-500`,

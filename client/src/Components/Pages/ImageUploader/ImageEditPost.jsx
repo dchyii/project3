@@ -26,7 +26,7 @@ const ImageEditPost = () => {
   const navigate = useNavigate();
   const { postID } = useParams();
   // const userContext = useContext[DataContext];
-  const [viewedPost, setViewedPost] = useState({})
+  const [viewedPost, setViewedPost] = useState({});
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
@@ -44,12 +44,17 @@ const ImageEditPost = () => {
       const post = await axios.get(`/api/images/${postID}`);
       console.log(post.data.data.imagePosts);
       setViewedPost(post.data.data.imagePosts);
-      formik.setFieldValue("description", post.data.data.imagePosts.description);
+      formik.setFieldValue(
+        "description",
+        post.data.data.imagePosts.description
+      );
       formik.setFieldValue("equipment", post.data.data.imagePosts.equipment);
       formik.setFieldValue("tags", post.data.data.imagePosts.tags);
       setTags(post.data.data.imagePosts.tags);
-      document.querySelector("#description").value = post.data.data.imagePosts.description;
-      document.querySelector("#equipment").value = post.data.data.imagePosts.equipment;
+      document.querySelector("#description").value =
+        post.data.data.imagePosts.description;
+      document.querySelector("#equipment").value =
+        post.data.data.imagePosts.equipment;
     };
     getPost();
   }, []);

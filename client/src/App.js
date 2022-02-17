@@ -3,16 +3,19 @@ import axios from "axios";
 import PhotoGallery from "./Components/Pages/Home/PhotoGallery";
 import ImageUploader from "./Components/Pages/ImageUploader/ImageUploader";
 import { useEffect, createContext, useContext, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
 import { SignupForm } from "./Components/Pages/SignupForm";
 import { SigninForm } from "./Components/Pages/SigninForm";
 import Photos from "./Components/Pages/Photos/Photos";
 import Photographers from "./Components/Pages/Photographers/Photographers";
-import SearchBar from "./Components/Subcomponents/SearchBar";
 import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
+import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
+import ScrollToTop from "react-scroll-to-top";
+import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
+import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
 
@@ -63,7 +66,7 @@ function App() {
 
   useEffect(() => {
     const photosDataset = photos.map((photo) => {
-      const findUser = allUsers.find(
+      const findUser = allUsers?.find(
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;
@@ -71,10 +74,13 @@ function App() {
       return { ...photo, username: username, profilePhoto: userProfile };
     });
     const sortedPhotosDataset = photosDataset.sort((a, b) => {
-      return a.imageLikes.length - b.imageLikes.length;
+      return b.imageLikes.length - a.imageLikes.length;
     });
     setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
@@ -82,8 +88,13 @@ function App() {
         <Navbar />
         <br></br>
         <br></br>
-        <SearchBar />
+        <SearchBar
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          setIsAdvancedSearch={setIsAdvancedSearch}
+        />
         <br></br>
+        <ScrollToTop smooth viewBox="-50 0 256 256" />
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
             <Route
@@ -101,6 +112,16 @@ function App() {
               element={<Photographers photos={allPhotosDataset} />}
             />
             <Route
+              path="/search"
+              element={
+                <SearchResults
+                  photos={allPhotosDataset}
+                  users={allUsers}
+                  advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
+                />
+              }
+            />
+            <Route
               path="/signup"
               element={
                 userContext.isLoggedIn ? <Navigate to="/" /> : <SignupForm />
@@ -114,10 +135,14 @@ function App() {
             />
             <Route
               path="/:userID/posts"
-              element={<UserPosts photos={photos} />}
+              element={<UserPosts photos={allPhotosDataset} users={allUsers} />}
+            />
+                        <Route
+              path="/:userID/edit"
+              element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}
