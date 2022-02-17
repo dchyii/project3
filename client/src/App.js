@@ -80,6 +80,7 @@ function App() {
   }, [photos, allUsers]);
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
@@ -90,6 +91,7 @@ function App() {
         <SearchBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}
+          setIsAdvancedSearch={setIsAdvancedSearch}
         />
         <br></br>
         <ScrollToTop smooth viewBox="-50 0 256 256" />
@@ -112,7 +114,11 @@ function App() {
             <Route
               path="/search"
               element={
-                <SearchResults photos={allPhotosDataset} users={allUsers} />
+                <SearchResults
+                  photos={allPhotosDataset}
+                  users={allUsers}
+                  advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
+                />
               }
             />
             <Route
@@ -136,7 +142,7 @@ function App() {
               element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}
