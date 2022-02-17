@@ -13,6 +13,8 @@ import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
+import ScrollToTop from "react-scroll-to-top";
+import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
 import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
@@ -64,7 +66,7 @@ function App() {
 
   useEffect(() => {
     const photosDataset = photos.map((photo) => {
-      const findUser = allUsers.find(
+      const findUser = allUsers?.find(
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;
@@ -72,7 +74,7 @@ function App() {
       return { ...photo, username: username, profilePhoto: userProfile };
     });
     const sortedPhotosDataset = photosDataset.sort((a, b) => {
-      return a.imageLikes.length - b.imageLikes.length;
+      return b.imageLikes.length - a.imageLikes.length;
     });
     setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
@@ -92,6 +94,7 @@ function App() {
           setIsAdvancedSearch={setIsAdvancedSearch}
         />
         <br></br>
+        <ScrollToTop smooth viewBox="-50 0 256 256" />
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
             <Route
@@ -132,10 +135,14 @@ function App() {
             />
             <Route
               path="/:userID/posts"
-              element={<UserPosts photos={photos} />}
+              element={<UserPosts photos={allPhotosDataset} users={allUsers} />}
+            />
+                        <Route
+              path="/:userID/edit"
+              element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}
