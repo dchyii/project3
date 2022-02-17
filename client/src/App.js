@@ -18,15 +18,16 @@ import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
 import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
+export const DatabaseStatus = createContext();
 
 function App() {
-  useEffect(() => {
-    const fetchTest = async () => {
-      const test = await axios.get("/api/test");
-      console.log("test", test);
-    };
-    fetchTest();
-  }, []);
+  // useEffect(() => {
+  //   const fetchTest = async () => {
+  //     const test = await axios.get("/api/test");
+  //     console.log("test", test);
+  //   };
+  //   fetchTest();
+  // }, []);
 
   const [userContext, setUserContext] = useState({
     userID: "",
@@ -40,6 +41,7 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [allPhotosDataset, setAllPhotosDataset] = useState([]);
+  const [isUpdatedData, setIsUpdatedData] = useState(false);
 
   useEffect(() => {
     const checkLocalStorage = () => {
@@ -62,7 +64,8 @@ function App() {
       setAllUsers(allUsers.data.data);
     };
     getAllPhotosAndUsers();
-  }, []);
+    setIsUpdatedData(true);
+  }, [isUpdatedData]);
 
   useEffect(() => {
     const photosDataset = photos.map((photo) => {
@@ -83,77 +86,83 @@ function App() {
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
   return (
-    <DataContext.Provider value={[userContext, setUserContext]}>
-      <div className="App">
-        <Navbar />
-        <br></br>
-        <br></br>
-        <SearchBar
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          setIsAdvancedSearch={setIsAdvancedSearch}
-        />
-        <br></br>
-        <ScrollToTop smooth viewBox="-50 0 256 256" />
-        <div className="App-container h-screen w-full pt-16 -mt-20 bg-slate-100 ">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PhotoGallery photos={allPhotosDataset} users={allUsers} />
-              }
-            />
-            <Route
-              path="/photos"
-              element={<Photos photos={allPhotosDataset} />}
-            />
-            <Route
-              path="/photographers"
-              element={<Photographers photos={allPhotosDataset} />}
-            />
-            <Route
-              path="/search"
-              element={
-                <SearchResults
-                  photos={allPhotosDataset}
-                  users={allUsers}
-                  advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
-                />
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                userContext.isLoggedIn ? <Navigate to="/" /> : <SignupForm />
-              }
-            />
-            <Route
-              path="/signin"
-              element={
-                userContext.isLoggedIn ? <Navigate to="/" /> : <SigninForm />
-              }
-            />
-            <Route
-              path="/:userID/posts"
-              element={<UserPosts photos={allPhotosDataset} users={allUsers} />}
-            />
-            <Route
-              path="/:userID/edit"
-              element={<ProfileEdit photos={photos} />}
-            />
-            <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route
-              path="/:userID/posts/:postID"
-              element={<PhotoView users={allUsers} photos={allPhotosDataset} />}
-            />
-            <Route
-              path="/:userID/posts/:postID/edit"
-              element={<ImageEditPost />}
-            />
-          </Routes>
+    <DatabaseStatus.Provider value={[isUpdatedData, setIsUpdatedData]}>
+      <DataContext.Provider value={[userContext, setUserContext]}>
+        <div className="App">
+          <Navbar />
+          <br></br>
+          <br></br>
+          <SearchBar
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            setIsAdvancedSearch={setIsAdvancedSearch}
+          />
+          <br></br>
+          <ScrollToTop smooth viewBox="-50 0 256 256" />
+          <div className="App-container h-screen w-full pt-16 -mt-20 bg-slate-100 ">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PhotoGallery photos={allPhotosDataset} users={allUsers} />
+                }
+              />
+              <Route
+                path="/photos"
+                element={<Photos photos={allPhotosDataset} />}
+              />
+              <Route
+                path="/photographers"
+                element={<Photographers photos={allPhotosDataset} />}
+              />
+              <Route
+                path="/search"
+                element={
+                  <SearchResults
+                    photos={allPhotosDataset}
+                    users={allUsers}
+                    advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
+                  />
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  userContext.isLoggedIn ? <Navigate to="/" /> : <SignupForm />
+                }
+              />
+              <Route
+                path="/signin"
+                element={
+                  userContext.isLoggedIn ? <Navigate to="/" /> : <SigninForm />
+                }
+              />
+              <Route
+                path="/:userID/posts"
+                element={
+                  <UserPosts photos={allPhotosDataset} users={allUsers} />
+                }
+              />
+              <Route
+                path="/:userID/edit"
+                element={<ProfileEdit photos={photos} />}
+              />
+              <Route path="/:userID/posts/new" element={<ImageUploader />} />
+              <Route
+                path="/:userID/posts/:postID"
+                element={
+                  <PhotoView users={allUsers} photos={allPhotosDataset} />
+                }
+              />
+              <Route
+                path="/:userID/posts/:postID/edit"
+                element={<ImageEditPost />}
+              />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </DataContext.Provider>
+      </DataContext.Provider>
+    </DatabaseStatus.Provider>
   );
 }
 
