@@ -33,7 +33,7 @@ const PhotoView = (props) => {
       formik.setFieldValue("postImage", postID);
     };
     getComments();
-  }, []);
+  }, [comments]);
 
   // POST "/:postid/comment"
   const validateSchema = Yup.object().shape({
@@ -51,7 +51,7 @@ const PhotoView = (props) => {
       // await axios.post("/api/images/new", values);
       axios({
         method: "post",
-        url: `/${postID}/comment`,
+        url: `/api/images/${postID}/comment`,
         data: values,
       }).then((response) => {
         console.log(response);
@@ -76,7 +76,8 @@ const PhotoView = (props) => {
             postImage: "",
           };
           console.log(post);
-          navigate(-1, { replace: false });
+          setComments([]);
+          // navigate(-1, { replace: false });
         }
       });
     },
