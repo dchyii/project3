@@ -134,7 +134,7 @@ function App() {
               element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}

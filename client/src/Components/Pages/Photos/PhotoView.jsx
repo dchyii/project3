@@ -3,23 +3,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./style.css";
 
-const PhotoView = () => {
+const PhotoView = (props) => {
   const { postID, userID } = useParams();
   const [viewedPost, setViewedPost] = useState({});
+  const [comments, setComments] = useState();
   useEffect(() => {
     const getPost = async () => {
       const post = await axios.get(`/api/images/${postID}`);
-      console.log(post);
+      console.log(post.data.data);
       setViewedPost(post.data.data.imagePosts);
-      console.log(post.data.data.comments)
+      console.log(post.data.data.comments);
+      setComments(post.data.data.comments);
+      console.log(props)
     };
     getPost();
   }, []);
 
   const dummyComments = ["sucks", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad"];
-  const allComments = dummyComments.map((item, index) => (
+  const allComments = comments?.map((item, index) => (
       <div className={((index % 2 == 0) ? "bg-slate-100 py-1 text-sm" : "bg-white py-1 text-sm")} key={index} >
-        <span className="font-medium mr-2">razzle_dazzle</span> <span>{item}</span>
+        <span className="font-medium mr-2">{item.commentAuthor}</span> <span>{item.comment}</span><span></span>
     </div>
   ));
 
