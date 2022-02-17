@@ -63,13 +63,13 @@ const ImageUploader = () => {
       }).then((response) => {
         console.log(response);
         if (response.data.status === "not ok") {
-          console.log("not ok");
-          const newMsg =
-            response.data.message.charAt(0).toUpperCase() +
-            response.data.message.slice(1);
-          setMessage(newMsg);
+          console.log("Error:" + response.data.message);
+          // const newMsg =
+          //   response.data.message.charAt(0).toUpperCase() +
+          //   response.data.message.slice(1);
+          // setMessage(newMsg);
         } else {
-          const result = response.data.data;
+          // const result = response.data.data;
           let post = {
             imgPath: "",
             description: "",
