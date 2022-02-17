@@ -5,7 +5,7 @@ import UserPostDisplay from "../Subcomponents/UserPostDisplay";
 const UserPosts = (props) => {
   return (
     <div>
-      <Avatar />
+      <Avatar photos={props.photos} />
       <UserPostDisplay photos={props.photos} />
     </div>
   );

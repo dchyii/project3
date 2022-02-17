@@ -1,8 +1,20 @@
 import { React, useState } from "react";
 
-const LikeButton = () => {
+const LikeButton = (props) => {
+  // const sorted = props.properties.sort();
+  // console.log(sorted);
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [l, setL] = useState([]);
+
+  const displayAllLikes = (likes) => {
+    const filteredLike = props.likes.filter((userName) => {
+      return;
+    });
+
+    setIsLiked(!isLiked);
+  };
+
   const onClicked = () => {
     setLike(like + (isLiked ? -1 : 1));
     setIsLiked(!isLiked);

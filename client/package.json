@@ -13,6 +13,7 @@
     "react-query": "^3.34.14",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-scroll-to-top": "^1.0.8",
     "swiper": "^8.0.5",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

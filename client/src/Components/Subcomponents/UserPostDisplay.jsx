@@ -15,10 +15,12 @@ const UserPostDisplay = (props) => {
         </div>
         <div className=" w-full">
           <div className="absolute bottom-0 p-4 text-left w-3/4">
-            <h2 className="text-xl font-semibold 5">Description</h2>
+            <h2 className="text-xl text-pink-700 font-semibold 5">
+              {photo.description}
+            </h2>
           </div>
 
-          <div className=" absolute bottom-0 right-0 p-3 text-white">
+          <div className=" absolute bottom-0 right-0 p-3 text-pink-300">
             <LikeButton />
           </div>
 
@@ -31,7 +33,6 @@ const UserPostDisplay = (props) => {
       </div>
     );
   });
-  console.log(displayPosts);
 
   return <div className=" w-full">{displayPosts}</div>;
 };

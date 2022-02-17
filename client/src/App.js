@@ -13,6 +13,7 @@ import SearchBar from "./Components/Subcomponents/SearchBar";
 import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
+import ScrollToTop from "react-scroll-to-top";
 
 export const DataContext = createContext();
 
@@ -84,6 +85,7 @@ function App() {
         <br></br>
         <SearchBar />
         <br></br>
+        <ScrollToTop smooth viewBox="-50 0 256 256" />
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
             <Route
@@ -114,7 +116,7 @@ function App() {
             />
             <Route
               path="/:userID/posts"
-              element={<UserPosts photos={photos} />}
+              element={<UserPosts photos={allPhotosDataset} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
             <Route path="/:userID/posts/:postID" element={<PhotoView />} />
