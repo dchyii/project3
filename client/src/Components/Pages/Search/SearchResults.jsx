@@ -1,17 +1,21 @@
 import { useSearchParams } from "react-router-dom";
+import AdvancedSearch from "./AdvancedSearch";
 import Cards from "../../Subcomponents/Cards";
+import { useState } from "react";
 
 const SearchResults = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchTerm = searchParams.get("q");
-  console.log(searchParams);
-
+  const q = searchParams.get("q");
+  console.log(q);
+  const test = searchParams.get("test");
+  console.log(test);
   const allPhotos = props.photos;
   const allUsers = props.users;
 
   // console.log(typeof JSON.stringify(allPhotos[1]));
   // console.log("photos:", allPhotos);
   // console.log("users: ", allUsers);
+  // console.log("AQ:", advancedQuery);
 
   const filterAllPhotos = (allData, searchTerm) => {
     if (!searchTerm) {
@@ -24,7 +28,7 @@ const SearchResults = (props) => {
       });
     }
   };
-  const filteredPhotos = filterAllPhotos(allPhotos, searchTerm);
+  const filteredPhotos = filterAllPhotos(allPhotos, q);
   // console.log(filteredPhotos);
 
   const displayPhotos = filteredPhotos.map((photo, index) => {
@@ -32,14 +36,18 @@ const SearchResults = (props) => {
   });
 
   const handleClick = () => {
-    // setSearchParams({...searchParams,});
-    console.log("clicked");
+    console.log("clicked", q);
+    setSearchParams({ q: q, test: "testing" });
     // searchParams.append("foo", 4);
   };
   return (
     <div>
       <div>
-        {/* <button onClick={handleClick}>Advanced Search</button>Advanced Search */}
+        <button onClick={handleClick}>Advanced Search</button>
+        <AdvancedSearch
+          query={[searchParams, setSearchParams]}
+          searchTerm={q}
+        />
       </div>
       <div>{displayPhotos}</div>
     </div>
