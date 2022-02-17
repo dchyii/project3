@@ -99,14 +99,12 @@ const ImageUploader = () => {
     const setUser = () => {
       formik.setFieldValue("imageAuthor", userContext.userID);
     };
-
     return () => {
       setUser();
     };
   }, []);
 
   //TAGS
-
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
@@ -170,6 +168,7 @@ const ImageUploader = () => {
     const uploadedUrl = await uploadImage(file);
     setFormData({ ...formData, img: uploadedUrl });
     setUploadingImg(false);
+    formik.setFieldValue("imageAuthor", userContext.userID);
   };
 
   const handleSubmit = (event) => {

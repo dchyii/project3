@@ -26,9 +26,13 @@ const FeaturedPhotographers = (props) => {
     }
   }, []);
 
+<<<<<<< HEAD
   const filterNoProfilePhoto = props?.users?.filter(
     (user) => user.profilePhoto
   );
+=======
+  const filterNoProfilePhoto = props?.users?.filter((user) => user.profilePhoto);
+>>>>>>> origin/development
 
   const filterNoPost = filterNoProfilePhoto?.filter((user) => {
     return (
@@ -38,7 +42,11 @@ const FeaturedPhotographers = (props) => {
 
   let featuredPhotographers = [];
   for (let i = 0; i < Math.min(10, filterNoPost?.length); i++) {
+<<<<<<< HEAD
     featuredPhotographers?.push(filterNoPost[i]);
+=======
+    featuredPhotographers.push(filterNoPost[i]);
+>>>>>>> origin/development
   }
 
   const swiperRow = featuredPhotographers.map((user, index) => {

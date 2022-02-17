@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import "./style.css";
 
-const PhotoView = () => {
+const PhotoView = (props) => {
   const { postID, userID } = useParams();
   const [viewedPost, setViewedPost] = useState({});
+  const [comments, setComments] = useState();
   useEffect(() => {
     const getPost = async () => {
       const post = await axios.get(`/api/images/${postID}`);
-      console.log(post.data.data.imagePosts);
+      console.log(post.data.data);
       setViewedPost(post.data.data.imagePosts);
-    };
-    const getComments = async () => {
-      const post = await axios.get(`/api/images/${postID}`);
-      console.log(post);
+      console.log(post.data.data.comments);
+      setComments(post.data.data.comments);
+      console.log(props)
     };
     getPost();
   }, []);
 
   const dummyComments = ["sucks", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad", "goood", "bad"];
-  const allComments = dummyComments.map((item, index) => (
-      <div className="mb-2 text-sm min-h-full" key={index} >
-        <span className="font-medium mr-2">razzle_dazzle</span> <span>{item}</span>
+  const allComments = comments?.map((item, index) => (
+      <div className={((index % 2 == 0) ? "bg-slate-100 py-1 text-sm" : "bg-white py-1 text-sm")} key={index} >
+        <span className="font-medium mr-2">{item.commentAuthor}</span> <span>{item.comment}</span><span></span>
     </div>
   ));
 
@@ -32,7 +33,7 @@ key={item}>
 </span>)
 
   return (
-    <div className="m-10 rounded border">
+    <div className="m-10 rounded border pb-5">
         <div className="flex my-3 ml-3 py-auto">
           <div className="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
             <img
@@ -44,7 +45,7 @@ key={item}>
         </div>
       <div className="flex flex-row">
         <span className="w-6/12">
-          <img src={viewedPost.imgPath} />
+          <img src={viewedPost?.imgPath} className="min-h-80 max-h-80" />
           <div className="pt-1">
           <div className="pt-2">
         <i className="far fa-heart cursor-pointer"></i>
@@ -52,7 +53,7 @@ key={item}>
       </div>
             <div className="mb-2 text-sm">
               <span className="font-medium mr-2">braydoncoyer</span>{" "}
-              {viewedPost.description}
+              {viewedPost?.description}
             </div>
             <div>
             <span>Tags: </span>
@@ -61,7 +62,7 @@ key={item}>
           </div>
         </span>
         <span className="w-6/12">
-          <div className="flex flex-col overflow-y-auto"><div className="flex flex-col m-h-500">{allComments}</div></div>
+          <section className="flex flex-col overflow-y-auto" id="container"><article id="content" className="border flex flex-col max-h-80">{allComments}</article></section>
         </span>
       </div>
     </div>
