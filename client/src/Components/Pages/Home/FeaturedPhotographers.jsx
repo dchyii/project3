@@ -26,16 +26,16 @@ const FeaturedPhotographers = (props) => {
     }
   }, []);
 
-  const filterNoProfilePhoto = props?.users.filter((user) => user.profilePhoto);
+  const filterNoProfilePhoto = props?.users?.filter((user) => user.profilePhoto);
 
-  const filterNoPost = filterNoProfilePhoto.filter((user) => {
+  const filterNoPost = filterNoProfilePhoto?.filter((user) => {
     return (
       props.photos.findIndex((post) => post.imageAuthor === user.userid) !== -1
     );
   });
 
   let featuredPhotographers = [];
-  for (let i = 0; i < Math.min(10, filterNoPost.length); i++) {
+  for (let i = 0; i < Math.min(10, filterNoPost?.length); i++) {
     featuredPhotographers.push(filterNoPost[i]);
   }
 
