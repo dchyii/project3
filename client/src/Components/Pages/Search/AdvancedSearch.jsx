@@ -22,6 +22,7 @@ function AdvancedSearch(props) {
           onChange={(e) => {
             let params = e.target.value;
             if (params === "invalid") {
+              refQuery.current.value = "";
               setIsDisabled(true);
               setSearchParams({ q: q });
             } else {
