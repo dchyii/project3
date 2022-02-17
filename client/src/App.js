@@ -147,6 +147,10 @@ function App() {
               element={<PhotoView allUsers={allUsers} />}
             />
             <Route
+              path="/:userID/posts/:postID"
+              element={<PhotoView users={allUsers} photos={allPhotosDataset} />}
+            />
+            <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}
             />

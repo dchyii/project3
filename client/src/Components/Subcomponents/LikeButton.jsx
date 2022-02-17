@@ -6,9 +6,10 @@ const LikeButton = (props) => {
   // console.log(props.properties);
   const [userContext, setUserContext] = useContext(DataContext);
   const userID = userContext.userID;
-  const allLikes = props.properties.imageLikes;
+  const allLikes = props?.properties?.imageLikes;
   const [totalLikes, setTotalLikes] = useState(allLikes);
   const postID = props?.properties?._id;
+  console.log(props.properties)
 
   const likeStatus = totalLikes?.includes(userID) ? "Liked" : "Like";
 
@@ -38,7 +39,7 @@ const LikeButton = (props) => {
         className="text-base border border-gray-300 px-5 py-2 rounded-md"
         onClick={onClicked}
       >
-        {likeStatus} | {totalLikes.length}
+        {likeStatus} | {totalLikes?.length}
       </button>
     </div>
   );

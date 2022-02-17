@@ -2,6 +2,9 @@ import { useState } from "react";
 import LikeButton from "./LikeButton";
 
 const Cards = (props) => {
+  // const [L, setL] = useState([]);
+  // const [liked, SetLiked] = useState(false);
+  // const allLiked = props?.photos?.imageLikes;
   const properties = props?.photos;
   console.log(properties?.description);
   return (
