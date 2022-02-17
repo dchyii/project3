@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import "./style.css";
-import { useState, forwardRef, useContext } from "react";
+import { useState, forwardRef, useContext, useEffect } from "react";
 import { DataContext } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
@@ -55,7 +55,7 @@ const ImageUploader = () => {
     onSubmit: async (values) => {
       if (uploadingImg) return;
       console.log("submitted values: ", values);
-        // await axios.post("/api/images/new", values);
+      // await axios.post("/api/images/new", values);
       axios({
         method: "post",
         url: "/api/images/new",
@@ -96,15 +96,14 @@ const ImageUploader = () => {
   });
 
   useEffect(() => {
-   const setUser = () => {
-    formik.setFieldValue("imageAuthor", userContext.userID)
-   }
-  
+    const setUser = () => {
+      formik.setFieldValue("imageAuthor", userContext.userID);
+    };
+
     return () => {
-      setUser()
-    }
-  }, [])
-  
+      setUser();
+    };
+  }, []);
 
   //TAGS
 
