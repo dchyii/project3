@@ -120,6 +120,27 @@ router.get("/superadmin", isSuperadmin, async (req, res) => {
   }
 });
 
+//* get all username - superadmin
+router.get("/superadmin/allusername", async (req, res) => {
+  try {
+    const allUsernames = await User.find({});
+    const usernameMap = [];
+    allUsernames.forEach((user) => {
+      usernameMap.push({
+        username: user.username,
+        userid: user._id,
+        profilePhoto: user.profilePhoto,
+      });
+      return usernameMap;
+    });
+    res
+      .status(200)
+      .json({ status: "ok", message: "get all username", data: usernameMap });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //get individual users - superadmin
 router.get("/superadmin/:userid", isSuperadmin, async (req, res) => {
   const { userid } = req.params;
@@ -145,27 +166,6 @@ router.delete("/superadmin/:userid", isSuperadmin, async (req, res) => {
       message: "deleted user",
       data: deletedUser,
     });
-  } catch (error) {
-    res.json({ status: "not ok", message: error.message });
-  }
-});
-
-//* get all username - superadmin
-router.get("/superadmin/allusername", async (req, res) => {
-  try {
-    const allUsernames = await User.find({});
-    const usernameMap = [];
-    allUsernames.forEach((user) => {
-      usernameMap.push({
-        username: user.username,
-        userid: user._id,
-        profilePhoto: user.profilePhoto,
-      });
-      return usernameMap;
-    });
-    res
-      .status(200)
-      .json({ status: "ok", message: "get all username", data: usernameMap });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
