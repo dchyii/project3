@@ -13,10 +13,10 @@ const PhotoView = (props) => {
   // const [viewedPost, setViewedPost] = useState({});
   const [userContext, setUserContext] = useContext(DataContext);
   const [comments, setComments] = useState();
-  const postIndex = props?.photos.findIndex((photo) => photo._id === postID);
+  const postIndex = props?.photos?.findIndex((photo) => photo?._id === postID);
   const properties = props?.photos[postIndex];
   const navigate = useNavigate();
-  const viewedPost = props.photos[postIndex];
+  const viewedPost = props?.photos[postIndex];
   // console.log(viewedPost.imageAuthor);
   // console.log(userContext.userID)
   useEffect(() => {
