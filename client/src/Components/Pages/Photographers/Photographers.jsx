@@ -3,7 +3,7 @@ import Avatar from "../../Subcomponents/Avatar";
 import PhotographerCard from "../../Subcomponents/PhotographerCard";
 
 const Photographers = (props) => {
-  console.log(props.users);
+  // console.log(props.users);
   const allUsers = props.users;
 
   const mappedUsers = allUsers.map((user, index) => {

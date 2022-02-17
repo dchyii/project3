@@ -159,6 +159,7 @@ router.get("/superadmin/:userid", isSuperadmin, async (req, res) => {
 //* delete users - superadmin
 router.delete("/superadmin/:userid", isSuperadmin, async (req, res) => {
   const { userid } = req.params;
+  console.log("delete user");
   try {
     const deletedUser = await User.findByIdAndDelete(userid);
     res.status(200).json({

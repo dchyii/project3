@@ -1,10 +1,15 @@
 import { React, useState, useContext } from "react";
 import { DataContext } from "../../App";
+import SuperAdminDelete from "./SuperAdminDelete";
 
 const Avatar = (props) => {
-  // console.log(props?.user?.profilePhoto);
+  // console.log(props?.user);
+
   return (
     <div className={`w-96 ${props.height} border m-5 py-5 rounded-lg`}>
+      <div className={`absolute`}>
+        <SuperAdminDelete type={"users"} id={props?.user?.userid} />
+      </div>
       <a href={`/${props?.user?.username}/posts`}>
         <div className="px-10">
           <img
