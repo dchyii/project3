@@ -71,12 +71,25 @@ router.get("/allimages", async (req, res) => {
   }
 });
 
-//* authentication
+//* authentication for user
 const isAuthenticated = (req, res, next) => {
   if (req.session.currentUser) {
     return next();
   } else {
     res.json({ status: "not ok", message: "please login or sign up" });
+  }
+};
+
+//authentication for superadmin
+const isSuperadmin = (req, res, next) => {
+  const user = req.session.currentUser;
+  if (user && user.superAdmin === true) {
+    return next();
+  } else {
+    res.json({
+      status: "not ok",
+      message: "user is not a superadmin",
+    });
   }
 };
 
@@ -129,9 +142,82 @@ router.post("/:postid/comment", isAuthenticated, async (req, res) => {
   }
 });
 
+//* get comment
+router.get("/:postid/:commentid", async (req, res) => {
+  // console.log(req.params.postid, req.params.commentid);
+  try {
+    const getComment = await Comment.findById(req.params.commentid);
+    res.status(200).json({
+      status: "ok",
+      message: "get individual comment",
+      data: getComment,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* delete comment
+router.delete("/:postid/:commentid", isAuthenticated, async (req, res) => {
+  const user = req.session.currentUser;
+  try {
+    const getComment = await Comment.findById(req.params.commentid);
+    if (getComment.commentAuthor.toString() === user._id) {
+      const deleteComment = await Comment.findByIdAndDelete(
+        req.params.commentid
+      );
+      res.status(200).json({
+        status: "ok",
+        message: "deleted comment",
+        data: deleteComment,
+      });
+    } else {
+      res.json({
+        status: "not ok",
+        message: "cannot delete image. please log in with the correct username",
+      });
+    }
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* edit comment
+router.put("/:postid/:commentid", isAuthenticated, async (req, res) => {
+  const user = req.session.currentUser;
+  const changedComment = {
+    comment: req.body.comment,
+  };
+  try {
+    const getComment = await Comment.findById(req.params.commentid);
+    if (getComment.commentAuthor.toString() === user._id) {
+      const editedComment = await Comment.findByIdAndUpdate(
+        req.params.commentid,
+        changedComment,
+        {
+          new: true,
+        }
+      );
+      res.status(200).json({
+        status: "ok",
+        message: "edited comments",
+        data: editedComment,
+      });
+    } else {
+      res.json({
+        status: "not ok",
+        message: "cannot edit comment. please log in with the correct username",
+      });
+    }
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* view individual post
-router.get("/:postid", async (req, res) => {
-  const { postid } = req.params;
+router.get("/:postid/", async (req, res) => {
+  const { postid } = req.params.postid;
+
   try {
     const foundImagePosts = await Image.findById(postid);
     const foundComments = await Comment.find({ postImage: postid });
@@ -192,23 +278,48 @@ router.put("/:postid/unlike", isAuthenticated, async (req, res) => {
   }
 });
 
+//* delete image post by superadmin
+router.delete("/superadmin/:postid", isSuperadmin, async (req, res) => {
+  const { postid } = req.params;
+  try {
+    const deleteImagePostBySuperadmin = await Image.findByIdAndDelete(postid);
+    res.status(200).json({
+      status: "ok",
+      message: "deleted image post by superadmin",
+      data: deleteImagePostBySuperadmin,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* edit image post
 router.put("/:postid", isAuthenticated, async (req, res) => {
   const { postid } = req.params;
   const changedImagePosts = req.body;
+  const user = req.session.currentUser;
   try {
-    const editedImagePosts = await Image.findByIdAndUpdate(
-      postid,
-      changedImagePosts,
-      {
-        new: true,
-      }
-    );
-    res.status(200).json({
-      status: "ok",
-      message: "edited image post",
-      data: editedImagePosts,
-    });
+    const findImagePost = await Image.findById(postid);
+
+    if (findImagePost.imageAuthor.toString() === user._id) {
+      const editedImagePosts = await Image.findByIdAndUpdate(
+        postid,
+        changedImagePosts,
+        {
+          new: true,
+        }
+      );
+      res.status(200).json({
+        status: "ok",
+        message: "edited image post",
+        data: editedImagePosts,
+      });
+    } else {
+      res.json({
+        status: "not ok",
+        message: "cannot edit image. please log in with the correct username",
+      });
+    }
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
@@ -217,13 +328,22 @@ router.put("/:postid", isAuthenticated, async (req, res) => {
 //* delete image post
 router.delete("/:postid", isAuthenticated, async (req, res) => {
   const { postid } = req.params;
+  const user = req.session.currentUser;
   try {
-    const deletedImagePost = await Image.findByIdAndDelete(postid);
-    res.status(200).json({
-      status: "ok",
-      message: "deleted image post",
-      data: deletedImagePost,
-    });
+    const findImagePost = await Image.findById(postid);
+    if (findImagePost.imageAuthor.toString() === user._id) {
+      const deletedImagePost = await Image.findByIdAndDelete(postid);
+      res.status(200).json({
+        status: "ok",
+        message: "deleted image post",
+        data: deletedImagePost,
+      });
+    } else {
+      res.json({
+        status: "not ok",
+        message: "cannot delete image. please log in with the correct username",
+      });
+    }
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }

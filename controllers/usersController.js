@@ -95,13 +95,56 @@ router.post("/new", async (req, res) => {
   }
 });
 
+//authentication for superadmin
+const isSuperadmin = (req, res, next) => {
+  const user = req.session.currentUser;
+  if (user && user.superAdmin === true) {
+    return next();
+  } else {
+    res.json({
+      status: "not ok",
+      message: "user is not a superadmin",
+    });
+  }
+};
+
 //* GET all users - superadmin
-router.get("/superadmin", async (req, res) => {
+router.get("/superadmin", isSuperadmin, async (req, res) => {
   try {
     const allUsers = await User.find({});
     res
       .status(200)
       .json({ status: "ok", message: "get all users", data: allUsers });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//get individual users - superadmin
+router.get("/superadmin/:userid", isSuperadmin, async (req, res) => {
+  const { userid } = req.params;
+  try {
+    const foundUser = await User.findById(userid);
+    res.status(200).json({
+      status: "ok",
+      message: "superadmin get user",
+      data: foundUser,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* delete users - superadmin
+router.delete("/superadmin/:userid", isSuperadmin, async (req, res) => {
+  const { userid } = req.params;
+  try {
+    const deletedUser = await User.findByIdAndDelete(userid);
+    res.status(200).json({
+      status: "ok",
+      message: "deleted user",
+      data: deletedUser,
+    });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }
