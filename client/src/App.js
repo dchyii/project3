@@ -13,11 +13,8 @@ import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
-<<<<<<< HEAD
 import ScrollToTop from "react-scroll-to-top";
-=======
 import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
->>>>>>> origin/development
 import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
@@ -139,7 +136,7 @@ function App() {
               element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView />} />
+            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}

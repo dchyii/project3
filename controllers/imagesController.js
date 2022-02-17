@@ -220,7 +220,7 @@ router.get("/:postid/", async (req, res) => {
 
   try {
     const foundImagePosts = await Image.findById(postid);
-    const foundComments = await Comment.find({ postImage: postid.postid });
+    const foundComments = await Comment.find({ postImage: postid });
     console.log("Find image post", foundImagePosts);
     console.log("Find comments", foundComments);
     res.status(200).json({
