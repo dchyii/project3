@@ -8,7 +8,7 @@ const Cards = (props) => {
   const properties = props?.photos;
   // console.log(properties?.description);
   return (
-    <div className=" inline-block rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-slate-100 mx-3 md:mx-0 lg:mx-0">
+    <div className=" inline-block rounded overflow-hidden border w-96 h-96 m-5 bg-white mx-3 rounded-lg">
       <div className="w-full flex justify-between p-3">
         <div className="flex">
           <div className="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
@@ -23,19 +23,17 @@ const Cards = (props) => {
             {props?.photos?.username}{" "}
           </span>
         </div>
-        <span className="px-2 hover:bg-gray-300 cursor-pointer rounded">
-          <i className="fas fa-ellipsis-h pt-2 text-lg"></i>
-        </span>
       </div>
-
-      <a href={`/${properties?.username}/posts/${properties?._id}`}>
-        <img
-          src={properties?.imgPath}
-          alt={properties?.description}
-          // className="object-cover h-5/6 aspect-auto box-border w-96"
-          className="w-full bg-cover bg-slate-100"
-        />
-      </a>
+      <div className="w-full h-64">
+        <a href={`/${properties?.username}/posts/${properties?._id}`}>
+          <img
+            src={properties?.imgPath}
+            alt={properties?.description}
+            // className="object-cover h-5/6 aspect-auto box-border w-96"
+            className="w-full h-56 bg-cover bg-slate-100"
+          />
+        </a>
+      </div>
 
       <div className="px-3 pb-2">
         <div className="pt-2">
