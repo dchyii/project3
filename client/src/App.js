@@ -13,6 +13,7 @@ import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
+import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
 import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
@@ -127,6 +128,10 @@ function App() {
             <Route
               path="/:userID/posts"
               element={<UserPosts photos={photos} />}
+            />
+                        <Route
+              path="/:userID/edit"
+              element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
             <Route path="/:userID/posts/:postID" element={<PhotoView />} />
