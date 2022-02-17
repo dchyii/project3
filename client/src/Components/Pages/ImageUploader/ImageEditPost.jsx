@@ -50,6 +50,7 @@ const ImageEditPost = () => {
       );
       formik.setFieldValue("equipment", post.data.data.imagePosts.equipment);
       formik.setFieldValue("tags", post.data.data.imagePosts.tags);
+      formik.setFieldValue("imageAuthor", post.data.data.imagePosts.imageAuthor);
       setTags(post.data.data.imagePosts.tags);
       document.querySelector("#description").value =
         post.data.data.imagePosts.description;
@@ -62,12 +63,12 @@ const ImageEditPost = () => {
   //FORM
   const formik = useFormik({
     initialValues: {
+      imageAuthor: "",
       description: "",
       equipment: "",
       tags: [],
     },
     onSubmit: async (values) => {
-      await formik.setFieldValue("imageAuthor", userContext.userID);
       if (uploadingImg) return;
       console.log("submitted values: ", values);
       // await axios.post("/api/images/new", values);
