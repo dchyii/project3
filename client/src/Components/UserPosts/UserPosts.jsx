@@ -2,7 +2,7 @@ import { React } from "react";
 import { useParams } from "react-router-dom";
 import Avatar from "../Subcomponents/Avatar";
 import UserPostDisplay from "../Subcomponents/UserPostDisplay";
-import { DataContext } from "../../App";
+// import { DataContext } from "../../App";
 
 const UserPosts = (props) => {
   const allUsers = props?.users;
@@ -19,20 +19,19 @@ const UserPosts = (props) => {
   // const allPhotoDataData = (profile) => {
   //   return profile === userID;
   // };
-  console.log(allPhotoData[0]);
+  // console.log(allPhotoData[0]);
   const allUserPostedPhotos = allPhotoData.filter(
     (photo) => photo.username === userID
   );
   // const photoProfile = allPhotoData[allUserPostedPhotos];
-  console.log(allUserPostedPhotos);
+  // console.log(allUserPostedPhotos);
 
   const allUserPostedPhotosMapped = allUserPostedPhotos?.map((photo, index) => {
     return <UserPostDisplay photo={photo} key={index} />;
-    // return <p>hello</p>;
   });
 
   return (
-    <div>
+    <div className=" bg-slate-100">
       <Avatar user={profile} />
       {allUserPostedPhotosMapped}
     </div>

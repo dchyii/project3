@@ -95,7 +95,7 @@ function App() {
         />
         <br></br>
         <ScrollToTop smooth viewBox="-50 0 256 256" />
-        <div className="App-container h-screen w-full pt-16 -mt-20 ">
+        <div className="App-container h-screen w-full pt-16 -mt-20 bg-slate-100 ">
           <Routes>
             <Route
               path="/"
@@ -142,7 +142,10 @@ function App() {
               element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
-            <Route path="/:userID/posts/:postID" element={<PhotoView allUsers={allUsers}/>} />
+            <Route
+              path="/:userID/posts/:postID"
+              element={<PhotoView allUsers={allUsers} />}
+            />
             <Route
               path="/:userID/posts/:postID/edit"
               element={<ImageEditPost />}

@@ -3,16 +3,17 @@ import { DataContext } from "../../App";
 import axios from "axios";
 
 const LikeButton = (props) => {
+  // console.log(props.properties);
   const [userContext, setUserContext] = useContext(DataContext);
   const userID = userContext.userID;
   const allLikes = props.properties.imageLikes;
   const [totalLikes, setTotalLikes] = useState(allLikes);
   const postID = props?.properties?._id;
 
-  const likeStatus = totalLikes.includes(userID) ? "Liked" : "Like";
+  const likeStatus = totalLikes?.includes(userID) ? "Liked" : "Like";
 
   const onClicked = async () => {
-    const index = totalLikes.findIndex((like) => {
+    const index = totalLikes?.findIndex((like) => {
       return like === userID;
     });
     console.log(index);
@@ -24,7 +25,7 @@ const LikeButton = (props) => {
       setTotalLikes(newTotalLikes);
       await axios.put(`/api/images/${postID}/like`);
     } else {
-      const newTotalLikes = totalLikes.filter((likes, i) => i !== index);
+      const newTotalLikes = totalLikes?.filter((likes, i) => i !== index);
       console.log("Unlike", newTotalLikes);
       setTotalLikes(newTotalLikes);
       await axios.put(`/api/images/${postID}/unlike`);
