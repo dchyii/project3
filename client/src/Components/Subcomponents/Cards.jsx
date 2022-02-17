@@ -6,7 +6,7 @@ const Cards = (props) => {
   // const [liked, SetLiked] = useState(false);
   // const allLiked = props?.photos?.imageLikes;
   const properties = props?.photos;
-  // console.log(properties);
+  console.log(properties);
   return (
     <div className=" inline-block rounded overflow-hidden border w-96 h-96 m-5 bg-white mx-3 rounded-lg">
       <div className="w-full flex justify-between p-3">
