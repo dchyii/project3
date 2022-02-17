@@ -37,7 +37,7 @@ const Top10 = (props) => {
           <img
             src={photo.imgPath}
             alt={photo.description}
-            className="object-fill h-5/6 aspect-auto box-border"
+            className="object-cover h-5/6 aspect-auto box-border w-96"
           />
         </a>
       </SwiperSlide>

@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import "./style.css";
-import { useState, forwardRef, useContext } from "react";
+import { useState, forwardRef, useContext, useEffect } from "react";
 import { DataContext } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
@@ -47,7 +47,7 @@ const ImageUploader = () => {
       imgPath: "",
       description: "",
       likes: [],
-      author: "",
+      imageAuthor: "",
       equipment: "",
       tags: [],
     },
@@ -55,7 +55,7 @@ const ImageUploader = () => {
     onSubmit: async (values) => {
       if (uploadingImg) return;
       console.log("submitted values: ", values);
-        // await axios.post("/api/images/new", values);
+      // await axios.post("/api/images/new", values);
       axios({
         method: "post",
         url: "/api/images/new",
@@ -63,18 +63,18 @@ const ImageUploader = () => {
       }).then((response) => {
         console.log(response);
         if (response.data.status === "not ok") {
-          console.log("not ok");
-          const newMsg =
-            response.data.message.charAt(0).toUpperCase() +
-            response.data.message.slice(1);
-          setMessage(newMsg);
+          console.log("Error:" + response.data.message);
+          // const newMsg =
+          //   response.data.message.charAt(0).toUpperCase() +
+          //   response.data.message.slice(1);
+          // setMessage(newMsg);
         } else {
-          const result = response.data.data;
+          // const result = response.data.data;
           let post = {
             imgPath: "",
             description: "",
             likes: [],
-             author: "",
+            imageAuthor: "",
             equipment: "",
             tags: [],
           };
@@ -84,7 +84,7 @@ const ImageUploader = () => {
             imgPath: "",
             description: "",
             likes: [],
-            author: "",
+            imageAuthor: "",
             equipment: "",
             tags: [],
           };
@@ -95,8 +95,17 @@ const ImageUploader = () => {
     },
   });
 
-  //TAGS
+  useEffect(() => {
+    const setUser = () => {
+      formik.setFieldValue("imageAuthor", userContext.userID);
+    };
 
+    return () => {
+      setUser();
+    };
+  }, []);
+
+  //TAGS
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
