@@ -128,7 +128,7 @@ function App() {
             />
             <Route
               path="/:userID/posts"
-              element={<UserPosts photos={allPhotosDataset} />}
+              element={<UserPosts photos={allPhotosDataset} users={allUsers} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
             <Route path="/:userID/posts/:postID" element={<PhotoView />} />
