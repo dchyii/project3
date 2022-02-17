@@ -3,7 +3,8 @@ import Cards from "../../Subcomponents/Cards";
 
 const SearchResults = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchTerm = searchParams.get("searchTerm");
+  const searchTerm = searchParams.get("q");
+  console.log(searchParams);
 
   const allPhotos = props.photos;
   const allUsers = props.users;
@@ -24,13 +25,25 @@ const SearchResults = (props) => {
     }
   };
   const filteredPhotos = filterAllPhotos(allPhotos, searchTerm);
-  console.log(filteredPhotos);
+  // console.log(filteredPhotos);
 
   const displayPhotos = filteredPhotos.map((photo, index) => {
     return <Cards photos={photo} key={index} />;
   });
 
-  return <div>{displayPhotos}</div>;
+  const handleClick = () => {
+    // setSearchParams({...searchParams,});
+    console.log("clicked");
+    // searchParams.append("foo", 4);
+  };
+  return (
+    <div>
+      <div>
+        {/* <button onClick={handleClick}>Advanced Search</button>Advanced Search */}
+      </div>
+      <div>{displayPhotos}</div>
+    </div>
+  );
 };
 
 export default SearchResults;

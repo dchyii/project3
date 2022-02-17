@@ -9,7 +9,6 @@ import { SignupForm } from "./Components/Pages/SignupForm";
 import { SigninForm } from "./Components/Pages/SigninForm";
 import Photos from "./Components/Pages/Photos/Photos";
 import Photographers from "./Components/Pages/Photographers/Photographers";
-import SearchBar2 from "./Components/Subcomponents/SearchBar2";
 import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
@@ -86,7 +85,7 @@ function App() {
         <Navbar />
         <br></br>
         <br></br>
-        <SearchBar2
+        <SearchBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}
         />
