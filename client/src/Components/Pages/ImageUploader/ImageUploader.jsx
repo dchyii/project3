@@ -106,7 +106,6 @@ const ImageUploader = () => {
   }, []);
 
   //TAGS
-
   const onTagInputChange = (e) => {
     const { value } = e.target;
     setTagInput(value);
