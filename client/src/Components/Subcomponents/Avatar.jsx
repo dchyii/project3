@@ -2,7 +2,7 @@ import { React, useState, useContext } from "react";
 import { DataContext } from "../../App";
 
 const Avatar = (props) => {
-  console.log(props?.user?.profilePhoto);
+  // console.log(props?.user?.profilePhoto);
   return (
     <div className="flex flex-wrap">
       <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-10">

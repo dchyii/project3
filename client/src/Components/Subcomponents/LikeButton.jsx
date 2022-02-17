@@ -3,6 +3,7 @@ import { DataContext } from "../../App";
 import axios from "axios";
 
 const LikeButton = (props) => {
+  // console.log(props.properties);
   const [userContext, setUserContext] = useContext(DataContext);
   const userID = userContext.userID;
   const allLikes = props?.properties?.imageLikes;

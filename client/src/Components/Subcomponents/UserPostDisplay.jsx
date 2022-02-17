@@ -1,27 +1,21 @@
 import { React, useState, useContext } from "react";
+import LikeButton from "./LikeButton";
 
 const UserPostDisplay = (props) => {
+  console.log(props.photo._id);
   return (
-    <div className="relative text-black w-1/2 p-2 inline-block">
-      <div className=" bg-white w-full">
-        {/* <p className="p-6 text-xs font-medium leading-3 absolute top-0 right-0">
-          {props?.photo.createdAt}
-        </p> */}
-      </div>
-      <div className=" w-full">
-        <div className="absolute bottom-0 p-4 text-left w-3/4">
-          <h2 className="text-xl text-pink-700 font-semibold 5">
-            {props?.photo?.description}
-          </h2>
-        </div>
-
-        <div className=" absolute bottom-0 right-0 p-3 text-pink-300"></div>
-
+    <div className=" inline-block rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-slate-100 mx-3 md:mx-0 lg:mx-0">
+      <a href={`/${props?.photo.username}/posts/${props?.photo._id}`}>
         <img
-          className="object-fill aspect-auto "
           src={props?.photo?.imgPath}
           alt={props?.photo?.description}
+          className="w-full bg-cover bg-slate-100 inline-block"
         />
+      </a>
+      <div className="px-3 pb-2 ">
+        <div className="pt-2 bg-white">
+          <h2>{props?.photo?.description}</h2>
+        </div>
       </div>
     </div>
   );
