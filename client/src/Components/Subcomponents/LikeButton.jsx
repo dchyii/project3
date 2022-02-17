@@ -46,6 +46,7 @@ const LikeButton = (props) => {
       <button
         className="text-base border border-gray-300 px-5 py-2 rounded-md"
         onClick={onClicked}
+        disabled={userContext.isLoggedIn ? false : true}
       >
         {likeStatus} | {totalLikes?.length}
       </button>

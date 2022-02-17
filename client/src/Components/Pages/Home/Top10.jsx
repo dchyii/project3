@@ -68,7 +68,7 @@ const Top10 = (props) => {
           spaceBetween={30}
           slidesPerGroup={1}
           autoplay={{
-            delay: 300000,
+            delay: 3500,
             disableOnInteraction: false,
           }}
           loop={true}
