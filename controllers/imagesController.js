@@ -216,11 +216,11 @@ router.put("/:postid/:commentid", isAuthenticated, async (req, res) => {
 
 //* view individual post
 router.get("/:postid/", async (req, res) => {
-  const { postid } = req.params.postid;
+  const { postid } = req.params;
 
   try {
     const foundImagePosts = await Image.findById(postid);
-    const foundComments = await Comment.find({ postImage: postid });
+    const foundComments = await Comment.find({ postImage: postid.postid });
     res.status(200).json({
       status: "ok",
       message: "get individual post",
