@@ -13,7 +13,11 @@ import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
 import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
+<<<<<<< HEAD
 import ScrollToTop from "react-scroll-to-top";
+=======
+import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
+>>>>>>> origin/development
 import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
@@ -65,7 +69,7 @@ function App() {
 
   useEffect(() => {
     const photosDataset = photos.map((photo) => {
-      const findUser = allUsers.find(
+      const findUser = allUsers?.find(
         (user) => user.userid === photo.imageAuthor
       );
       const username = findUser?.username;
@@ -129,6 +133,10 @@ function App() {
             <Route
               path="/:userID/posts"
               element={<UserPosts photos={allPhotosDataset} users={allUsers} />}
+            />
+                        <Route
+              path="/:userID/edit"
+              element={<ProfileEdit photos={photos} />}
             />
             <Route path="/:userID/posts/new" element={<ImageUploader />} />
             <Route path="/:userID/posts/:postID" element={<PhotoView />} />
