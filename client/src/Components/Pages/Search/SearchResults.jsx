@@ -5,10 +5,13 @@ import { useState } from "react";
 
 const SearchResults = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isAdvancedSearch, setIsAdvancedSearch] = props.advancedSearch;
   const q = searchParams.get("q");
   console.log(q);
-  const test = searchParams.get("test");
-  console.log(test);
+  const params = searchParams.get("params");
+  console.log(params);
+  const advancedQuery = searchParams.get("advancedQuery");
+  console.log(advancedQuery);
   const allPhotos = props.photos;
   const allUsers = props.users;
 
@@ -43,8 +46,8 @@ const SearchResults = (props) => {
   return (
     <div>
       <div>
-        <button onClick={handleClick}>Advanced Search</button>
         <AdvancedSearch
+          advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
           query={[searchParams, setSearchParams]}
           searchTerm={q}
         />

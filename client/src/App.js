@@ -78,6 +78,7 @@ function App() {
   }, [photos, allUsers]);
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
 
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
@@ -88,6 +89,7 @@ function App() {
         <SearchBar
           searchParams={searchParams}
           setSearchParams={setSearchParams}
+          setIsAdvancedSearch={setIsAdvancedSearch}
         />
         <br></br>
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
@@ -109,7 +111,11 @@ function App() {
             <Route
               path="/search"
               element={
-                <SearchResults photos={allPhotosDataset} users={allUsers} />
+                <SearchResults
+                  photos={allPhotosDataset}
+                  users={allUsers}
+                  advancedSearch={[isAdvancedSearch, setIsAdvancedSearch]}
+                />
               }
             />
             <Route

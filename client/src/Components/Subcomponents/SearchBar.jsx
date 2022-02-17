@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({ searchParams, setSearchParams }) => {
+const SearchBar = ({ searchParams, setSearchParams, setIsAdvancedSearch }) => {
   const navigate = useNavigate();
   const searchRef = useRef();
   const onSubmit = (e) => {
@@ -65,6 +65,7 @@ const SearchBar = ({ searchParams, setSearchParams }) => {
           value={searchParams?.get("q") || ""}
           onInput={(e) => {
             let q = e.target.value;
+            setIsAdvancedSearch(false);
             console.log(e.target.value);
             if (q) {
               setSearchParams({ q });

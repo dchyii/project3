@@ -6,10 +6,21 @@ function AdvancedSearch(props) {
   const q = props.searchTerm ? props.searchTerm : "";
   const [searchParams, setSearchParams] = props.query;
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isAdvancedSearch, setIsAdvancedSearch] = props.advancedSearch;
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  if (!isAdvancedSearch) {
+    return (
+      <div>
+        <button onClick={() => setIsAdvancedSearch(true)}>
+          Advanced Search
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -27,7 +38,13 @@ function AdvancedSearch(props) {
               setSearchParams({ q: q });
             } else {
               setIsDisabled(false);
-              setSearchParams({ q: q, params: params });
+              setSearchParams({
+                q: q,
+                params: params,
+                advancedQuery: refQuery.current.value
+                  ? refQuery.current.value
+                  : "",
+              });
             }
             console.log(params);
           }}
@@ -40,19 +57,19 @@ function AdvancedSearch(props) {
         :{" "}
         <input
           type="text"
-          id="query"
-          name="query"
+          id="advancedQuery"
+          name="advancedQuery"
           ref={refQuery}
           disabled={isDisabled}
           placeholder="Select Parameter"
           onInput={(e) => {
-            let query = e.target.value;
-            console.log(query);
-            if (query) {
+            let advancedQuery = e.target.value;
+            console.log(advancedQuery);
+            if (advancedQuery) {
               setSearchParams({
                 q: q,
                 params: refParams.current.value,
-                query: query,
+                advancedQuery: advancedQuery,
               });
             } else {
               setSearchParams({ q: q });
