@@ -15,10 +15,6 @@ const Avatar = (props) => {
           />
           <div className="pt-6 text-center">
             <h5 className="text-xl font-bold text-blueGray-700">DCHYII</h5>
-            {/* <p className="mt-1 text-sm text-blueGray-400 uppercase font-semibold">
-              {" "}
-              Web Developer
-            </p> */}
           </div>
         </div>
       </div>

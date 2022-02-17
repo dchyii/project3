@@ -30,8 +30,6 @@ const Cards = (props) => {
       <img className="w-full bg-cover" src={props?.photos?.imgPath} alt="img" />
       <div className="px-3 pb-2">
         <div className="pt-2">
-          <i className="far fa-heart cursor-pointer"></i>
-          <span className="text-sm text-gray-400 font-medium">12 likes</span>
           <LikeButton properties={properties} />
         </div>
       </div>

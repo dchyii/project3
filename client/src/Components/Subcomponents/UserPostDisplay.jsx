@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import LikeButton from "./LikeButton";
 import { DataContext } from "../../App";
 
 const UserPostDisplay = (props) => {
   const [userContext, setUserContext] = useContext(DataContext);
-
+  const properties = props?.photos;
+  console.log(properties);
   const displayPosts = props.photos.map((photo, key) => {
     return (
       <div className="relative text-black w-1/2 p-2 inline-block" key={key}>
@@ -20,9 +20,7 @@ const UserPostDisplay = (props) => {
             </h2>
           </div>
 
-          <div className=" absolute bottom-0 right-0 p-3 text-pink-300">
-            <LikeButton />
-          </div>
+          <div className=" absolute bottom-0 right-0 p-3 text-pink-300"></div>
 
           <img
             className="object-fill aspect-auto "

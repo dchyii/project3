@@ -73,7 +73,7 @@ function App() {
       return { ...photo, username: username, profilePhoto: userProfile };
     });
     const sortedPhotosDataset = photosDataset.sort((a, b) => {
-      return a.imageLikes.length - b.imageLikes.length;
+      return b.imageLikes.length - a.imageLikes.length;
     });
     setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
