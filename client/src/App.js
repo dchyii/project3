@@ -3,17 +3,18 @@ import axios from "axios";
 import PhotoGallery from "./Components/Pages/Home/PhotoGallery";
 import ImageUploader from "./Components/Pages/ImageUploader/ImageUploader";
 import { useEffect, createContext, useContext, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import Navbar from "./Components/Subcomponents/Navbar";
 import { SignupForm } from "./Components/Pages/SignupForm";
 import { SigninForm } from "./Components/Pages/SigninForm";
 import Photos from "./Components/Pages/Photos/Photos";
 import Photographers from "./Components/Pages/Photographers/Photographers";
-import SearchBar from "./Components/Subcomponents/SearchBar";
 import ImageEditPost from "./Components/Pages/ImageUploader/ImageEditPost";
+import SearchBar from "./Components/Subcomponents/SearchBar";
 import PhotoView from "./Components/Pages/Photos/PhotoView";
 import UserPosts from "./Components/UserPosts/UserPosts";
 import ProfileEdit from "./Components/Pages/ImageUploader/ProfileEdit";
+import SearchResults from "./Components/Pages/Search/SearchResults";
 
 export const DataContext = createContext();
 
@@ -77,13 +78,18 @@ function App() {
     setAllPhotosDataset(sortedPhotosDataset);
   }, [photos, allUsers]);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <DataContext.Provider value={[userContext, setUserContext]}>
       <div className="App">
         <Navbar />
         <br></br>
         <br></br>
-        <SearchBar />
+        <SearchBar
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
         <br></br>
         <div className="App-container h-screen w-full pt-16 -mt-20 ">
           <Routes>
@@ -100,6 +106,12 @@ function App() {
             <Route
               path="/photographers"
               element={<Photographers photos={allPhotosDataset} />}
+            />
+            <Route
+              path="/search"
+              element={
+                <SearchResults photos={allPhotosDataset} users={allUsers} />
+              }
             />
             <Route
               path="/signup"
