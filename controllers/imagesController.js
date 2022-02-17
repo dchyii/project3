@@ -187,6 +187,21 @@ router.put("/:postid/unlike", isAuthenticated, async (req, res) => {
   }
 });
 
+//* delete image post by superadmin
+router.delete("/superadmin/:postid", isSuperadmin, async (req, res) => {
+  const { postid } = req.params;
+  try {
+    const deleteImagePostBySuperadmin = await Image.findByIdAndDelete(postid);
+    res.status(200).json({
+      status: "ok",
+      message: "deleted image post by superadmin",
+      data: deleteImagePostBySuperadmin,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* create new comment
 router.post("/:postid/comment", isAuthenticated, async (req, res) => {
   const { postid } = req.params;
@@ -275,21 +290,6 @@ router.put("/:postid/:commentid", isAuthenticated, async (req, res) => {
         message: "cannot edit comment. please log in with the correct username",
       });
     }
-  } catch (error) {
-    res.json({ status: "not ok", message: error.message });
-  }
-});
-
-//* delete image post by superadmin
-router.delete("/superadmin/:postid", isSuperadmin, async (req, res) => {
-  const { postid } = req.params;
-  try {
-    const deleteImagePostBySuperadmin = await Image.findByIdAndDelete(postid);
-    res.status(200).json({
-      status: "ok",
-      message: "deleted image post by superadmin",
-      data: deleteImagePostBySuperadmin,
-    });
   } catch (error) {
     res.json({ status: "not ok", message: error.message });
   }

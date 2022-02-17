@@ -2,8 +2,7 @@ import { React, useState, useContext } from "react";
 import LikeButton from "./LikeButton";
 
 const UserPostDisplay = (props) => {
-  const properties = props?.photo;
-  console.log(properties);
+
   return (
     <div className=" inline-block rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-slate-100 mx-3 md:mx-0 lg:mx-0">
       <a href={`/${props?.photo.username}/posts/${props?.photo._id}`}>

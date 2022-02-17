@@ -113,7 +113,7 @@ function App() {
               />
               <Route
                 path="/photographers"
-                element={<Photographers photos={allPhotosDataset} />}
+                element={<Photographers users={allUsers} />}
               />
               <Route
                 path="/search"
