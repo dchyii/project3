@@ -148,6 +148,50 @@ router.get("/:postid", async (req, res) => {
   }
 });
 
+//* like image post
+router.put("/:postid/like", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  const user = req.session.currentUser;
+  try {
+    const foundImagePosts = await Image.findById(postid);
+    await foundImagePosts.imageLikes.push(user);
+    foundImagePosts.save();
+    res.status(200).json({
+      status: "ok",
+      message: user.username + " liked post",
+      data: foundImagePosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
+//* unlike image post
+router.put("/:postid/unlike", isAuthenticated, async (req, res) => {
+  const { postid } = req.params;
+  const user = req.session.currentUser;
+  try {
+    const foundImagePosts = await Image.findByIdAndUpdate(
+      postid,
+      {
+        $pull: { imageLikes: user._id },
+      },
+      {
+        new: true,
+      }
+    );
+
+    foundImagePosts.save();
+    res.status(200).json({
+      status: "ok",
+      message: user.username + " unliked post",
+      data: foundImagePosts,
+    });
+  } catch (error) {
+    res.json({ status: "not ok", message: error.message });
+  }
+});
+
 //* edit image post
 router.put("/:postid", isAuthenticated, async (req, res) => {
   const { postid } = req.params;
