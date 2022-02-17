@@ -19,7 +19,6 @@ const LikeButton = (props) => {
     const index = totalLikes?.findIndex((like) => {
       return like === userID;
     });
-    console.log(index);
     if (index === -1) {
       const userArr = [userID];
 
