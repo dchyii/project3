@@ -1,15 +1,15 @@
 import { React, useState, useContext, useEffect } from "react";
 import { DataContext } from "../../App";
+import { DatabaseStatus } from "../../App";
 import axios from "axios";
 
 const LikeButton = (props) => {
-  // console.log(props.properties);
   const [userContext, setUserContext] = useContext(DataContext);
+  const [isUpdatedData, setIsUpdatedData] = useContext(DatabaseStatus);
   const userID = userContext.userID;
   const allLikes = props?.properties?.imageLikes;
   const [totalLikes, setTotalLikes] = useState(allLikes);
   const postID = props?.properties?._id;
-  console.log(props.properties);
 
   useEffect(() => {
     setTotalLikes(allLikes);
@@ -21,20 +21,24 @@ const LikeButton = (props) => {
     const index = totalLikes?.findIndex((like) => {
       return like === userID;
     });
-    console.log(index);
     if (index === -1) {
       const userArr = [userID];
 
       const newTotalLikes = totalLikes.concat(userArr);
-      console.log("like", newTotalLikes);
       setTotalLikes(newTotalLikes);
       await axios.put(`/api/images/${postID}/like`);
+      // axios({
+      //   method: "put",
+      //   url: `/api/images/${postID}/like`,
+      // }).then((response) => {
+      //   console.log(response);
+      // });
     } else {
       const newTotalLikes = totalLikes?.filter((likes, i) => i !== index);
-      console.log("Unlike", newTotalLikes);
       setTotalLikes(newTotalLikes);
       await axios.put(`/api/images/${postID}/unlike`);
     }
+    setIsUpdatedData(false);
   };
 
   return (
