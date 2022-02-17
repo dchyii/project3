@@ -15,7 +15,13 @@ function AdvancedSearch(props) {
   if (!isAdvancedSearch) {
     return (
       <div>
-        <button onClick={() => setIsAdvancedSearch(true)}>
+        <button
+          onClick={() => {
+            setIsAdvancedSearch(true);
+            setSearchParams({ q: q });
+            setIsDisabled(true);
+          }}
+        >
           Advanced Search
         </button>
       </div>
@@ -46,7 +52,6 @@ function AdvancedSearch(props) {
                   : "",
               });
             }
-            console.log(params);
           }}
         >
           <option value="invalid">Field </option>

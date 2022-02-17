@@ -66,7 +66,6 @@ const SearchBar = ({ searchParams, setSearchParams, setIsAdvancedSearch }) => {
           onInput={(e) => {
             let q = e.target.value;
             setIsAdvancedSearch(false);
-            console.log(e.target.value);
             if (q) {
               setSearchParams({ q });
             } else {
