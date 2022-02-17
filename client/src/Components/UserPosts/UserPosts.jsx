@@ -21,9 +21,11 @@ const UserPosts = (props) => {
   });
 
   return (
-    <div className=" bg-slate-100 w-full flex">
-      <Avatar user={profile} />
-      {allUserPostedPhotosMapped}
+    <div className=" bg-slate-100 flex">
+      <div>
+        <Avatar user={profile} height={"h-96"} />
+      </div>
+      <div>{allUserPostedPhotosMapped}</div>
     </div>
   );
 };

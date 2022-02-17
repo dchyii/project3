@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 // import "swiper/css/pagination";
 // import "swiper/css/scrollbar";
 import { useEffect, useState } from "react";
+import Avatar from "../../Subcomponents/Avatar";
 
 const FeaturedPhotographers = (props) => {
   const [groupSize, setGroupSize] = useState(1);
@@ -26,7 +27,9 @@ const FeaturedPhotographers = (props) => {
     }
   }, []);
 
-  const filterNoProfilePhoto = props?.users?.filter((user) => user.profilePhoto);
+  const filterNoProfilePhoto = props?.users?.filter(
+    (user) => user.profilePhoto
+  );
 
   const filterNoPost = filterNoProfilePhoto?.filter((user) => {
     return (
@@ -35,18 +38,41 @@ const FeaturedPhotographers = (props) => {
   });
 
   let featuredPhotographers = [];
-  for (let i = 0; i < Math.min(10, filterNoPost?.length); i++) {
-    featuredPhotographers.push(filterNoPost[i]);
+  for (let i = 0; i < filterNoPost?.length; i++) {
+    const method = Math.round(Math.random());
+    if (method === 1) {
+      featuredPhotographers.unshift(filterNoPost[i]);
+    } else {
+      featuredPhotographers.push(filterNoPost[i]);
+    }
   }
+
+  // const swiperRow = featuredPhotographers.map((user, index) => {
+  //   return (
+  //     <SwiperSlide key={index}>
+  //       <a href={`/${user.username}/posts`}>
+  //         <img
+  //           src={user.profilePhoto}
+  //           alt={user.username}
+  //           className="object-fill h-5/6 aspect-auto box-border"
+  //         />
+  //       </a>
+  //     </SwiperSlide>
+  //   );
+  // });
 
   const swiperRow = featuredPhotographers.map((user, index) => {
     return (
       <SwiperSlide key={index}>
         <a href={`/${user.username}/posts`}>
           <img
-            src={user.profilePhoto}
             alt={user.username}
-            className="object-fill h-5/6 aspect-auto box-border"
+            src={
+              user.profilePhoto
+                ? user?.profilePhoto
+                : "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+            }
+            className="shadow-lg rounded-full mx-auto bg-cover h-72"
           />
         </a>
       </SwiperSlide>

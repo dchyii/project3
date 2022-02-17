@@ -4,7 +4,7 @@ import { DataContext } from "../../App";
 const Avatar = (props) => {
   // console.log(props?.user?.profilePhoto);
   return (
-    <div className="w-96 h-96 m-5 py-5 rounded-lg">
+    <div className={`w-96 ${props.height} border m-5 py-5 rounded-lg`}>
       <div className="px-10">
         <img
           alt={""}
@@ -14,7 +14,7 @@ const Avatar = (props) => {
               ? props?.user?.profilePhoto
               : "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
           }
-          className="shadow-lg rounded-full mx-auto max-w-120-px"
+          className="shadow-lg rounded-full mx-auto bg-cover"
         />
         <div className="pt-6 text-center">
           <h5 className="text-xl font-bold text-blueGray-700">
