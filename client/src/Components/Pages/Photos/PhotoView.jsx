@@ -2,7 +2,7 @@
 import React, { useState, useEffect, forwardRef, useContext } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
-import "./style.css";
+// import "./style.css";
 import LikeButton from "../../Subcomponents/LikeButton";
 import { DataContext } from "../../../App";
 import { useFormik, Formik } from "formik";
@@ -115,26 +115,39 @@ const PhotoView = (props) => {
       <div className="flex my-3 ml-3 py-auto">
         <div className="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
           <img
-              className={viewedPost?.profilePhoto ? "" : " hidden"}
-              src={viewedPost?.profilePhoto}
-              alt="profilepic"
+            className={viewedPost?.profilePhoto ? "" : " hidden"}
+            src={viewedPost?.profilePhoto}
+            alt="profilepic"
           />
         </div>
         <span className="pt-1 ml-2 font-bold text-sm">
           {viewedPost?.username}
         </span>
-        <span className="flex justify-end mt-1 ml-96" hidden={viewedPost?.imageAuthor !== userContext.userID}><Link to={`/${userID}/posts/${postID}/edit`}><button disabled={viewedPost?.imageAuthor !== userContext.userID} className="bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded py-1 px-2">Edit</button></Link></span>
+        <span
+          className="flex justify-end mt-1 ml-96"
+          hidden={viewedPost?.imageAuthor !== userContext.userID}
+        >
+          <Link to={`/${userID}/posts/${postID}/edit`}>
+            <button
+              disabled={viewedPost?.imageAuthor !== userContext.userID}
+              className="bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded py-1 px-2"
+            >
+              Edit
+            </button>
+          </Link>
+        </span>
       </div>
       <div className="flex flex-row">
         <span className="w-6/12">
           <img
             src={viewedPost?.imgPath}
+            alt={viewedPost?.description}
             className="min-h-80 max-h-80 mx-auto"
           />
           <div className="pt-1">
             <div className="pt-2">
               <i className="far fa-heart cursor-pointer"></i>
-              <span className="text-sm text-gray-400 font-medium">
+              <span className="text-sm font-medium">
                 <LikeButton properties={properties} />
               </span>
             </div>
@@ -171,7 +184,9 @@ const PhotoView = (props) => {
             <button
               type="submit"
               className=" bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded px-4 py-1"
-            >Submit Comment</button>
+            >
+              Submit Comment
+            </button>
           </form>
         </span>
       </div>
