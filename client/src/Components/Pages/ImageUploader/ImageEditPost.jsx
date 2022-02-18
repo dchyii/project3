@@ -195,7 +195,7 @@ const ImageEditPost = () => {
         <div>
           <img
             src={viewedPost?.imgPath}
-            style={{ maxWidth: "75% ", height: "auto" }}
+            className="max-h-56"
           />
         </div>
         <span
