@@ -38,7 +38,7 @@ const FeaturedPhotographers = (props) => {
   });
 
   let featuredPhotographers = [];
-  for (let i = 0; i < filterNoPost?.length; i++) {
+  for (let i = 0; i < Math.min(10, filterNoPost?.length); i++) {
     const method = Math.round(Math.random());
     if (method === 1) {
       featuredPhotographers.unshift(filterNoPost[i]);
