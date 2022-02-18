@@ -33,7 +33,7 @@ const Cards = (props) => {
             src={properties?.imgPath}
             alt={properties?.description}
             // className="object-cover h-5/6 aspect-auto box-border w-96"
-            className="w-full h-56 bg-cover bg-slate-100"
+            className="w-auto h-56 bg-cover bg-slate-100 mx-auto"
           />
         </a>
       </div>
