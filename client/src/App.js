@@ -21,7 +21,7 @@ export const DataContext = createContext();
 export const DatabaseStatus = createContext();
 
 function App() {
-  // useEffect(() => {
+  //  useEffect(() => {
   //   const fetchTest = async () => {
   //     const test = await axios.get("/api/test");
   //     console.log("test", test);
