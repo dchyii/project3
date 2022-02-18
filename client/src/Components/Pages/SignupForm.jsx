@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import { DataContext } from "../../App";
+import { DatabaseStatus } from "../../App";
 
 export const SignupForm = () => {
   const navigate = useNavigate();
   const [userContext, setUserContext] = useContext(DataContext);
+  const [isUpdatedData, setIsUpdatedData] = useContext(DatabaseStatus);
   const [allUsernames, setAllUsernames] = useState([]);
 
   useEffect(() => {
@@ -63,6 +65,7 @@ export const SignupForm = () => {
             response.data.message.charAt(0).toUpperCase() +
             response.data.message.slice(1);
           window.alert(newMsg);
+          setIsUpdatedData(false);
           setUserContext(user);
         }
       });

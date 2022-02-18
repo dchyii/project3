@@ -2,6 +2,7 @@
 import "./style.css";
 import { useState, forwardRef, useContext, useEffect } from "react";
 import { DataContext } from "../../../App";
+import { DatabaseStatus } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,6 +24,7 @@ const tagList = [
 
 const ImageEditPost = () => {
   const [userContext, setUserContext] = useContext(DataContext);
+  const [isUpdatedData, setIsUpdatedData] = useContext(DatabaseStatus);
   const navigate = useNavigate();
   const { postID } = useParams();
   // const userContext = useContext[DataContext];
@@ -50,6 +52,10 @@ const ImageEditPost = () => {
       );
       formik.setFieldValue("equipment", post.data.data.imagePosts.equipment);
       formik.setFieldValue("tags", post.data.data.imagePosts.tags);
+      formik.setFieldValue(
+        "imageAuthor",
+        post.data.data.imagePosts.imageAuthor
+      );
       setTags(post.data.data.imagePosts.tags);
       document.querySelector("#description").value =
         post.data.data.imagePosts.description;
@@ -62,12 +68,12 @@ const ImageEditPost = () => {
   //FORM
   const formik = useFormik({
     initialValues: {
+      imageAuthor: "",
       description: "",
       equipment: "",
       tags: [],
     },
     onSubmit: async (values) => {
-      await formik.setFieldValue("imageAuthor", userContext.userID);
       if (uploadingImg) return;
       console.log("submitted values: ", values);
       // await axios.post("/api/images/new", values);
@@ -98,7 +104,10 @@ const ImageEditPost = () => {
             tags: [],
           };
           console.log(post);
-          navigate(-1, { replace: false });
+          setIsUpdatedData(false);
+          navigate(`../${userContext.username}/posts/${postID}`, {
+            replace: true,
+          });
         }
       });
     },
@@ -186,7 +195,7 @@ const ImageEditPost = () => {
         <div>
           <img
             src={viewedPost?.imgPath}
-            style={{ maxWidth: "75% ", height: "auto" }}
+            className="max-h-56"
           />
         </div>
         <span

@@ -2,6 +2,7 @@
 import "./style.css";
 import { useState, forwardRef, useContext, useEffect } from "react";
 import { DataContext } from "../../../App";
+import { DatabaseStatus } from "../../../App";
 import axios from "axios";
 import { useFormik, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,7 @@ const tagList = [
 
 const ImageUploader = () => {
   const [userContext, setUserContext] = useContext(DataContext);
+  const [isUpdatedData, setIsUpdatedData] = useContext(DatabaseStatus);
   const navigate = useNavigate();
   // const userContext = useContext[DataContext];
   const [tagInput, setTagInput] = useState("");
@@ -69,7 +71,7 @@ const ImageUploader = () => {
           //   response.data.message.slice(1);
           // setMessage(newMsg);
         } else {
-          // const result = response.data.data;
+          const result = response.data.data;
           let post = {
             imgPath: "",
             description: "",
@@ -78,7 +80,7 @@ const ImageUploader = () => {
             equipment: "",
             tags: [],
           };
-          console.log(post);
+          console.log(result);
           post = {
             ...post,
             imgPath: "",
@@ -89,7 +91,10 @@ const ImageUploader = () => {
             tags: [],
           };
           console.log(post);
-          navigate(-1, { replace: false });
+          setIsUpdatedData(false);
+          navigate(`../${userContext.username}/posts/${result._id}`, {
+            replace: false,
+          });
         }
       });
     },
@@ -185,7 +190,7 @@ const ImageUploader = () => {
         <div>
           <img
             src={displayedImage}
-            style={{ maxWidth: "75% ", height: "auto" }}
+            className="max-h-56"
           />
           <Field
             className="input"

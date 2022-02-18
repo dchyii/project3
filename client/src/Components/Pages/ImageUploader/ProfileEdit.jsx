@@ -35,7 +35,7 @@ const ProfileEdit = () => {
   const formik = useFormik({
     initialValues: {
         profilePhoto: "",
-        username: "",
+        // username: "",
         email: "",
     },
     validationSchema: validateSchema,
@@ -59,14 +59,14 @@ const ProfileEdit = () => {
           // const result = response.data.data;
           let post = {
             profilePhoto: "",
-            username: "",
+            // username: "",
             email: "",
           };
           console.log(post);
           post = {
             ...post,
             profilePhoto: "",
-            username: "",
+            // username: "",
             email: "",
           };
           console.log(post);
@@ -83,8 +83,8 @@ const ProfileEdit = () => {
       setUserInfo(userData?.post?.data?.data[0])
       formik.setFieldValue("profilePhoto", userData?.profilePhoto);
       setDisplayedImage(userData?.profilePhoto);
-      formik.setFieldValue("username", userData?.username);
-      document.querySelector("#username").value = userData?.username;
+      // formik.setFieldValue("username", userData?.username);
+      // document.querySelector("#username").value = userData?.username;
       formik.setFieldValue("email", userData?.email);
       document.querySelector("#email").value = userData?.email;
 
@@ -148,14 +148,14 @@ const ProfileEdit = () => {
             error={formik.touched?.description && formik.errors?.imgPath}
           />
         </div>
-        <Field
+        {/* <Field
             label="Username"
             name="username"
             id="username"
             placeholder="Enter new username"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
-          />
+          /> */}
                   <Field
             label="Email"
             name="email"
