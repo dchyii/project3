@@ -190,7 +190,7 @@ const ImageUploader = () => {
         <div>
           <img
             src={displayedImage}
-            style={{ maxWidth: "75% ", height: "auto" }}
+            className="max-h-56"
           />
           <Field
             className="input"

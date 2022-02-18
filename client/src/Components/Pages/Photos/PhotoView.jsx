@@ -136,7 +136,7 @@ const PhotoView = (props) => {
         >
           <Link to={`/${userID}/posts/${postID}/edit`}>
             <button
-              disabled={viewedPost?.imageAuthor !== userContext.userID}
+              disabled={(viewedPost?.imageAuthor !== userContext.userID)}
               className="bg-black disabled:bg-gray-200 active:bg-gray-900 focus:outline-none text-white rounded py-1 px-2"
             >
               Edit

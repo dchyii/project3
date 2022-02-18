@@ -5,9 +5,9 @@
   justify-content: center;
 }
 .form-input {
+  margin-top: 10px;
   width: 80%;
-  margin-left: 10%;
-  height: 100%;
+  height: fit-content;
   padding: 20px;
   align-items: center;
   justify-content: center;
@@ -17,7 +17,6 @@
 }
 
 .form-input img {
-  height: 100px;
   display: block;
   margin: auto;
   margin-bottom: 30px;
