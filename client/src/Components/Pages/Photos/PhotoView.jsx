@@ -2,7 +2,7 @@
 import React, { useState, useEffect, forwardRef, useContext } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
-import "./style.css";
+
 import LikeButton from "../../Subcomponents/LikeButton";
 import { DataContext } from "../../../App";
 import { useFormik, Formik } from "formik";
@@ -17,6 +17,7 @@ const PhotoView = (props) => {
   const properties = props?.photos[postIndex];
   const navigate = useNavigate();
   const viewedPost = props.photos[postIndex];
+  // const [commentInput, setCommentInput] = useState();
   // console.log(viewedPost.imageAuthor);
   // console.log(userContext.userID)
   useEffect(() => {
@@ -48,6 +49,7 @@ const PhotoView = (props) => {
     validationSchema: validateSchema,
     onSubmit: async (values) => {
       console.log("submitted values: ", values);
+      document.querySelector("#comment").value = null
       // await axios.post("/api/images/new", values);
       axios({
         method: "post",
@@ -91,13 +93,13 @@ const PhotoView = (props) => {
     return (
       <div
         className={
-          index % 2 == 0 ? "bg-slate-100 py-1 text-sm" : "bg-white py-1 text-sm"
+          index % 2 == 0 ? "bg-slate-100 py-1 text-sm text-left ml-2" : "bg-white py-1 text-sm text-left ml-2"
         }
         key={index}
       >
         <span className="font-medium mr-2">{commentUsername}</span>{" "}
         <span>{item.comment}</span>
-        <span></span>
+        <div className="mr-0 text-slate-400 text-sm">{item?.createdAt}</div>
       </div>
     );
   });
@@ -114,15 +116,19 @@ const PhotoView = (props) => {
   return (
     <div className="m-10 rounded border pb-5">
       <div className="flex my-3 ml-3 py-auto">
+      <Link to={`/${viewedPost?.username}/posts`}>
         <div className="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
           <img
             className={viewedPost?.profilePhoto ? "" : " hidden"}
             src={viewedPost?.profilePhoto}
             alt="profilepic"
           />
-        </div>
+        </div></Link>
         <span className="pt-1 ml-2 font-bold text-sm">
           {viewedPost?.username}
+        </span>
+        <span className="mr-0 ml-24 mt-1 text-slate-500 text-sm">
+        {viewedPost?.createdAt}
         </span>
         <span
           className="flex justify-end mt-1 ml-96"
