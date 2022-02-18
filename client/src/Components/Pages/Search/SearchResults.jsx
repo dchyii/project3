@@ -32,7 +32,7 @@ const SearchResults = (props) => {
     } else {
       return allData.filter((photo) => {
         const lowerCaseAQ = advancedQuery?.toLowerCase();
-        const lowerCaseValue = photo[params]?.toLowerCase();
+        const lowerCaseValue = JSON.stringify(photo[params])?.toLowerCase();
         console.log(lowerCaseAQ);
         console.log(lowerCaseValue);
         return lowerCaseValue?.includes(lowerCaseAQ);
